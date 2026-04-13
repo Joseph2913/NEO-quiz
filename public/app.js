@@ -10,6 +10,7 @@
   let eventSource = null;      // SSE connection
   let processFormName = null;  // form being processed (single mode)
   let bulkItems = [];          // parsed bulk items
+  let useTemplate = false;     // template duplication mode
 
   // ─── DOM refs ────────────────────────────────────────────────────────────
   const $ = (sel) => document.querySelector(sel);
@@ -347,7 +348,249 @@
     }
   }
 
-  // ─── Bulk processing ────────────────────────────────────────────────────
+  // ─── Bulk Tabs ──────────────────────────────────────────────────────────
+  function switchBulkTab(tabName) {
+    $$('.bulk-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tabName));
+    $$('.bulk-tab-content').forEach(c => c.classList.remove('active'));
+    $(`#bulk-tab-${tabName}`).classList.add('active');
+    // Hide preview when switching tabs
+    $('#bulk-preview').classList.add('hidden');
+    $('#bulk-start-btn').classList.add('hidden');
+    bulkItems = [];
+  }
+
+  // ─── Manual Picker ─────────────────────────────────────────────────────
+  function getPickerQuizzes() {
+    return quizzes.filter(q => q.status !== 'processed');
+  }
+
+  function createSearchDropdown(preselect) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'search-dropdown';
+    wrapper.innerHTML = `
+      <input type="text" class="search-dropdown-input" placeholder="Search or select a quiz..." autocomplete="off" />
+      <span class="search-dropdown-arrow">&#9660;</span>
+      <div class="search-dropdown-list"></div>
+    `;
+
+    const input = wrapper.querySelector('.search-dropdown-input');
+    const list = wrapper.querySelector('.search-dropdown-list');
+    let selectedValue = preselect || '';
+
+    function renderList(filter) {
+      const items = getPickerQuizzes();
+      const query = (filter || '').toLowerCase();
+      const filtered = query ? items.filter(q => q.form_name.toLowerCase().includes(query)) : items;
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="search-dropdown-empty">No quizzes found</div>';
+        return;
+      }
+      list.innerHTML = filtered.map(q =>
+        `<div class="search-dropdown-item${q.form_name === selectedValue ? ' selected' : ''}" data-value="${esc(q.form_name)}">
+          <span>${esc(q.form_name)}</span>
+          <span class="item-count">${q.question_count}q</span>
+        </div>`
+      ).join('');
+
+      list.querySelectorAll('.search-dropdown-item').forEach(item => {
+        item.addEventListener('mousedown', (e) => {
+          e.preventDefault(); // prevent blur from firing first
+          selectedValue = item.dataset.value;
+          input.value = selectedValue;
+          input.classList.add('has-selection');
+          wrapper.classList.remove('open');
+          updatePickerPreview();
+        });
+      });
+    }
+
+    // Open on focus
+    input.addEventListener('focus', () => {
+      wrapper.classList.add('open');
+      if (selectedValue && input.value === selectedValue) {
+        input.select(); // select all so typing replaces it
+      }
+      renderList(selectedValue ? '' : input.value);
+    });
+
+    // Filter as user types
+    input.addEventListener('input', () => {
+      selectedValue = '';
+      input.classList.remove('has-selection');
+      wrapper.classList.add('open');
+      renderList(input.value);
+      updatePickerPreview();
+    });
+
+    // Close on blur
+    input.addEventListener('blur', () => {
+      wrapper.classList.remove('open');
+      // If user typed something that doesn't match, revert to selection
+      if (selectedValue) {
+        input.value = selectedValue;
+        input.classList.add('has-selection');
+      } else {
+        // Check if typed text exactly matches a quiz
+        const exact = getPickerQuizzes().find(q => q.form_name.toLowerCase() === input.value.toLowerCase());
+        if (exact) {
+          selectedValue = exact.form_name;
+          input.value = exact.form_name;
+          input.classList.add('has-selection');
+          updatePickerPreview();
+        }
+      }
+    });
+
+    // Keyboard navigation
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        wrapper.classList.remove('open');
+        input.blur();
+      }
+    });
+
+    // Set initial value
+    if (preselect) {
+      input.value = preselect;
+      input.classList.add('has-selection');
+    }
+
+    // Expose getter
+    wrapper.getValue = () => selectedValue;
+
+    return wrapper;
+  }
+
+  function addPickerRow(preselect, preurl) {
+    const container = $('#manual-picker-rows');
+    const row = document.createElement('div');
+    row.className = 'picker-row';
+
+    const dropdown = createSearchDropdown(preselect);
+    row.appendChild(dropdown);
+
+    const urlInput = document.createElement('input');
+    urlInput.type = 'url';
+    urlInput.className = 'picker-url';
+    urlInput.placeholder = 'Paste the Microsoft Forms URL here...';
+    if (preurl) { urlInput.value = preurl; urlInput.classList.add('has-value'); }
+    if (useTemplate) { urlInput.style.display = 'none'; }
+    urlInput.addEventListener('input', () => {
+      urlInput.classList.toggle('has-value', urlInput.value.trim().length > 0);
+      updatePickerPreview();
+    });
+    row.appendChild(urlInput);
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'picker-remove-btn';
+    removeBtn.title = 'Remove';
+    removeBtn.innerHTML = '&times;';
+    removeBtn.addEventListener('click', () => {
+      row.remove();
+      updatePickerPreview();
+    });
+    row.appendChild(removeBtn);
+
+    container.appendChild(row);
+    return row;
+  }
+
+  function updatePickerPreview() {
+    const rows = $$('.picker-row');
+    bulkItems = [];
+    rows.forEach(row => {
+      const dropdown = row.querySelector('.search-dropdown');
+      const name = dropdown ? dropdown.getValue() : '';
+      const url = row.querySelector('.picker-url').value.trim();
+      // In template mode, URL is not required per row
+      if (name && (url || useTemplate)) {
+        const quiz = quizzes.find(q => q.form_name === name);
+        bulkItems.push({
+          form_name: name,
+          form_url: url || null,
+          found: !!quiz,
+          question_count: quiz ? quiz.question_count : 0,
+        });
+      }
+    });
+    renderBulkPreview();
+  }
+
+  // ─── CSV Download ──────────────────────────────────────────────────────
+  function downloadCSVTemplate() {
+    const pending = quizzes.filter(q => q.status !== 'processed');
+    const header = 'Form Name,URL';
+    const rows = pending.map(q => `"${q.form_name.replace(/"/g, '""')}",`);
+    const csv = [header, ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'neo_quiz_bulk_template.csv';
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+
+  // ─── CSV Upload / Parse ────────────────────────────────────────────────
+  function handleCSVUpload(file) {
+    if (!file || !file.name.endsWith('.csv')) {
+      alert('Please upload a .csv file.');
+      return;
+    }
+    $('#csv-filename').textContent = `Loaded: ${file.name}`;
+    $('#csv-filename').classList.remove('hidden');
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = e.target.result;
+      parseCSVText(text);
+    };
+    reader.readAsText(file);
+  }
+
+  function parseCSVText(text) {
+    const lines = text.split('\n').filter(l => l.trim());
+    bulkItems = [];
+
+    // Skip header if present
+    const startIdx = (lines[0] && lines[0].toLowerCase().includes('form name')) ? 1 : 0;
+
+    for (let i = startIdx; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+
+      // Parse CSV respecting quoted fields
+      let name = '';
+      let url = '';
+      if (line.startsWith('"')) {
+        const endQuote = line.indexOf('"', 1);
+        if (endQuote > 0) {
+          name = line.substring(1, endQuote).replace(/""/g, '"');
+          url = line.substring(endQuote + 1).replace(/^[,\t\s]+/, '').trim();
+        }
+      } else {
+        const parts = line.split(/[,\t]/).map(s => s.trim());
+        name = parts[0] || '';
+        url = parts[parts.length - 1] || '';
+      }
+
+      if (name && url) {
+        const quiz = quizzes.find(q => q.form_name === name);
+        bulkItems.push({ form_name: name, form_url: url, found: !!quiz, question_count: quiz ? quiz.question_count : 0 });
+      } else if (name && !url) {
+        // Row with name but no URL — skip silently (template row)
+      }
+    }
+
+    if (bulkItems.length === 0) {
+      alert('No valid entries found in the CSV. Make sure each row has a Form Name and a URL.');
+      return;
+    }
+
+    renderBulkPreview();
+  }
+
+  // ─── Paste Text Parse ──────────────────────────────────────────────────
   function parseBulkInput() {
     const raw = $('#bulk-input').value.trim();
     if (!raw) { alert('Please paste form data.'); return; }
@@ -355,11 +598,10 @@
     const lines = raw.split('\n').filter(l => l.trim());
     bulkItems = [];
     lines.forEach(line => {
-      // Split by tab, comma+space, or just comma
       const parts = line.split(/\t|,\s*/).map(s => s.trim());
       if (parts.length >= 2) {
         const name = parts[0];
-        const url = parts[parts.length - 1]; // URL is usually last
+        const url = parts[parts.length - 1];
         const quiz = quizzes.find(q => q.form_name === name);
         bulkItems.push({ form_name: name, form_url: url, found: !!quiz, question_count: quiz ? quiz.question_count : 0 });
       }
@@ -370,18 +612,33 @@
       return;
     }
 
-    // Render preview table
+    renderBulkPreview();
+  }
+
+  // ─── Shared Preview Render ─────────────────────────────────────────────
+  function renderBulkPreview() {
     const preview = $('#bulk-preview');
+    if (bulkItems.length === 0) {
+      preview.classList.add('hidden');
+      $('#bulk-start-btn').classList.add('hidden');
+      return;
+    }
+
     preview.classList.remove('hidden');
+    const urlHeader = useTemplate ? 'Mode' : 'URL';
     preview.innerHTML = `
       <table>
-        <thead><tr><th>Form Name</th><th>Questions</th><th>URL</th><th>Status</th></tr></thead>
+        <thead><tr><th>Form Name</th><th>Questions</th><th>${urlHeader}</th><th>Status</th></tr></thead>
         <tbody>
           ${bulkItems.map(b => `
             <tr>
               <td>${esc(b.form_name)}</td>
               <td>${b.question_count || '?'}</td>
-              <td class="url-cell" title="${esc(b.form_url)}">${esc(b.form_url)}</td>
+              <td class="url-cell">${
+                useTemplate && !b.form_url
+                  ? '<span style="color:#6366f1;font-size:12px;">From template</span>'
+                  : `<span title="${esc(b.form_url || '')}">${esc(b.form_url || '')}</span>`
+              }</td>
               <td>${b.found ? '<span class="badge badge-success">Found</span>' : '<span class="badge badge-error">Not found</span>'}</td>
             </tr>
           `).join('')}
@@ -390,44 +647,192 @@
     `;
 
     const startBtn = $('#bulk-start-btn');
-    if (bulkItems.every(b => b.found)) {
+    const allFound = bulkItems.every(b => b.found);
+    const anyValid = bulkItems.some(b => b.found);
+    if (allFound) {
       startBtn.classList.remove('hidden');
+    } else if (anyValid) {
+      startBtn.classList.remove('hidden');
+      // Show warning but still allow processing found items
     } else {
       startBtn.classList.add('hidden');
-      alert('Some form names were not found in the quiz data. Please check and try again.');
+      alert('None of the form names matched the quiz data. Please check the names and try again.');
     }
   }
+
+  // ─── Bulk Progress State ─────────────────────────────────────────────────
+  let bulkFormStates = {}; // { formName: { index, totalQ, phase, questionsDone, status, error } }
+  let bulkTotalForms = 0;
 
   async function startBulkProcessing() {
     if (bulkItems.length === 0) return;
     const validItems = bulkItems.filter(b => b.found);
     if (validItems.length === 0) return;
 
+    // Initialize state
+    bulkTotalForms = validItems.length;
+    bulkFormStates = {};
+    validItems.forEach((b, i) => {
+      bulkFormStates[b.form_name] = {
+        index: i,
+        totalQ: b.question_count,
+        phase: 'waiting',   // waiting | template | opening | title | questions | cleanup | done | failed
+        questionsDone: 0,
+        currentQuestion: 0,
+        status: 'pending',  // pending | running | processed | failed
+        error: null,
+      };
+    });
+
     // Switch to bulk progress view
     showView('bulk-progress');
-    const list = $('#bulk-progress-list');
-    list.innerHTML = validItems.map((b, i) => `
-      <div class="bulk-progress-item" id="bulk-item-${i}">
-        <span class="status-dot not_started"></span>
-        <span class="form-name">${esc(b.form_name)}</span>
-        <span class="question-progress">--</span>
-        <span class="badge badge-not_started">Pending</span>
-      </div>
-    `).join('');
+    $('#bulk-complete-panel').classList.add('hidden');
     $('#bulk-progress-bar').style.width = '0%';
-    $('#bulk-progress-detail').textContent = 'Starting...';
+    $('#bulk-progress-bar').className = 'progress-bar';
     $('#bulk-progress-log').innerHTML = '';
 
+    renderBulkCards();
+    updateBulkSummary();
+
+    // Validate template URL if in template mode
+    const templateUrl = useTemplate ? ($('#template-url-input').value || '').trim() : null;
+    if (useTemplate && !templateUrl) {
+      alert('Please paste the template URL before starting.');
+      return;
+    }
+
     try {
+      const payload = {
+        items: validItems.map(b => ({ form_name: b.form_name, form_url: b.form_url })),
+      };
+      if (templateUrl) {
+        payload.template_url = templateUrl;
+      }
+
       await api('/process', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          items: validItems.map(b => ({ form_name: b.form_name, form_url: b.form_url }))
-        }),
+        body: JSON.stringify(payload),
       });
     } catch (e) {
       alert('Failed to start bulk processing: ' + e.message);
+    }
+  }
+
+  function renderBulkCards() {
+    const list = $('#bulk-progress-list');
+    list.innerHTML = '';
+
+    Object.keys(bulkFormStates).forEach((formName) => {
+      const s = bulkFormStates[formName];
+      const cardClass = s.status === 'running' ? 'bp-active' :
+                        s.status === 'processed' ? 'bp-done' :
+                        s.status === 'failed' ? 'bp-failed' : '';
+
+      const phases = useTemplate
+        ? ['template', 'opening', 'title', 'questions', 'cleanup']
+        : ['opening', 'title', 'questions', 'cleanup'];
+      const phaseLabels = { template: 'Duplicate', opening: 'Opening', title: 'Title', questions: 'Questions', cleanup: 'Cleanup' };
+      const phasesHTML = phases.map(p => {
+        let cls = '';
+        if (s.status === 'processed' || (s.status === 'running' && phases.indexOf(p) < phases.indexOf(s.phase))) cls = 'phase-done';
+        else if (s.status === 'failed' && s.phase === p) cls = 'phase-error';
+        else if (s.phase === p && s.status === 'running') cls = 'phase-active';
+        return `<span class="bp-phase ${cls}">${phaseLabels[p]}</span>`;
+      }).join('');
+
+      // Question step pills
+      let stepsHTML = '';
+      if (s.totalQ > 0) {
+        const pills = [];
+        for (let i = 1; i <= s.totalQ; i++) {
+          let stepCls = '';
+          if (i < s.currentQuestion || (s.status === 'processed' && s.phase === 'done')) stepCls = 'step-done';
+          else if (i === s.currentQuestion && s.phase === 'questions' && s.status === 'running') stepCls = 'step-active';
+          pills.push(`<span class="bp-step ${stepCls}" id="bp-${s.index}-q${i}">Q${i}</span>`);
+        }
+        stepsHTML = `<div class="bp-steps">${pills.join('')}</div>`;
+      }
+
+      const progressPct = s.totalQ > 0 ? Math.round((s.questionsDone / s.totalQ) * 100) : 0;
+      const barPct = s.status === 'processed' ? 100 : s.status === 'failed' ? progressPct : progressPct;
+
+      let detailText = '';
+      if (s.status === 'pending') detailText = 'Waiting...';
+      else if (s.status === 'processed') detailText = s.newFormUrl ? `Complete! Form URL: ${s.newFormUrl}` : 'All questions filled, samples removed. Complete!';
+      else if (s.status === 'failed') detailText = `Error: ${s.error || 'Unknown'}`;
+      else if (s.phase === 'template') detailText = 'Duplicating form template...';
+      else if (s.phase === 'opening') detailText = 'Opening form in browser...';
+      else if (s.phase === 'title') detailText = 'Replacing form title...';
+      else if (s.phase === 'questions') detailText = `Filling question ${s.currentQuestion} of ${s.totalQ}...`;
+      else if (s.phase === 'cleanup') detailText = 'Deleting sample template questions...';
+
+      const card = document.createElement('div');
+      card.className = `bp-card ${cardClass}`;
+      card.id = `bp-card-${s.index}`;
+      card.innerHTML = `
+        <div class="bp-card-header">
+          <span class="bp-card-title">${esc(formName)}</span>
+          <span class="bp-card-badge badge badge-${s.status === 'running' ? 'running' : s.status}">${
+            s.status === 'pending' ? 'Pending' :
+            s.status === 'running' ? 'In Progress' :
+            s.status === 'processed' ? 'Complete' : 'Failed'
+          }</span>
+        </div>
+        <div class="bp-phases">${phasesHTML}</div>
+        <div class="bp-card-progress">
+          <div class="bp-card-bar-container">
+            <div class="bp-card-bar" style="width: ${barPct}%"></div>
+          </div>
+        </div>
+        ${stepsHTML}
+        <div class="bp-card-detail">${detailText}</div>
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  function updateBulkSummary() {
+    const states = Object.values(bulkFormStates);
+    const done = states.filter(s => s.status === 'processed').length;
+    const running = states.filter(s => s.status === 'running').length;
+    const pending = states.filter(s => s.status === 'pending').length;
+    const failed = states.filter(s => s.status === 'failed').length;
+
+    $('#bp-summary-done').textContent = `${done} done`;
+    $('#bp-summary-running').textContent = `${running} running`;
+    $('#bp-summary-pending').textContent = `${pending} pending`;
+    $('#bp-summary-failed').textContent = `${failed} failed`;
+
+    // Overall progress bar
+    const total = states.length;
+    const completedOrFailed = done + failed;
+    $('#bulk-progress-bar').style.width = `${total > 0 ? (completedOrFailed / total) * 100 : 0}%`;
+  }
+
+  function showBulkComplete(results) {
+    const total = results ? results.length : 0;
+    const success = results ? results.filter(r => r.success).length : 0;
+    const failed = total - success;
+
+    const panel = $('#bulk-complete-panel');
+    panel.classList.remove('hidden');
+
+    if (failed === 0) {
+      $('#bulk-complete-icon').textContent = String.fromCodePoint(0x2705);
+      $('#bulk-complete-title').textContent = 'All Forms Processed Successfully!';
+      $('#bulk-complete-message').textContent = `${success} of ${total} forms completed without errors.`;
+      $('#bulk-progress-bar').classList.add('complete');
+    } else if (success > 0) {
+      $('#bulk-complete-icon').textContent = String.fromCodePoint(0x26A0, 0xFE0F);
+      $('#bulk-complete-title').textContent = 'Bulk Processing Complete';
+      $('#bulk-complete-message').textContent = `${success} of ${total} forms succeeded. ${failed} form(s) had errors.`;
+      $('#bulk-progress-bar').classList.add('error');
+    } else {
+      $('#bulk-complete-icon').textContent = String.fromCodePoint(0x274C);
+      $('#bulk-complete-title').textContent = 'Bulk Processing Failed';
+      $('#bulk-complete-message').textContent = `All ${total} forms encountered errors.`;
+      $('#bulk-progress-bar').classList.add('error');
     }
   }
 
@@ -471,38 +876,67 @@
   }
 
   function handleProgressEvent(data) {
+    const isBulk = currentView === 'bulk-progress';
+    const fn = data.formName;
+
     switch (data.type) {
       case 'batch_start':
         updateRunningStatus(true);
         break;
 
       case 'form_start':
-        if (currentView === 'bulk-progress') {
-          updateBulkItem(data.formIndex - 1, 'running', 'In Progress', '--');
-          $('#bulk-progress-detail').textContent = `Processing ${data.formName} (${data.formIndex}/${data.totalForms})`;
-          $('#bulk-progress-bar').style.width = `${((data.formIndex - 1) / data.totalForms) * 100}%`;
-        } else {
-          $('#progress-detail').textContent = `Opening form...`;
+        if (isBulk && bulkFormStates[fn]) {
+          bulkFormStates[fn].status = 'running';
+          bulkFormStates[fn].phase = useTemplate ? 'template' : 'opening';
+          renderBulkCards();
+          updateBulkSummary();
+        } else if (!isBulk) {
+          $('#progress-detail').textContent = 'Opening form...';
+        }
+        break;
+
+      case 'template_start':
+        if (isBulk && bulkFormStates[fn]) {
+          bulkFormStates[fn].phase = 'template';
+          renderBulkCards();
+        }
+        break;
+
+      case 'template_done':
+        if (isBulk && bulkFormStates[fn]) {
+          bulkFormStates[fn].phase = 'opening';
+          if (data.newUrl) bulkFormStates[fn].newFormUrl = data.newUrl;
+          renderBulkCards();
         }
         break;
 
       case 'title_replaced':
-        if (currentView !== 'bulk-progress') {
+        if (isBulk && bulkFormStates[fn]) {
+          bulkFormStates[fn].phase = 'title';
+          renderBulkCards();
+        } else if (!isBulk) {
           $('#progress-detail').textContent = 'Title replaced, scrolling to questions...';
         }
         break;
 
       case 'section_found':
-        if (currentView !== 'bulk-progress') {
+        if (isBulk && bulkFormStates[fn]) {
+          bulkFormStates[fn].phase = 'questions';
+          bulkFormStates[fn].currentQuestion = 0;
+          renderBulkCards();
+        } else if (!isBulk) {
           $('#progress-detail').textContent = 'Found Self Assessment section, starting questions...';
         }
         break;
 
       case 'question_start': {
-        const pct = ((data.question - 1) / data.totalQuestions) * 100;
-        if (currentView === 'bulk-progress') {
-          updateBulkItem(null, null, null, `Q${data.question}/${data.totalQuestions}`);
-        } else {
+        if (isBulk && bulkFormStates[fn]) {
+          bulkFormStates[fn].phase = 'questions';
+          bulkFormStates[fn].currentQuestion = data.question;
+          bulkFormStates[fn].totalQ = data.totalQuestions || bulkFormStates[fn].totalQ;
+          renderBulkCards();
+        } else if (!isBulk) {
+          const pct = ((data.question - 1) / data.totalQuestions) * 100;
           const step = $(`#step-q${data.question}`);
           if (step) { step.className = 'progress-step active'; }
           $('#progress-bar').style.width = `${pct}%`;
@@ -512,10 +946,12 @@
       }
 
       case 'question_done': {
-        const pct = (data.question / data.totalQuestions) * 100;
-        if (currentView === 'bulk-progress') {
-          updateBulkItem(null, null, null, `Q${data.question}/${data.totalQuestions}`);
-        } else {
+        if (isBulk && bulkFormStates[fn]) {
+          bulkFormStates[fn].questionsDone = data.question;
+          bulkFormStates[fn].currentQuestion = data.question + 1;
+          renderBulkCards();
+        } else if (!isBulk) {
+          const pct = (data.question / data.totalQuestions) * 100;
           const step = $(`#step-q${data.question}`);
           if (step) { step.className = 'progress-step done'; }
           $('#progress-bar').style.width = `${pct}%`;
@@ -524,7 +960,10 @@
       }
 
       case 'question_error': {
-        if (currentView !== 'bulk-progress') {
+        if (isBulk && bulkFormStates[fn]) {
+          // Mark the question as errored but keep going
+          renderBulkCards();
+        } else if (!isBulk) {
           const step = $(`#step-q${data.question}`);
           if (step) { step.className = 'progress-step error'; }
         }
@@ -532,61 +971,67 @@
       }
 
       case 'cleanup_start':
-        if (currentView !== 'bulk-progress') {
+        if (isBulk && bulkFormStates[fn]) {
+          bulkFormStates[fn].phase = 'cleanup';
+          renderBulkCards();
+        } else if (!isBulk) {
           $('#progress-detail').textContent = 'Cleaning up sample questions...';
         }
         break;
 
       case 'form_done':
-        if (currentView === 'bulk-progress') {
-          const idx = findBulkItemIndex(data.formName);
-          if (idx !== null) updateBulkItem(idx, 'processed', 'Done', '');
-        } else {
+        if (isBulk && bulkFormStates[fn]) {
+          bulkFormStates[fn].status = 'processed';
+          bulkFormStates[fn].phase = 'done';
+          bulkFormStates[fn].questionsDone = bulkFormStates[fn].totalQ;
+          if (data.newFormUrl) bulkFormStates[fn].newFormUrl = data.newFormUrl;
+          renderBulkCards();
+          updateBulkSummary();
+        } else if (!isBulk) {
           $('#progress-bar').style.width = '100%';
           $('#progress-bar').classList.add('complete');
           $('#progress-status').textContent = 'Complete';
           $('#progress-status').className = 'badge badge-success';
           $('#progress-detail').textContent = 'Form processed successfully!';
         }
-        // Refresh quiz list immediately so sidebar/dashboard reflect the new status
         loadQuizzes();
         break;
 
       case 'form_error':
-        if (currentView === 'bulk-progress') {
-          const idx = findBulkItemIndex(data.formName);
-          if (idx !== null) updateBulkItem(idx, 'failed', 'Failed', data.error || '');
-        } else {
+        if (isBulk && bulkFormStates[fn]) {
+          bulkFormStates[fn].status = 'failed';
+          bulkFormStates[fn].phase = bulkFormStates[fn].phase || 'opening';
+          bulkFormStates[fn].error = data.error || 'Unknown error';
+          renderBulkCards();
+          updateBulkSummary();
+        } else if (!isBulk) {
           $('#progress-bar').classList.add('error');
           $('#progress-status').textContent = 'Failed';
           $('#progress-status').className = 'badge badge-error';
           $('#progress-detail').textContent = `Error: ${data.error || 'Unknown error'}`;
         }
-        // Refresh quiz list immediately so sidebar/dashboard reflect the failure
         loadQuizzes();
         break;
 
       case 'batch_done':
         updateRunningStatus(false);
-        if (currentView === 'bulk-progress') {
-          const total = data.results ? data.results.length : 0;
-          const success = data.results ? data.results.filter(r => r.success).length : 0;
-          $('#bulk-progress-bar').style.width = '100%';
-          $('#bulk-progress-bar').classList.add(success === total ? 'complete' : 'error');
-          $('#bulk-progress-detail').textContent = `Complete: ${success}/${total} forms processed successfully`;
+        if (isBulk) {
+          updateBulkSummary();
+          showBulkComplete(data.results);
         }
-        // Refresh quiz list to show updated statuses
         loadQuizzes();
         break;
 
       case 'auth_required':
-        if (currentView !== 'bulk-progress') {
+        if (isBulk && bulkFormStates[fn]) {
+          // Keep current phase, just note it
+        } else if (!isBulk) {
           $('#progress-detail').textContent = 'Sign-in required -- please sign in in the browser window...';
         }
         break;
 
       case 'log': {
-        const logEl = currentView === 'bulk-progress' ? $('#bulk-progress-log') : $('#progress-log');
+        const logEl = isBulk ? $('#bulk-progress-log') : $('#progress-log');
         if (logEl) {
           const line = document.createElement('div');
           line.className = 'log-line';
@@ -598,36 +1043,6 @@
         }
         break;
       }
-    }
-  }
-
-  // Helper for bulk progress tracking
-  let currentBulkIndex = 0;
-  function findBulkItemIndex(formName) {
-    const items = $$('.bulk-progress-item');
-    for (let i = 0; i < items.length; i++) {
-      const nameEl = items[i].querySelector('.form-name');
-      if (nameEl && nameEl.textContent === formName) return i;
-    }
-    return null;
-  }
-
-  function updateBulkItem(index, dotClass, badgeText, progressText) {
-    if (index !== null) currentBulkIndex = index;
-    const item = $(`#bulk-item-${currentBulkIndex}`);
-    if (!item) return;
-    if (dotClass) {
-      const dot = item.querySelector('.status-dot');
-      dot.className = `status-dot ${dotClass === 'running' ? 'not_started' : dotClass}`;
-      if (dotClass === 'running') dot.style.background = '#3b82f6';
-    }
-    if (badgeText) {
-      const badge = item.querySelector('.badge');
-      badge.textContent = badgeText;
-      badge.className = `badge badge-${dotClass === 'running' ? 'running' : dotClass}`;
-    }
-    if (progressText !== undefined && progressText !== null) {
-      item.querySelector('.question-progress').textContent = progressText;
     }
   }
 
@@ -670,6 +1085,29 @@
     $('#questions-editor').addEventListener('click', handleEditorClick);
     $('#questions-editor').addEventListener('input', handleEditorInput);
 
+    // Export
+    $('#export-btn').addEventListener('click', async () => {
+      const btn = $('#export-btn');
+      btn.disabled = true;
+      btn.textContent = 'Exporting...';
+      try {
+        const res = await fetch('/api/export');
+        if (!res.ok) throw new Error('Export failed');
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `NEO_Quiz_Export_${new Date().toISOString().split('T')[0]}.xlsx`;
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch (e) {
+        alert('Export failed: ' + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Export to Excel';
+      }
+    });
+
     // Setup Guide modal
     $('#setup-guide-btn').addEventListener('click', () => {
       $('#setup-modal').classList.remove('hidden');
@@ -693,9 +1131,58 @@
     // Process
     $('#start-process-btn').addEventListener('click', startProcessing);
 
-    // Bulk
+    // Template toggle
+    $('#use-template-toggle').addEventListener('change', (e) => {
+      useTemplate = e.target.checked;
+      $('#template-url-input-group').classList.toggle('hidden', !useTemplate);
+      // Hide/show URL columns in picker rows
+      $$('.picker-url').forEach(el => {
+        el.style.display = useTemplate ? 'none' : '';
+      });
+      // When in template mode, switch to manual picker (most natural)
+      if (useTemplate) {
+        switchBulkTab('manual');
+      }
+      updatePickerPreview();
+    });
+
+    // Bulk Tabs
+    $$('.bulk-tab').forEach(tab => {
+      tab.addEventListener('click', () => switchBulkTab(tab.dataset.tab));
+    });
+
+    // Manual Picker
+    $('#add-picker-row-btn').addEventListener('click', () => addPickerRow());
+    // Add one empty row by default
+    addPickerRow();
+
+    // CSV
+    $('#csv-download-btn').addEventListener('click', downloadCSVTemplate);
+    $('#csv-file-input').addEventListener('change', (e) => {
+      if (e.target.files[0]) handleCSVUpload(e.target.files[0]);
+    });
+    // Drag & drop on CSV area
+    const csvArea = $('#csv-upload-area');
+    csvArea.addEventListener('dragover', (e) => { e.preventDefault(); csvArea.classList.add('dragover'); });
+    csvArea.addEventListener('dragleave', () => csvArea.classList.remove('dragover'));
+    csvArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      csvArea.classList.remove('dragover');
+      if (e.dataTransfer.files[0]) handleCSVUpload(e.dataTransfer.files[0]);
+    });
+
+    // Paste
     $('#bulk-parse-btn').addEventListener('click', parseBulkInput);
+
+    // Start (shared)
     $('#bulk-start-btn').addEventListener('click', startBulkProcessing);
+
+    // Bulk complete -> back to dashboard
+    $('#bulk-back-btn').addEventListener('click', () => {
+      currentQuiz = null;
+      showView('dashboard');
+      renderQuizList();
+    });
   }
 
   // ─── Utility ─────────────────────────────────────────────────────────────
@@ -704,6 +1191,13 @@
     div.textContent = str || '';
     return div.innerHTML.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
+
+  // ─── Close dropdowns on outside click ────────────────────────────────────
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-dropdown')) {
+      $$('.search-dropdown.open').forEach(d => d.classList.remove('open'));
+    }
+  });
 
   // ─── Start ───────────────────────────────────────────────────────────────
   init();

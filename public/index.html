@@ -13,6 +13,7 @@
       <span class="subtitle">Microsoft Forms Quiz Generator</span>
     </div>
     <div class="header-right">
+      <button id="export-btn" class="btn btn-export">Export to Excel</button>
       <button id="setup-guide-btn" class="btn btn-setup-guide">Setup Guide</button>
       <span id="platform-badge" class="badge">--</span>
       <span id="status-badge" class="badge badge-idle">Idle</span>
@@ -180,9 +181,63 @@ Also tell me these usage tips:
 
           <div class="bulk-section">
             <h3>Bulk Process</h3>
-            <p>Paste form names and URLs (one per line, tab or comma separated):</p>
-            <textarea id="bulk-input" rows="6" placeholder="F2S - S&OP RESA & Advanced ATP, https://forms.cloud.microsoft/...&#10;F2S - Inbound Delivery & Goods Reception, https://forms.cloud.microsoft/..."></textarea>
-            <button id="bulk-parse-btn" class="btn btn-secondary">Parse & Review</button>
+
+            <!-- Template URL (shared across all modes) -->
+            <div class="template-url-section">
+              <div class="template-toggle">
+                <label class="toggle-label">
+                  <input type="checkbox" id="use-template-toggle" />
+                  <span class="toggle-switch"></span>
+                  <span>Create forms from template</span>
+                </label>
+                <span class="template-hint">When enabled, the tool will automatically duplicate a shared form template for each quiz — no need to provide individual form URLs.</span>
+              </div>
+              <div id="template-url-input-group" class="template-url-input-group hidden">
+                <label for="template-url-input">Template URL:</label>
+                <input type="url" id="template-url-input" placeholder="Paste the shared Microsoft Forms template URL here..." />
+              </div>
+            </div>
+
+            <!-- Tab Switcher -->
+            <div class="bulk-tabs">
+              <button class="bulk-tab active" data-tab="manual">Manual Picker</button>
+              <button class="bulk-tab" data-tab="csv">CSV Upload</button>
+              <button class="bulk-tab" data-tab="paste">Paste Text</button>
+            </div>
+
+            <!-- Tab 1: Manual Picker -->
+            <div id="bulk-tab-manual" class="bulk-tab-content active">
+              <p class="bulk-tab-desc">Select a quiz from the dropdown, paste its form URL, and click + to add more.</p>
+              <div id="manual-picker-rows" class="picker-rows">
+                <!-- rows added dynamically -->
+              </div>
+              <button id="add-picker-row-btn" class="btn btn-sm btn-add-row">+ Add Form</button>
+            </div>
+
+            <!-- Tab 2: CSV Upload -->
+            <div id="bulk-tab-csv" class="bulk-tab-content">
+              <p class="bulk-tab-desc">Download the template, fill in the URLs, then upload the completed CSV.</p>
+              <div class="csv-actions">
+                <button id="csv-download-btn" class="btn btn-secondary">Download CSV Template</button>
+                <div class="csv-upload-area" id="csv-upload-area">
+                  <input type="file" id="csv-file-input" accept=".csv" />
+                  <div class="csv-upload-label">
+                    <span class="csv-upload-icon">&#8593;</span>
+                    <span>Drop CSV here or <strong>click to browse</strong></span>
+                  </div>
+                </div>
+              </div>
+              <div id="csv-filename" class="csv-filename hidden"></div>
+            </div>
+
+            <!-- Tab 3: Paste Text (original) -->
+            <div id="bulk-tab-paste" class="bulk-tab-content">
+              <p class="bulk-tab-desc">Paste form names and URLs (one per line, tab or comma separated):</p>
+              <textarea id="bulk-input" rows="6" placeholder="F2S - S&OP RESA & Advanced ATP, https://forms.cloud.microsoft/...&#10;F2S - Inbound Delivery & Goods Reception, https://forms.cloud.microsoft/..."></textarea>
+              <button id="bulk-parse-btn" class="btn btn-secondary">Parse &amp; Review</button>
+            </div>
+
+            <!-- Shared Preview & Start (all tabs feed into this) -->
             <div id="bulk-preview" class="bulk-preview hidden"></div>
             <button id="bulk-start-btn" class="btn btn-primary hidden">Start Bulk Processing</button>
           </div>
@@ -243,13 +298,28 @@ Also tell me these usage tips:
       <!-- Bulk Progress View -->
       <div id="view-bulk-progress" class="view">
         <div class="process-panel">
-          <h2>Bulk Processing</h2>
-          <div id="bulk-progress-list" class="bulk-progress-list"></div>
-          <div class="progress-bar-container">
+          <div class="bulk-progress-header">
+            <h2>Bulk Processing</h2>
+            <div class="bulk-progress-summary">
+              <span id="bp-summary-done" class="bp-summary-stat">0 done</span>
+              <span id="bp-summary-running" class="bp-summary-stat bp-stat-running">0 running</span>
+              <span id="bp-summary-pending" class="bp-summary-stat bp-stat-pending">0 pending</span>
+              <span id="bp-summary-failed" class="bp-summary-stat bp-stat-failed">0 failed</span>
+            </div>
+          </div>
+          <div class="progress-bar-container" style="margin-bottom: 16px;">
             <div id="bulk-progress-bar" class="progress-bar" style="width: 0%"></div>
           </div>
-          <div id="bulk-progress-detail" class="progress-detail"></div>
-          <div id="bulk-progress-log" class="progress-log"></div>
+          <div id="bulk-progress-list" class="bulk-progress-list-v2"></div>
+          <div id="bulk-progress-log" class="progress-log" style="margin-top: 16px;"></div>
+
+          <!-- Completion Panel -->
+          <div id="bulk-complete-panel" class="bulk-complete-panel hidden">
+            <div class="bulk-complete-icon" id="bulk-complete-icon"></div>
+            <h3 id="bulk-complete-title"></h3>
+            <p id="bulk-complete-message"></p>
+            <button id="bulk-back-btn" class="btn btn-primary btn-lg">Back to Dashboard</button>
+          </div>
         </div>
       </div>
     </main>

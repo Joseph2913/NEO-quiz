@@ -623,6 +623,77 @@ class QuizAutomation extends EventEmitter {
     this._log(`  WARNING: Could not delete "${sampleText}"`);
   }
 
+  // ── Template Duplication ────────────────────────────────────────────────
+
+  /**
+   * Navigate to a shared form template URL, click "Duplicate it",
+   * wait for the new form editor to load, and return the new edit URL.
+   * @param {string} templateUrl - The shared template URL
+   * @param {string} formName    - For logging/progress events
+   * @returns {string} The edit URL of the newly duplicated form
+   */
+  async _duplicateTemplate(templateUrl, formName) {
+    this._log(`  Duplicating template for "${formName}"...`);
+    this._progress({ type: 'template_start', formName });
+
+    // Navigate to the shared template page
+    await this.page.goto(templateUrl, {
+      waitUntil: 'domcontentloaded',
+      timeout: 60000,
+    });
+    await wait(TIMING.pageLoadWait);
+    await this._handleSignIn();
+    await wait(TIMING.longWait);
+
+    // Look for the "Duplicate it" button
+    const dupSelectors = [
+      'button:has-text("Duplicate it")',
+      'button:has-text("Duplicate It")',
+      'a:has-text("Duplicate it")',
+      '[aria-label*="Duplicate" i]',
+    ];
+
+    let clicked = false;
+    for (const sel of dupSelectors) {
+      const btn = this.page.locator(sel).first();
+      if (await btn.isVisible({ timeout: 5000 }).catch(() => false)) {
+        await btn.click();
+        clicked = true;
+        this._log('  Clicked "Duplicate it" button');
+        break;
+      }
+    }
+
+    if (!clicked) {
+      throw new Error('Could not find "Duplicate it" button on template page');
+    }
+
+    // Wait for the form editor to load — URL should change to the edit page
+    this._log('  Waiting for duplicated form to load...');
+    await this.page.waitForURL(
+      url => {
+        const u = url.toString();
+        // The edit URL typically contains "DesignPage" or "FormId" or different path than share
+        return !u.includes('ShareFormPage') && !u.includes('sharetoken');
+      },
+      { timeout: 60000 }
+    );
+    await wait(TIMING.pageLoadWait);
+
+    // Dismiss any startup overlays / Copilot banners
+    for (let d = 0; d < 3; d++) {
+      await this.page.keyboard.press('Escape');
+      await wait(300);
+    }
+    await wait(TIMING.shortWait);
+
+    const newUrl = this.page.url();
+    this._log(`  Template duplicated. New form URL: ${newUrl}`);
+    this._progress({ type: 'template_done', formName, newUrl });
+
+    return newUrl;
+  }
+
   // ── Process One Form (public) ───────────────────────────────────────────
 
   /**
@@ -810,12 +881,19 @@ class QuizAutomation extends EventEmitter {
   /**
    * Process multiple forms sequentially, then auto-close the browser.
    * @param {Array<{quizData: Object, formUrl: string}>} items
-   * @returns {Array<{formName: string, success: boolean, error?: string}>}
+   * @param {Object} [opts]
+   * @param {string} [opts.templateUrl] - If provided, each form is created by
+   *   duplicating this template first (instead of using a pre-existing form URL).
+   * @returns {Array<{formName: string, success: boolean, error?: string, newFormUrl?: string}>}
    */
-  async processBatch(items) {
+  async processBatch(items, opts) {
+    const templateUrl = (opts && opts.templateUrl) || null;
     const total = items.length;
-    this._progress({ type: 'batch_start', total });
+    this._progress({ type: 'batch_start', total, useTemplate: !!templateUrl });
     this._log(`=== NEO Quiz Automation: ${total} form(s) ===`);
+    if (templateUrl) {
+      this._log(`Template mode: each form will be duplicated from the shared template`);
+    }
 
     // Ensure browser is launched
     if (!this.page) {
@@ -826,7 +904,7 @@ class QuizAutomation extends EventEmitter {
 
     for (let i = 0; i < items.length; i++) {
       const { quizData, formUrl, form_url } = items[i];
-      const url = formUrl || form_url;
+      let url = formUrl || form_url || null;
       const formName = quizData.form_name;
       const ssFolder = `form_${String(i + 1).padStart(2, '0')}_${formName.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 40)}`;
 
@@ -842,39 +920,50 @@ class QuizAutomation extends EventEmitter {
       this._log('='.repeat(60));
 
       try {
-        // Navigate to the form
+        // Template mode: duplicate the template to get a fresh form URL
+        if (templateUrl && !url) {
+          url = await this._duplicateTemplate(templateUrl, formName);
+          await this._screenshot(ssFolder, '00_template_duplicated');
+        }
+
         if (!url) {
           throw new Error(`No form URL provided for "${formName}"`);
         }
 
-        await this.page.goto(url, {
-          waitUntil: 'domcontentloaded',
-          timeout: 60000,
-        });
-        await wait(TIMING.pageLoadWait);
-        await this._handleSignIn();
-        await wait(TIMING.longWait);
+        // If we just duplicated, we're already on the editor page — skip navigation
+        const currentUrl = this.page.url();
+        const alreadyOnForm = url === currentUrl;
 
-        // Dismiss startup overlays / tooltips
-        for (let d = 0; d < 3; d++) {
-          await this.page.keyboard.press('Escape');
-          await wait(300);
+        if (!alreadyOnForm) {
+          await this.page.goto(url, {
+            waitUntil: 'domcontentloaded',
+            timeout: 60000,
+          });
+          await wait(TIMING.pageLoadWait);
+          await this._handleSignIn();
+          await wait(TIMING.longWait);
+
+          // Dismiss startup overlays / tooltips
+          for (let d = 0; d < 3; d++) {
+            await this.page.keyboard.press('Escape');
+            await wait(300);
+          }
+          await wait(TIMING.shortWait);
         }
-        await wait(TIMING.shortWait);
 
         await this._screenshot(ssFolder, '00_form_loaded');
 
         // Core processing
         await this._processFormInternal(quizData, ssFolder);
 
-        this._progress({ type: 'form_done', formName, success: true });
+        this._progress({ type: 'form_done', formName, success: true, newFormUrl: url });
         this._log(`DONE: ${formName}`);
-        results.push({ formName, success: true });
+        results.push({ formName, success: true, newFormUrl: url });
       } catch (err) {
         this._progress({ type: 'form_error', formName, error: err.message });
         this._log(`FAILED: ${formName} -- ${err.message}`);
         await this._screenshot(ssFolder, 'FAILED').catch(() => {});
-        results.push({ formName, success: false, error: err.message });
+        results.push({ formName, success: false, error: err.message, newFormUrl: url || null });
       }
     }
 
