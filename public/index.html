@@ -26,95 +26,104 @@
           <button id="modal-close-btn" class="modal-close">&times;</button>
         </div>
         <div class="modal-body">
-          <p class="modal-intro">Follow these steps to get the NEO Quiz Automation tool running on your machine. Copy the prompt below and paste it into your terminal or Claude Code session.</p>
+          <!-- PROMPT FIRST -->
+          <div class="prompt-hero">
+            <div class="prompt-hero-header">
+              <div>
+                <h3>Claude Code Setup Prompt</h3>
+                <p>Copy this prompt, paste it into Claude Code, and it will do everything for you.</p>
+              </div>
+              <button id="copy-prompt-btn" class="btn btn-copy-hero">Copy to Clipboard</button>
+            </div>
+            <pre id="setup-prompt" class="setup-prompt">Set up the NEO Quiz Automation tool on my machine. This tool automates Microsoft Forms quiz creation for the LUSA NEO training program. Please complete every step below automatically — I should not need to do anything manually.
+
+## Step 1: Check and install Node.js if needed
+
+Check if Node.js (v18+) is installed by running `node --version`. If it is NOT installed or the version is below 18:
+- On macOS: Install Homebrew first if not present (`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`), then run `brew install node`
+- On Windows: Download and run the Node.js installer from https://nodejs.org using `winget install OpenJS.NodeJS.LTS` or guide me to download it manually if winget is unavailable
+- On Linux: Run `curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - &amp;&amp; sudo apt-get install -y nodejs`
+
+Verify the installation succeeds before continuing.
+
+## Step 2: Check and install Git if needed
+
+Check if Git is installed by running `git --version`. If it is NOT installed:
+- On macOS: Run `xcode-select --install` or `brew install git`
+- On Windows: Run `winget install Git.Git`
+- On Linux: Run `sudo apt-get install -y git`
+
+## Step 3: Clone the repository
+
+Run these commands:
+```
+git clone https://github.com/Joseph2913/NEO-quiz.git
+cd NEO-quiz
+```
+
+## Step 4: Install dependencies
+
+Run `npm install` to install Express and Playwright.
+
+Then run `npx playwright install chromium` to download the Chromium browser that the automation uses.
+
+## Step 5: Start the application
+
+Run `npm start` to start the server. It will automatically open the app in the browser at http://localhost:3000.
+
+If the browser does not open automatically, open http://localhost:3000 manually.
+
+## After setup is complete
+
+Tell me: "Setup complete! The NEO Quiz Automation tool is running at http://localhost:3000. You can now use the app in your browser."
+
+Also tell me these usage tips:
+- To process a SINGLE form: Click a quiz in the left sidebar, review the questions, click "Approve &amp; Continue", paste the Microsoft Forms editor URL, and click "Start Automation"
+- To BULK process: On the Dashboard, paste form names and URLs (comma or tab separated, one per line) into the Bulk Process box, click "Parse &amp; Review", then "Start Bulk Processing"
+- The first time you run an automation, a Chromium browser will open asking you to sign in to your Microsoft account. After signing in once, the session is saved so you won't need to sign in again.
+- To stop the server later, press Ctrl+C in the terminal where it is running. To restart, run `npm start` again from the NEO-quiz folder.</pre>
+          </div>
+
+          <!-- DIVIDER -->
+          <div class="guide-divider">
+            <span>How to use the prompt above</span>
+          </div>
+
+          <!-- SIMPLE STEPS -->
+          <p class="modal-callout">You don't need to take any technical action yourself. Just follow these 4 steps and the prompt above handles everything else:</p>
 
           <div class="setup-steps">
             <div class="setup-step">
               <div class="step-number">1</div>
               <div class="step-content">
-                <h4>Prerequisites</h4>
-                <p>Make sure you have <strong>Node.js</strong> (v18 or later) installed. Download it from <code>https://nodejs.org</code> if needed. You can verify by opening a terminal and running:</p>
-                <div class="code-block"><code>node --version</code></div>
+                <h4>Download VS Code</h4>
+                <p>If you don't already have it, download Visual Studio Code from <code>https://code.visualstudio.com</code> and install it.</p>
               </div>
             </div>
 
             <div class="setup-step">
               <div class="step-number">2</div>
               <div class="step-content">
-                <h4>Clone the Repository</h4>
-                <p>Open a terminal and run:</p>
-                <div class="code-block"><code id="clone-command">git clone https://github.com/Joseph2913/NEO-quiz.git
-cd NEO-quiz</code></div>
+                <h4>Install the Claude Code Extension</h4>
+                <p>Open VS Code, go to the Extensions panel (the square icon on the left sidebar), search for <strong>"Claude Code"</strong>, and click <strong>Install</strong>.</p>
               </div>
             </div>
 
             <div class="setup-step">
               <div class="step-number">3</div>
               <div class="step-content">
-                <h4>Install Dependencies &amp; Start</h4>
-                <p>Run these two commands:</p>
-                <div class="code-block"><code>npm install
-npm start</code></div>
-                <p class="step-note">The app will open automatically in your browser at <code>http://localhost:3000</code>.</p>
+                <h4>Connect Your Claude Account</h4>
+                <p>Open the Claude Code panel in VS Code and sign in with your Claude / Anthropic account. If you don't have one, you can create one at <code>https://claude.ai</code>.</p>
               </div>
             </div>
 
             <div class="setup-step">
               <div class="step-number">4</div>
               <div class="step-content">
-                <h4>First-Time Sign In</h4>
-                <p>The first time you process a form, a Chromium browser will open and ask you to sign in to your Microsoft account. After signing in once, your session is saved locally in <code>auth-state.json</code> so you won't need to sign in again.</p>
+                <h4>Paste the Prompt</h4>
+                <p>Click the <strong>"Copy to Clipboard"</strong> button above, then paste the prompt into the Claude Code chat. Claude will automatically install everything, clone the project, and start the app for you. <strong>That's it.</strong></p>
               </div>
             </div>
-          </div>
-
-          <h3 class="section-heading">Full Setup Prompt (copy &amp; paste into terminal)</h3>
-          <p class="modal-intro">This single block of commands will clone, install, and start the tool:</p>
-          <div class="prompt-container">
-            <div class="prompt-header">
-              <span class="prompt-label">Terminal Commands</span>
-              <button id="copy-prompt-btn" class="btn btn-sm btn-copy">Copy to Clipboard</button>
-            </div>
-            <pre id="setup-prompt" class="setup-prompt"># ── NEO Quiz Automation — Quick Setup ──────────────────────────
-# Prerequisites: Node.js v18+ (https://nodejs.org)
-
-# 1. Clone the repo
-git clone https://github.com/Joseph2913/NEO-quiz.git
-cd NEO-quiz
-
-# 2. Install dependencies (Playwright + Express)
-npm install
-
-# 3. Install Playwright browsers (Chromium)
-npx playwright install chromium
-
-# 4. Start the app
-npm start
-
-# The app will open at http://localhost:3000
-# ────────────────────────────────────────────────────────────────
-#
-# HOW TO USE:
-#
-# SINGLE FORM:
-#   1. Click a quiz in the sidebar to review questions
-#   2. Click "Approve &amp; Continue"
-#   3. Paste the Microsoft Forms editor URL
-#   4. Click "Start Automation"
-#
-# BULK PROCESSING:
-#   1. On the Dashboard, paste form names + URLs into the
-#      Bulk Process box (one per line, comma or tab separated):
-#      Form Name, https://forms.cloud.microsoft/...
-#   2. Click "Parse &amp; Review" then "Start Bulk Processing"
-#
-# NOTES:
-#   - First run will prompt Microsoft sign-in in the browser
-#   - Session is saved locally — no repeated sign-ins
-#   - The tool duplicates template questions, fills them,
-#     then deletes the templates automatically
-#   - Screenshots are saved to ./screenshots/ for debugging
-# ────────────────────────────────────────────────────────────────</pre>
           </div>
         </div>
       </div>
