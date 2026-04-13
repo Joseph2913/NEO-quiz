@@ -649,14 +649,25 @@
     const startBtn = $('#bulk-start-btn');
     const allFound = bulkItems.every(b => b.found);
     const anyValid = bulkItems.some(b => b.found);
-    if (allFound) {
+
+    // Check template URL is provided when in template mode
+    const templateReady = !useTemplate || ($('#template-url-input').value || '').trim().length > 0;
+
+    if (allFound && templateReady) {
       startBtn.classList.remove('hidden');
-    } else if (anyValid) {
+      startBtn.disabled = false;
+    } else if (anyValid && templateReady) {
       startBtn.classList.remove('hidden');
-      // Show warning but still allow processing found items
+      startBtn.disabled = false;
+    } else if (anyValid && !templateReady) {
+      startBtn.classList.remove('hidden');
+      startBtn.disabled = true;
+      startBtn.title = 'Select a template or paste a template URL first';
     } else {
       startBtn.classList.add('hidden');
-      alert('None of the form names matched the quiz data. Please check the names and try again.');
+      if (bulkItems.length > 0) {
+        alert('None of the form names matched the quiz data. Please check the names and try again.');
+      }
     }
   }
 
@@ -1132,9 +1143,16 @@
     $('#start-process-btn').addEventListener('click', startProcessing);
 
     // Template toggle
+    const NEO_TEMPLATE_URL = 'https://forms.cloud.microsoft/Pages/ShareFormPage.aspx?id=-PwcN9hMeUuH3N6aiZ96iJL6XI4jatJEuJk0OOXdqXtUQkFPODk2U0VST1NXRk1TR1dYWUhSSVpORi4u&sharetoken=3PyQUmQnMob1STET4Lxp';
+
     $('#use-template-toggle').addEventListener('change', (e) => {
       useTemplate = e.target.checked;
       $('#template-url-input-group').classList.toggle('hidden', !useTemplate);
+      if (!useTemplate) {
+        // Deselect the card and clear URL when toggling off
+        $('#template-card-neo').classList.remove('selected');
+        $('#template-url-input').value = '';
+      }
       // Hide/show URL columns in picker rows
       $$('.picker-url').forEach(el => {
         el.style.display = useTemplate ? 'none' : '';
@@ -1144,6 +1162,32 @@
         switchBulkTab('manual');
       }
       updatePickerPreview();
+    });
+
+    // Template card click
+    $('#template-card-neo').addEventListener('click', () => {
+      const card = $('#template-card-neo');
+      const input = $('#template-url-input');
+      const isSelected = card.classList.contains('selected');
+      if (isSelected) {
+        card.classList.remove('selected');
+        input.value = '';
+      } else {
+        card.classList.add('selected');
+        input.value = NEO_TEMPLATE_URL;
+      }
+      // Re-validate the start button
+      if (bulkItems.length > 0) renderBulkPreview();
+    });
+
+    // If user types a custom URL, deselect the card and revalidate
+    $('#template-url-input').addEventListener('input', () => {
+      const card = $('#template-card-neo');
+      if ($('#template-url-input').value.trim() !== NEO_TEMPLATE_URL) {
+        card.classList.remove('selected');
+      }
+      // Re-validate the start button
+      if (bulkItems.length > 0) renderBulkPreview();
     });
 
     // Bulk Tabs
@@ -1177,11 +1221,51 @@
     // Start (shared)
     $('#bulk-start-btn').addEventListener('click', startBulkProcessing);
 
-    // Bulk complete -> back to dashboard
+    // Bulk complete -> back to dashboard (reset everything)
     $('#bulk-back-btn').addEventListener('click', () => {
       currentQuiz = null;
+
+      // Clear bulk state
+      bulkItems = [];
+      bulkFormStates = {};
+      bulkTotalForms = 0;
+
+      // Reset template section
+      useTemplate = false;
+      $('#use-template-toggle').checked = false;
+      $('#template-url-input-group').classList.add('hidden');
+      $('#template-url-input').value = '';
+      $('#template-card-neo').classList.remove('selected');
+
+      // Reset picker rows
+      $('#manual-picker-rows').innerHTML = '';
+      addPickerRow();
+
+      // Reset CSV tab
+      $('#csv-file-input').value = '';
+      $('#csv-filename').classList.add('hidden');
+      $('#csv-filename').textContent = '';
+
+      // Reset paste tab
+      $('#bulk-input').value = '';
+
+      // Hide preview and start button
+      $('#bulk-preview').classList.add('hidden');
+      $('#bulk-start-btn').classList.add('hidden');
+
+      // Reset bulk progress view
+      $('#bulk-progress-list').innerHTML = '';
+      $('#bulk-progress-bar').style.width = '0%';
+      $('#bulk-progress-bar').className = 'progress-bar';
+      $('#bulk-progress-log').innerHTML = '';
+      $('#bulk-complete-panel').classList.add('hidden');
+
+      // Switch back to manual picker tab
+      switchBulkTab('manual');
+
+      // Refresh data and show dashboard
+      loadQuizzes();
       showView('dashboard');
-      renderQuizList();
     });
   }
 

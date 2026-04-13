@@ -668,15 +668,14 @@ class QuizAutomation extends EventEmitter {
       throw new Error('Could not find "Duplicate it" button on template page');
     }
 
-    // Wait for the form editor to load — URL should change to the edit page
+    // Wait for the form editor to load
     this._log('  Waiting for duplicated form to load...');
     await this.page.waitForURL(
       url => {
         const u = url.toString();
-        // The edit URL typically contains "DesignPage" or "FormId" or different path than share
-        return !u.includes('ShareFormPage') && !u.includes('sharetoken');
+        return u.includes('DesignPage') && u.includes('subpage=design');
       },
-      { timeout: 60000 }
+      { timeout: 90000 }
     );
     await wait(TIMING.pageLoadWait);
 
