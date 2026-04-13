@@ -1,0 +1,52 @@
+{
+  "form_name": "F2S - Supply Planning",
+  "topic_code": "F2S.PI.S010.NC04697.Deck.USAFM.EN",
+  "tribe": "F2S",
+  "question_count": 4,
+  "questions": [
+    {
+      "number": 1,
+      "text": "NEO utilizes Google Cloud Platform for its reporting and data processing.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "The \"Platinum Flow\" refers to affiliates connected to the SAP APO system, where weekly requirements are calculated.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "FCC (Order Confirmation File) is sent from the affiliates to the MSL/S&OP/AFP.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "The MRP Controller value is made up of 3 alphanumeric digits, each representing Division, Supplier Location, and File Type.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    }
+  ]
+}

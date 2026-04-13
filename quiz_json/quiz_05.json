@@ -1,0 +1,67 @@
+{
+  "form_name": "F2S - CoPacking Planning & Scheduling",
+  "topic_code": "F2S.IF.S139.NC04738.Deck.USAFMAFP.EN",
+  "tribe": "F2S",
+  "question_count": 5,
+  "questions": [
+    {
+      "number": 1,
+      "text": "The Co-Packing Planning & Scheduling subprocess occurs:\n____ master data has been maintained in the system\n____ execution",
+      "options": [
+        "After, before",
+        "Before, before",
+        "Before, after",
+        "After, after"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "The Co-Packing Planning & Scheduling subprocess describes how to manage the planning for BOM headers/Co-packing activity in NEO",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "With NEO S/4 Hana, Supply Planners will use S/4 functionalities of stock reservation using the MRP Area and planned Stock Transfer Requisition for each vendor. \n\nAmong all the advantages, the one disadvantage this comes with is that this could lead to wrong requirement calculation (blocked stock is not relevant for the stock equation) or immobilization of the stock at a co-packer for long periods (with possible storage cost related).",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "Supply Planners and SubCo Planners will use the Mid/Long Term Stock Equation (GCP) to review the constrained stock equation and anticipate business risk and overstock on a _____ basis",
+      "options": [
+        "Daily",
+        "Weekly",
+        "Bi-Weekly",
+        "Monthly"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "With the goal of centralizing and harmonizing business processes, Platinum Planning AND Non-Platinum planning will be now both be done in S4",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

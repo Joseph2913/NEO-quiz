@@ -1,0 +1,65 @@
+{
+  "form_name": "F2S - Triangular Flows",
+  "topic_code": "F2S.ID.S371.NC07778.Deck.USAFMAFP",
+  "tribe": "F2S",
+  "question_count": 5,
+  "questions": [
+    {
+      "number": 1,
+      "text": "When do we consider the it is a 2B Triangular flow?",
+      "options": [
+        "As soonasthereis a billingpartnerthatisn'ttheonelinkedtothereceiver."
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "In which object can we see the ZL partner?",
+      "options": [
+        "Purchaseorder",
+        "Sales Order",
+        "Invoice"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "Is there a specific PO type for 2B Triangular flow?",
+      "options": [
+        "Yes (YTPL)",
+        "No"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "What SL is used for statistical IBD PGR?",
+      "options": [
+        "SL01",
+        "SL82",
+        "Itdepends"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "Which role isn't impacted by this flow?",
+      "options": [
+        "DC Flow/Stocks/Picking Supervisor",
+        "Intra Group Customer Care Administrator",
+        "Business Planner"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    }
+  ]
+}

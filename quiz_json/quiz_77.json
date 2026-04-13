@@ -1,0 +1,145 @@
+{
+  "form_name": "R2R - General Ledger - Closing",
+  "topic_code": "R2R.GL.S050.NC04729.Deck.USAFMAFP.EN",
+  "tribe": "R2R",
+  "question_count": 11,
+  "questions": [
+    {
+      "number": 1,
+      "text": "What is the main purpose of the period end closing process?",
+      "options": [
+        "To initiate new business activities.",
+        "To finalize financial results of the business activities during a specific period.",
+        "To start recruitment for financial positions.",
+        "To redesign financial software."
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "How are revaluation postings aggregated?",
+      "options": [
+        "By currency and trading partner.",
+        "By country and vendor.",
+        "By fiscal year and ledger type.",
+        "By company code and region."
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "What has replaced data link upload for sending data from S/4 to Magnitude?",
+      "options": [
+        "Manual upload via Fiori.",
+        "Automatic HIP connection.",
+        "Physical data transfer.",
+        "Email transmission."
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "What can be done with posting period variants in the NEO system?",
+      "options": [
+        "They can only be set up by the company code.",
+        "They allow scheduling for a group of entities at once.",
+        "They prevent balance carry forward.",
+        "They are different for each type of ledger."
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "How are balances carried forward in NEO?",
+      "options": [
+        "Manually for each ledger.",
+        "Only for the leading ledger.",
+        "Through manual adjustments only.",
+        "By one Fiori App for all ledgers."
+      ],
+      "correct_answer_index": 3,
+      "correct_answer_letter": "D",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "Which tool continues to be used for accounts reconciliation after NEO?",
+      "options": [
+        "Fiori Apps",
+        "SAP GUI",
+        "Magnitude",
+        "Black Line"
+      ],
+      "correct_answer_index": 3,
+      "correct_answer_letter": "D",
+      "needs_review": false
+    },
+    {
+      "number": 7,
+      "text": "What happens if GR>IR in terms of GRIR reclassification?",
+      "options": [
+        "GRIR balance needs reclassification.",
+        "Accrual engine will expense it.",
+        "GRIR balance is in the right group line, no need for reclass.",
+        "Manual adjustment is required immediately."
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 8,
+      "text": "After NEO, the FX valuation can only be run once.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 9,
+      "text": "If re-opening of a closed period needs to be done for one specific company, it will affect all others using\nthe same posting period variant.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 10,
+      "text": "Carryforward must be done for all ledgers, including any defined extension ledgers.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 11,
+      "text": "Which of the following scenarios would NOT be a valid reason to make a manual posting in SAP S/4?",
+      "options": [
+        "A temporary disruption in the Blackline system functionality.",
+        "The need to post an entry directly to a sub-ledger account.",
+        "A problem with the automated clearing rules for bank transactions.",
+        "An employee forgets to enter an expense report before the monthly closing deadline."
+      ],
+      "correct_answer_index": 3,
+      "correct_answer_letter": "D",
+      "needs_review": false
+    }
+  ]
+}

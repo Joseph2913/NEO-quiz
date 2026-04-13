@@ -1,0 +1,118 @@
+{
+  "form_name": "F2S - CoPacking Execution",
+  "topic_code": "F2S.IF.S140.NC04740.Deck.USAFMAFP.EN",
+  "tribe": "F2S",
+  "question_count": 10,
+  "questions": [
+    {
+      "number": 1,
+      "text": "Co-packers are not responsible for performing any quality or quantity checks upon receiving components.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "The new NEO system allows CSC Supply Planners to manually convert Purchase Requisitions (PRs) to Purchase Orders (POs) but does not provide a mass conversion option.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "NEO introduces a standardized, automated process for managing returns from co-packers, improving efficiency and stock management.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "Two Purchase Orders are required for direct shipment to a co-packer if a portion of the stock needs to be sent to a Distribution Center first.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "In the new NEO system, the conversion from Purchase Requisition to Purchase Order for co-packing will be automated.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "The main goal of managing component shipments is to consolidate shipments and optimize logistics.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 7,
+      "text": "The Subcontracting Substitution Cockpit allows updating co-packing Purchase Orders based on component stock levels and supersession chains.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 8,
+      "text": "The logic for component consumption during co-packing is predefined based on the component's master data.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 9,
+      "text": "Level 2 traceability for co-packing only requires tracking batch codes, not quantities.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 10,
+      "text": "If the Rounding Profile value in the Customizing Table is blank, the Minimum Order Quantity (MOQ) defined in the material master is used for rounding.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

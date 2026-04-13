@@ -1,0 +1,106 @@
+{
+  "form_name": "R2R - Affair Controlling - Titan AFM - IG Automatic Services Reinvoicing",
+  "topic_code": "R2R.AC.S363.NC06444.Deck.USAFM.EN",
+  "tribe": "R2R",
+  "question_count": 8,
+  "questions": [
+    {
+      "number": 1,
+      "text": "Titan is a tool dedicated to the simulation and the recharging of Central IG Costs (services only)",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "ROCC uses the same entry door as Titan, with the same frequency and G/L and material codes",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "When is Titan used?",
+      "options": [
+        "Intra Group Services",
+        "With a recurring flow overtime ( IG contract)",
+        "Covering activities with frequent tax justification required",
+        "With complex costs composition",
+        "All of the above"
+      ],
+      "correct_answer_index": 4,
+      "correct_answer_letter": "E",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "Which statements about the process for creating or adding a new Service are true?",
+      "options": [
+        "It is managed at global level",
+        "It is based on a governed service classification",
+        "The request originates as an email from the Requester",
+        "All of the above"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "The characteristics of a financial material can be viewed from the \"____\" Fiori app",
+      "options": [
+        "Display Line Items in General Ledger",
+        "Display Customer Material Info",
+        "Display Material",
+        "Display Condition"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "The creation process of a new IntraGroup Customer starts with a request from the \"____\" in \"____\"",
+      "options": [
+        "BSC Vendor MDM, ServiceNow",
+        "Project Team, ServiceNow",
+        "Project Team, NEO MDM"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 7,
+      "text": "Which statements about OPD (Output Determination) are true?",
+      "options": [
+        "OPD is used to determine which kind of output is needed by IG customer",
+        "There are two available outputs",
+        "It is not possible to distinguish the output between TITAN and ROCC through the PO type",
+        "List of customers, without email, to be maintained"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 8,
+      "text": "RRB process is used when the amount to invoice to a customer is based on the resources consumed by a project",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    }
+  ]
+}

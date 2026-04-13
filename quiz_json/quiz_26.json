@@ -1,0 +1,52 @@
+{
+  "form_name": "F2S - S&OP E2E Planning - Part 1",
+  "topic_code": "F2S.PI.S300.NC06427.Deck.01.USAFMAFP",
+  "tribe": "F2S",
+  "question_count": 4,
+  "questions": [
+    {
+      "number": 1,
+      "text": "Supersession in NEO simplifies substitution management and automatically determines the active code.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "Network consistency in APO is crucial for correct needs calculation and stock deployment planning.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "For Interzone flows, a catalogue is required to link the factory and the IDC (International Distribution Center).",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "In the “NEO target\" state, the Product Type and Feature Code will be maintained for a transitory phase.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    }
+  ]
+}

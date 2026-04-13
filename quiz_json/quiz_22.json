@@ -1,0 +1,113 @@
+{
+  "form_name": "F2S - Manage Lifecycle_Decision Table",
+  "topic_code": "F2S.PI.S012.NC07335.Deck.02.USAFMAFP.EN",
+  "tribe": "F2S",
+  "question_count": 10,
+  "questions": [
+    {
+      "number": 1,
+      "text": "Decision Table is essential for the Program MM/SD works",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "Plant / Sales Org and Distribution Channel are optional fields",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "The Decision Table rules can be set up for all types of products, even if no filters are used",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "Identify two specific \"Criteria\" for the “Decision Table\" that can be used to control the evolution of Material Master (MM) and Sales Distribution (SD) Status",
+      "options": [
+        "Any from this list: Units of measure, Forecast, Forecast Months, Unrestricted Stocks, Stock (Batch Rest), Blocked Stocks, Stock In-Transit, Stock Consignment, Goods Receipt, GR_Range (Past), Goods Issue, GI_Range (Past). Sales Master Data"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "In the context of the \"Copy Master Data GLOBAL\", what is the consequence if there is an ASN or GR of Code In?",
+      "options": [
+        "The Master Data will then be copied from Code Out to Code In, whatever the Code Out MM status"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "What's the main objective of BRF+ Decision Table?",
+      "options": [
+        "To set up rules for changing MM/SD status"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 7,
+      "text": "What are the mandatory fields on the BRF+ Decision Table?",
+      "options": [
+        "Plant / Sales Org / Dist Channel",
+        "MM Current / MM Target",
+        "SD Current / SD Target"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 8,
+      "text": "The \"Copy Master Data GLOBAL\" can be triggered by which fields?",
+      "options": [
+        "GR (Goods Reception) or GI (Goods Issue) or MSL status"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 9,
+      "text": "If I choose Autoupdate \"No\", how does the MM/SD change?",
+      "options": [
+        "With Autoupdate \"No\", MM/SD changes only if the user validates on the Fiori App"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 10,
+      "text": "How many Fiori Apps do we have to validate changes on MM/SD status?",
+      "options": [
+        "2 Fiori Apps"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    }
+  ]
+}

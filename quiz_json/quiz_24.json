@@ -1,0 +1,52 @@
+{
+  "form_name": "F2S - Manage Lifecycle AFP - MM & SD Status",
+  "topic_code": "F2S.PI.S012.NC07334.Deck.01.USAFP.EN.",
+  "tribe": "F2S",
+  "question_count": 4,
+  "questions": [
+    {
+      "number": 1,
+      "text": "Manage Lifecycle is a new tool to update MM and SD status of materials, as well as Substitution Management and can be used Daily (night) / Weekly (Monday) / Monthly (1st day)",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "A single Fiori Tile can be used to manage authorization for SD and MM status",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "Status change/evolution is based in a Decision Table built by Plant (with the possibility do also create rules by Division and Material Account Assignment Group)",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "Options are available for Automatic updates and for User Validation Requests",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    }
+  ]
+}

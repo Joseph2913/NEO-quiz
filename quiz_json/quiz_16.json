@@ -1,0 +1,118 @@
+{
+  "form_name": "F2S - CoPacking Reverse Logistics",
+  "topic_code": "F2S.IF.S142.NC06752.Deck.USAFMAFP.EN",
+  "tribe": "F2S",
+  "question_count": 10,
+  "questions": [
+    {
+      "number": 1,
+      "text": "A single Purchase Order (PO) is used for both the sorting/rework execution and the service fee in the new NEO system.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "The \"Available to Promise\" (ATP) function in SAP helps determine if the required delivery quantity of materials can be met by the requested delivery date.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "Movement type 542 is always automated in the “Return of Components/BOM Headers” process within NEO.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "A NEO SAP Contract represents a legal agreement for L'Oréal to purchase materials from a specific vendor at a defined price, for a specific period and/or target quantity.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "The unpacking process only applies to activities performed internally at the L’Oréal Distribution Center (DC).",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "If a subcontractor or 3PL performs the unpacking, a purchase order is required to cover the unpacking service costs.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 7,
+      "text": "The \"Return of Components/BOM Headers\" process covers the return of components only when they are stored at the co-packer, not directly from the co-packer.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 8,
+      "text": "In the unpacking process, the ASN (Advanced Shipping Notice) from the co-packer initiates the corresponding movements in the SAP system.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 9,
+      "text": "Sorting and Rework operations are always planned and scheduled in advance within the NEO system.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 10,
+      "text": "In the new way of working with NEO, it is not required to create a specific inspection type.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

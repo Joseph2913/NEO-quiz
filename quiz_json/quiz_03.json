@@ -1,0 +1,52 @@
+{
+  "form_name": "F2S - Stock Comparison & Adjustment",
+  "topic_code": "F2S.DI.S118.NC04699.Deck.USAFMAFP.EN",
+  "tribe": "F2S",
+  "question_count": 4,
+  "questions": [
+    {
+      "number": 1,
+      "text": "True or False: Stock Overview is one of the Standard Reports available for identification of stock discrepancies",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "True or False: The Fiori tile “Stocks at Subcontractor” is the same as the ECC Transaction Code MBLB",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "True or False: The Stock Equation Report was Built as a replacement for the YR09 in ECC.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "True or False: The Stock Equation Report displays only historical data.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

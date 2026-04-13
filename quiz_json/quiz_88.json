@@ -1,0 +1,127 @@
+{
+  "form_name": "R2R - Assets Accounting - Invest Projects",
+  "topic_code": "R2R.GL.S053.NC04756.Deck.USAFMAFP.EN",
+  "tribe": "R2R",
+  "question_count": 10,
+  "questions": [
+    {
+      "number": 1,
+      "text": "What is the consequence of posting to an Asset Under Construction (AuC) via the Invest-WBS?",
+      "options": [
+        "The AuC will be automatically deleted.",
+        "The costs are transferred from the cost object to the balance sheet.",
+        "The budget is increased.",
+        "The WBS element is deactivated."
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "Who is responsible for creating Projects & WBS and assigning budgets in NEO?",
+      "options": [
+        "Project Managers",
+        "Financial Accountants",
+        "Controlling"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "What does a budget profile control in a project structure?",
+      "options": [
+        "The project's location",
+        "The project's approval phase",
+        "Blocking or allowing PR/PO creation",
+        "Employee access to project data"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "Where are commitments in NEO updated to differentiate them from actual postings?",
+      "options": [
+        "In the Universal Journal using the ACDOCA table.",
+        "Directly on the project dashboard.",
+        "In the master budget document.",
+        "Through external accounting software."
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "Which statement about the codification rules for Invest-WBS is correct?",
+      "options": [
+        "The codification for Invest-WBS always starts with \"B.\"",
+        "The codification for Invest-WBS always starts with \"C.\"",
+        "The codification for Invest-WBS always starts with \"A.\" to distinguish it from Cost-WBS.",
+        "Invest-WBS and Cost-WBS use the same prefix in their codification."
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "In NEO, all asset capitalization must use Invest-WBS, eliminating direct asset purchases.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 7,
+      "text": "The new Commitments Management is activated by creating an extension ledger for commitments and is updated to this ledger in NEO.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 8,
+      "text": "The WBS element level is where the project budget is entered \nand managed.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 9,
+      "text": "Invest-WBS and Cost-WBS use different codification systems to define their respective numbers in NEO.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 10,
+      "text": "Commitments are posted in accounting immediately upon creation.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

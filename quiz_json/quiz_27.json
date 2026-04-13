@@ -1,0 +1,52 @@
+{
+  "form_name": "F2S - S&OP E2E Planning - Part 2",
+  "topic_code": "F2S.PI.S300.NC07727.Deck.02.USAFMAFP",
+  "tribe": "F2S",
+  "question_count": 4,
+  "questions": [
+    {
+      "number": 1,
+      "text": "Demand confirmation to NEOMRP AFMs is propagated using the FCC (Factory Constraint Confirmation) for all affiliates.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "When a code is sent to IDC before quality release and AID-TL+1>Local GR, the end date in the inbound delivery CIF-ed to APO, corresponds to the expected reception of the stock",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "GR (Goods Receipt) Time is calculated using the formula: GR = MAX(AID + 1 - TL; Local GR).",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "The subcontractor and the ESC (External Sourcing Center) are treated as the same location in the NEO co-packing process.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

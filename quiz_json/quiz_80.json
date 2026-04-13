@@ -1,0 +1,82 @@
+{
+  "form_name": "R2R - Treasury - Bank Reconciliation",
+  "topic_code": "R2R.TR.S060.NC04691.Deck.USAFMAFP.EN",
+  "tribe": "R2R",
+  "question_count": 6,
+  "questions": [
+    {
+      "number": 1,
+      "text": "Bank reconciliation must be done per bank account and must include related bank pending accounts",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "One \"512\" account can have up to how many \"580\" pending accounts?",
+      "options": [
+        "3",
+        "5",
+        "9",
+        "10"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "Bank pending accounts (#580) have to be cleared \"____\" and justified \"____\"",
+      "options": [
+        "Daily, daily",
+        "Daily, weekly",
+        "Daily, at month end",
+        "Weekly, at month end"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "How many ways are there to clear a bank pending account?",
+      "options": [
+        "2",
+        "3",
+        "5"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "Collection reports are automatically integrated in S4 on a \"____\" basis",
+      "options": [
+        "Daily",
+        "Weekly",
+        "Monthly"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "Who is responsible for validating the bank reconciliations completed by the Cash Accountant (Control LoC1)?",
+      "options": [
+        "Only the Chief Accountant",
+        "Only the CFO",
+        "Both the Chief Accountant and the CFO",
+        "The validation process is not specified in the description."
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    }
+  ]
+}

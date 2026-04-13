@@ -1,0 +1,67 @@
+{
+  "form_name": "O2C - Supply Protection (SUP) & Product Allocation (PAL)",
+  "topic_code": "O2C.OI.S339.NC06574.Deck.USAFM",
+  "tribe": "O2C",
+  "question_count": 5,
+  "questions": [
+    {
+      "number": 1,
+      "text": "The name of the app to Protect quantities of a material of a specific plant against other demands is called",
+      "options": [
+        "Supply Allocation Tracker",
+        "Product Protector",
+        "Manage Supply Requests",
+        "Manage Supply Protection"
+      ],
+      "correct_answer_index": 3,
+      "correct_answer_letter": "D",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "SUP is set up at SKU level, not at EAN level",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "Overprotection occurs when",
+      "options": [
+        "SUP = Stock available",
+        "SUP > Stock available",
+        "SUP < Stock available",
+        "SUP ≥ Stock available"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "Product allocation works as a stock limiter on the Sales Order",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "Product Allocation (PAL) should be established as permanent solution.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

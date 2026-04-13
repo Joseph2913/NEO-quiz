@@ -1,0 +1,73 @@
+{
+  "form_name": "F2S - Manage Finished Good",
+  "topic_code": "DAT.PM.S296.NC07317.Deck.USAFP.EN",
+  "tribe": "F2S",
+  "question_count": 5,
+  "questions": [
+    {
+      "number": 1,
+      "text": "What key update is introduced in Sales Data for the Material Account Assignment Group (MAAG)?",
+      "options": [
+        "Integration of alternative units of measure",
+        "Harmonization with SD Status globally",
+        "New attribute to manage SD posting",
+        "Removal of hazardous classification"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "What is the recommended source of truth for Safety Data in NEO?",
+      "options": [
+        "S/4",
+        "Elixpedia",
+        "Legal Team",
+        "WISE"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "Which table is no longer used for Commodity Code management?",
+      "options": [
+        "MVKE",
+        "MARC",
+        "MAKT",
+        "MIC"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "What is one of the changes introduced in  Plant Data Management in the NEO system?",
+      "options": [
+        "Integration of life cycle programs",
+        "MRP Area Management for co-packing components",
+        "Removal of SD posting attributes",
+        "Introduction of hazardous classification"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "What is the primary focus of the new hierarchy codification in NEO for Basic Data?",
+      "options": [
+        "Regional alignment with S/4 Regional",
+        "Harmonization with alternative units of measure",
+        "Alignment with Unika hierarchy",
+        "Introduction of commodity codes"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    }
+  ]
+}

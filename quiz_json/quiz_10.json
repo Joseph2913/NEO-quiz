@@ -1,0 +1,63 @@
+{
+  "form_name": "F2S - Manage Substitution",
+  "topic_code": "F2S.IF.S117.NC04719.Deck.USAFMAFP.EN",
+  "tribe": "F2S",
+  "question_count": 5,
+  "questions": [
+    {
+      "number": 1,
+      "text": "In the NEO system, Material Master data will need to be updated manually for each instance of substitution.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "In the NEO system, once a Supersession is activated, the system will prioritize the consumption/selling of the newer product in the substitution chain.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "NEO utilizes separate, yet linked, objects in S/4: MM Substitution/Supersession (for Procurement) and SD Substitution (for Sales).",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "The \"Mix Allowed in PO BOM\" flag can be manually changed by planners on a case-by-case basis, even after the Supersession is created.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "The current substitution management processes (prior to NEO) are fully integrated between Sales and Planning departments.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

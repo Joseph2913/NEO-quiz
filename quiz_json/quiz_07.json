@@ -1,0 +1,128 @@
+{
+  "form_name": "F2S - Destructions Management",
+  "topic_code": "F2S.DI.S013.NC06753.Deck.USAFMAFP.EN",
+  "tribe": "F2S",
+  "question_count": 10,
+  "questions": [
+    {
+      "number": 1,
+      "text": "What is the first step of the Destruction Flow in NEO?",
+      "options": [
+        "Destruction List Submission",
+        "Identify stock to be destroyed",
+        "Destruction SO Creation",
+        "Check the Stock quantity"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "What does ZDEN refer to in the context of the destruction management process?",
+      "options": [
+        "The order type for Scrapping Destruction",
+        "The transaction code for destruction",
+        "The order type for E&O Destruction",
+        "The code for routine stock checks"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "What is the purpose of creating a sold-to customer in the destruction process?",
+      "options": [
+        "To track where destroyed materials are sent",
+        "To invoice the destruction process",
+        "To define a partner for Supply Chain functional Sales Order",
+        "To purchase new materials"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "What is the order type used for Scrapping within the NEO system?",
+      "options": [
+        "ZDEN",
+        "ZSCR",
+        "ZSCP",
+        "ZSL40"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "In NEO, the Destruction SO Creation occurs before the Destruction List is finalized.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "Outbound Delivery and Post Goods Issue are the final steps in the destruction process flow.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 7,
+      "text": "Which movement type will be used for destruction management in NEO solution?",
+      "options": [
+        "555",
+        "975",
+        "311",
+        "973"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 8,
+      "text": "The destruction of stocked materials is automatically interfaced with warehouse management systems.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 9,
+      "text": "A sales order for destruction requires a separate customer master to be created.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 10,
+      "text": "In NEO S4, the same customer can be used for both ZDEN and ZSCP sales orders.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    }
+  ]
+}

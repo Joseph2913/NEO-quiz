@@ -1,0 +1,63 @@
+{
+  "form_name": "F2S - Demand Management",
+  "topic_code": "F2S.PI.S082.NC04735.Deck.GLOB.EN",
+  "tribe": "F2S",
+  "question_count": 5,
+  "questions": [
+    {
+      "number": 1,
+      "text": "FCC is a file containing AFM net requirements.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "\"Platinum Flow\" refers to affiliates connected to S4, where weekly requirements are calculated.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "NEO improves the demand planning process by linking the Business Family Level (BFL) directly to the financial COMPASS code.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "With NEO, forecast integration now occurs monthly instead of weekly.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "Sales Orders will reduce forecasted quantities (VSF) within a defined period.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "neo-quiz",
+  "version": "2.0.0",
+  "description": "NEO Quiz Automation Tool",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "cli": "node fill-questions.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "playwright": "^1.59.1"
+  }
+}

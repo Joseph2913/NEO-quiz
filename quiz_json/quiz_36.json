@@ -1,0 +1,95 @@
+{
+  "form_name": "O2C - Dispute Management",
+  "topic_code": "O2C.AC.S016.NC04732.Deck.USAFM.EN",
+  "tribe": "O2C",
+  "question_count": 7,
+  "questions": [
+    {
+      "number": 1,
+      "text": "What is the purpose of linking a dispute case to an FI document?",
+      "options": [
+        "To increase financial transparency",
+        "To provide a way of tracking its resolution",
+        "To enhance customer satisfaction",
+        "To reduce the need for manual data entry"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "What must be done as part of the follow-up process for disputes?",
+      "options": [
+        "The disputes should be ignored until they are resolved automatically",
+        "The disputes should be archived immediately after documentation",
+        "The disputes need to be identified, categorized, documented, archived, followed up on, and rapidly settled",
+        "The disputes should only be followed up if they exceed a financial threshold"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "How can final resolution of a dispute be achieved?",
+      "options": [
+        "By ignoring the dispute",
+        "Through the creation/matching of a credit memo, payout, etc.",
+        "By letting the dispute resolve over time",
+        "Through arbitration"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "Which is NOT a common issue with deductions?",
+      "options": [
+        "FIFO method of clearing disputes with receivables",
+        "No process in place to follow up/challenge disputes",
+        "Clearing and resolution of deductions not done in a timely manner",
+        "High visibility of the real reason of deduction"
+      ],
+      "correct_answer_index": 3,
+      "correct_answer_letter": "D",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "What happens when a deduction is fully cleared?",
+      "options": [
+        "The disputed amount becomes zero and the case remains open",
+        "The disputed amount increases and requires further review",
+        "The disputed amount becomes zero and the case is automatically closed",
+        "The dispute escalates to legal action"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "Reason codes are fixed and cannot be changed once assigned to a dispute.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 7,
+      "text": "Credit notes created for disputes can be linked back for documentation purposes.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    }
+  ]
+}

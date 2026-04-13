@@ -1,0 +1,73 @@
+{
+  "form_name": "F2S - Inbound Delivery & Goods Reception",
+  "topic_code": "F2S.IF.S004.NC06584.Deck.USAFMAFP.EN",
+  "tribe": "F2S",
+  "question_count": 6,
+  "questions": [
+    {
+      "number": 1,
+      "text": "An ASN is always required to create an Inbound Delivery in NEO.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "What are two key differences between a \"Rich ASN\" and a \"Poor ASN\"?",
+      "options": [
+        "\"Rich ASN\" includes an SSCC (Serial Shipping Container Code), while a \"Poor ASN\" does not. This impacts how the system groups items into Inbound Deliveries."
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "What is the purpose of the \"Delivery Grouping Rule\" in NEO?",
+      "options": [
+        "It determines how Inbound Deliveries are created from the ASN, depending on factors like material, order, batch, and SSCC. This rule allows flexibility based on the WMS capabilities."
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "Name one key report that can be used to monitor stock levels in NEO.",
+      "options": [
+        "Stock in Transit report (GCP) or Stock report - Multiple materials – NEO (Both are valid)"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "What triggers the automatic generation of an Inbound Delivery in the BOM Header Reception process?",
+      "options": [
+        "Manual entry by the MSC procurement planner",
+        "The ASN received from the co-packer via interface",
+        "Completion of the MRP run by the co-packer",
+        "Quality Management approval"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "The objective of the GS1 Rules for SSCC is to always transform the SSCC into an 18-digit format, regardless of whether the plant is maintained in the TVARVC table.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

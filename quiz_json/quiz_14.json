@@ -1,0 +1,129 @@
+{
+  "form_name": "F2S - CoPacking Master Data",
+  "topic_code": "F2S.IF.S138.NC04739.Deck.USAFMAFP.EN",
+  "tribe": "F2S",
+  "question_count": 11,
+  "questions": [
+    {
+      "number": 1,
+      "text": "Coffret / Sets and FG Re-labelling are in scope for Co-packing",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "For every new co-packing operation, a new code is created in Elixpédia and published in S/4",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "Supply Protection (SUP®) is a new feature of Co-packing, enabling proactive stock allocation between Sales & Sub-Co",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "All master data elements are defined in Elixpédia and published in S/4 through an interface",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "Master data is defined and set up only once.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 1,
+      "text": "Co-Packing Master Data set-up includes BOM Maintenance and Manage Contracts and Source Lists",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "Contract creation will trigger automatically PIR creation",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "In the Manage Workflows for Purchase Contract app, each contract will go workflow",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "If the purchase contract is in the process, you still can place purchase order",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "The source list creation is not mandatory for single or multi-sourcing cases",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "A contract will be created manually when a new supplier needs to be assigned to a subcontracted material for one of the 3 following reasons: Error on supplier assignment, Switch of supplier, Multi-sourcing.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    }
+  ]
+}

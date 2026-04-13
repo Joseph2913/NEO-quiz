@@ -1,0 +1,77 @@
+{
+  "form_name": "P2P - 2-Way Match",
+  "topic_code": "P2P.IP.S076.NC04761.Deck.USAFMAFP.EN",
+  "tribe": "P2P",
+  "question_count": 6,
+  "questions": [
+    {
+      "number": 1,
+      "text": "Fill in the blank:\nBenefit of the 2-way match configuration, is to not block payments due to missing \"____\"",
+      "options": [
+        "Purchase Requisition (PR)",
+        "Goods Receipt (GR)",
+        "Purchase Order (PO)"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "The purpose of 2-way match is to help Accountant in the monthly reconciliation",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "2-Way match is used when a purchasing category  (taxes, insurances, electricity, water, etc.) is considered at \"____\" risk",
+      "options": [
+        "Low",
+        "High"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "What is the Requester's role in terms of purchase requisitions?",
+      "options": [
+        "To Approve, Reject or ask for the Rework of the Purchase Requisition",
+        "To create purchase requisitions, follow-on documents (such as goods receipts and return deliveries) and monitor the overall PR/PO process"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "A purchase order (PO) is a formal order and legally binding agreement with a supplier to have services or items furnished to L'Oréal",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "What is the PRIMARY responsibility of the Accounts Payable Manager (BEST P2P Manager) regarding 2-way match configurations according to Control LoC1?",
+      "options": [
+        "To implement and test any required changes to the 2-way match settings.",
+        "To approve or reject all requests to add or remove vendors from the authorized list.",
+        "To perform an annual review of the configured company codes, vendors, and material groups for 2-way match and validate it with the CFO.",
+        "To investigate and resolve any discrepancies or errors identified through the 2-way match process."
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    }
+  ]
+}

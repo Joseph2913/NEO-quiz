@@ -1,0 +1,63 @@
+{
+  "form_name": "F2S - Supply Acquisition Costs",
+  "topic_code": "F2S.DP.S370.NC07716.Deck.USAFMAFP",
+  "tribe": "F2S",
+  "question_count": 5,
+  "questions": [
+    {
+      "number": 1,
+      "text": "Fill in the Blank: The main types of acquisition costs include ________, customs duties, clearance fees, handling/labeling, and other taxes.",
+      "options": [
+        "Transportation fees"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "True or False: The NEO system allows for the modeling of acquisition costs by analyzing costs by organizational structure, suppliers, nature, and event type",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "The FIORI application used to create pricing conditions for purchasing is ________",
+      "options": [
+        "Create Price Conditions - Purchasing"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "True or False: Intra-group pricing mapping helps in understanding the cost and price elements for AFP and AFM",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "What is the purpose of the acquisition cost management process?",
+      "options": [
+        "To reduce overall company expenses",
+        "To ensure compliance with DGAF norms",
+        "To improve customer satisfaction",
+        "To streamline the supply chain process"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

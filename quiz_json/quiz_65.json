@@ -1,0 +1,66 @@
+{
+  "form_name": "P2P - Purchasing & Suppliers Relation - IP - Contacts",
+  "topic_code": "P2P.IP.S360.NC06445.Deck.USAFM.EN",
+  "tribe": "P2P",
+  "question_count": 5,
+  "questions": [
+    {
+      "number": 1,
+      "text": "In case of invoice discrepancy with missing GR the invoice will be blocked for payment",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "Generic WBS is technical Work Breakdown Structure used only for \"____\"",
+      "options": [
+        "Contacts PO",
+        "Contacts GR",
+        "Contacts PR"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "Flight is created and validated in Contacts",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "The GR is done in Contacts and then sent to \"____\"",
+      "options": [
+        "Readsoft",
+        "Blackline",
+        "S/4"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "In case of invoice discrepancy with missing GR, the recommended action from the requester is to add the GR in \"____\"",
+      "options": [
+        "Readsoft",
+        "Contacts",
+        "S/4"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

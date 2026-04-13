@@ -1,0 +1,71 @@
+{
+  "form_name": "O2C - Order Management - Services",
+  "topic_code": "O2C.OI.S357.NC04700.Deck.USAFM.EN",
+  "tribe": "O2C",
+  "question_count": 5,
+  "questions": [
+    {
+      "number": 1,
+      "text": "What happens if Customer Care forgets to add CC/WBS to an order?",
+      "options": [
+        "The order is processed without issue",
+        "An alarm will pop up at the end of the month",
+        "The order will be automatically corrected",
+        "The order will be canceled immediately"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "In NEO, B2B channel sales orders can combine products from multiple divisions on a single order",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "What type of cost is recharged under the \"Services directly linked to sell-in\" category?",
+      "options": [
+        "Promotional costs",
+        "Transport cost, postage & packaging billed in addition to the product invoicing",
+        "Marketing expenses",
+        "Administrative costs"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "What should be done if a sales order is created without a PO Type?",
+      "options": [
+        "The order will proceed as usual",
+        "The order will fall into incompletion",
+        "The order will be prioritized",
+        "The order will be canceled"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "To identify the correct WBS or cost center users should contact",
+      "options": [
+        "Marketing Department",
+        "Finance Department",
+        "HR",
+        "Global Master Data Management team"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

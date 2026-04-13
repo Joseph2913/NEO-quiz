@@ -1,0 +1,128 @@
+{
+  "form_name": "R2R - Affair Controlling - Profitability Analysis",
+  "topic_code": "R2R.AC.S046.NC04749.Deck.USAFM.EN",
+  "tribe": "R2R",
+  "question_count": 10,
+  "questions": [
+    {
+      "number": 1,
+      "text": "What is the primary purpose of a Cost Center in business management?",
+      "options": [
+        "To collect and analyze costs of any business units",
+        "To generate profit",
+        "To manage customer relationships",
+        "To stock inventory"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "How does the Cost Center Hierarchy function in relation to L'Oréal P&L?",
+      "options": [
+        "It contradicts the structure",
+        "It aligns with the Compass Group Cost Center",
+        "It has no relation",
+        "It groups cost centers randomly"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "What is the purpose of a Profit Center?",
+      "options": [
+        "To collect information on employee performance",
+        "To segregate financial data by management Units",
+        "To manage material costs only",
+        "To track sales data"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "What does WBS allow in terms of budget management?",
+      "options": [
+        "Limited control over the budget",
+        "Only initial budget setting",
+        "No control over the budget",
+        "Budget follow up and control at any level of the hierarchy"
+      ],
+      "correct_answer_index": 3,
+      "correct_answer_letter": "D",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "Which statement correctly describes the Valuation class in Material Management?",
+      "options": [
+        "It prevents automatic G/L account assignment",
+        "Is defined at customer level",
+        "Determines G/L account assignment based on the nature of the product and plant type",
+        "Is only relevant to the procurement process"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "The Global Customer Hierarchy Framework includes one \"Sold To\" level.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 7,
+      "text": "Budget availability control does not support an approval workflow process for indirect procurement.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 8,
+      "text": "In the context of budget availability for a cost center or WBS, a purchase requisition may exceed the available budget.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 9,
+      "text": "According to the new \"Account based\" principle in NEO, each line of the P&L is represented by an account.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 10,
+      "text": "Under the new S4 processes, direct posting and use of cost collectors like WBS and Cost Centers are mutually exclusive.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

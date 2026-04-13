@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Auth state (contains session tokens - never commit)
+auth-state.json
+
+# Runtime/output files
+screenshots/
+processing-log.json
+progress.json
+results.json
+diagnostics/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Source documents (large binaries, not needed for the tool)
+*.pptx
+*.xlsx
+*.pdf
+*.png
+
+# Editor
+.vscode/
+.idea/

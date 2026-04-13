@@ -1,0 +1,67 @@
+{
+  "form_name": "P2P - Supplier Request",
+  "topic_code": "P2P.MD.S191.NC04766.Deck.USAFMAFP.EN",
+  "tribe": "P2P",
+  "question_count": 5,
+  "questions": [
+    {
+      "number": 1,
+      "text": "TIBCO EBX/NEO MDM will become the Single Source of Truth for Supplier master data",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "All changes of sensitive data must be approved by the requester",
+      "options": [
+        "Customer & Finance",
+        "Product & Customer",
+        "Customer & Supplier",
+        "Supplier & Product"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "The creation of a new supplier is requested via Email",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "All requesters have access to TIBCO EBX/NEO MDM",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "The Supplier Update process starts with an update request made by the Requester in \"___\"",
+      "options": [
+        "S/4",
+        "ServiceNow",
+        "TIBCO EBX",
+        "MySourcing"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

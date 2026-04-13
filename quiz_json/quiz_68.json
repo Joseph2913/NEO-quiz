@@ -1,0 +1,70 @@
+{
+  "form_name": "P2P - VMDM Vendor Master Data Manager",
+  "topic_code": "DAT.SM.S192.NC04765.Deck.USAFMAFP.EN",
+  "tribe": "P2P",
+  "question_count": 5,
+  "questions": [
+    {
+      "number": 1,
+      "text": "NEO MDM will become the Single Source of Truth for Supplier data",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "Functional changes affecting the Vendor Master Data team include:",
+      "options": [
+        "Increased manual data inputs",
+        "Access to a central repository of all documents",
+        "Additional direct contact with suppliers"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "Which systems are used in the creation process of new direct and indirect suppliers?",
+      "options": [
+        "SNOW",
+        "TIBCO EBX",
+        "S4",
+        "MySourcing",
+        "All of the above"
+      ],
+      "correct_answer_index": 4,
+      "correct_answer_letter": "E",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "Supplier Master Data is directly created or updated in S4",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "What are the key benefits brought by NEO Master Data?",
+      "options": [
+        "Ownership",
+        "Quality",
+        "Standardisation",
+        "Accessibility",
+        "All of the above"
+      ],
+      "correct_answer_index": 4,
+      "correct_answer_letter": "E",
+      "needs_review": false
+    }
+  ]
+}

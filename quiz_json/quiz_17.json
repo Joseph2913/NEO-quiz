@@ -1,0 +1,43 @@
+{
+  "form_name": "F2S - DC to DC Planning - Stock Rebalancing",
+  "topic_code": "F2S.IF.S144.NC07610.Deck.USAFMAFP",
+  "tribe": "F2S",
+  "question_count": 3,
+  "questions": [
+    {
+      "number": 1,
+      "text": "What are the 3 kind of STO to be created?",
+      "options": [
+        "SO promo, SO baseline and component need",
+        "ZTCA, ZTSL and component need",
+        "ZTCA , SO baseline and component need"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "What is the type of STO to be generated?",
+      "options": [
+        "ZREB",
+        "ZTCA",
+        "ZSUB"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "Is there the possibility to take into account the stock in transit?",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    }
+  ]
+}

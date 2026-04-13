@@ -1,0 +1,90 @@
+{
+  "form_name": "R2R - Finance Master Data - Cost Center_Profit Center",
+  "topic_code": "R2R.MD.S097.NC04731.Deck.USAFMAFP.EN",
+  "tribe": "R2R",
+  "question_count": 7,
+  "questions": [
+    {
+      "number": 1,
+      "text": "What is a key improvement in Financial Master Data management after implementing NEO?",
+      "options": [
+        "Continued local silo management",
+        "Customizing remains different across solutions",
+        "Common process to define and maintain Financial Master Data",
+        "Additional work is needed for global reporting"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "NEO has introduced a customized process for each entity to manage their Financial Master Data.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "Which system is used to manage the Profit Center creation process in NEO?",
+      "options": [
+        "SAP S/4",
+        "TIBCO EBX",
+        "MyMarket"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "What happens when an Indirect PO is created using a Cost Center in the MyMarket workflow?",
+      "options": [
+        "The budget responsible approval step is determined.",
+        "The controller approval step is automatically skipped.",
+        "No workflow is initiated.",
+        "It triggers a system logout."
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "The Profit Center structure includes a 10-digit external codification with the first four digits dedicated to the Company Code (CoCode).",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "The Lock indicator for Cost Centers should be set to 'No' by default.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 7,
+      "text": "In NEO, a Cost Center can be attached to multiple Company Codes as standard practice.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

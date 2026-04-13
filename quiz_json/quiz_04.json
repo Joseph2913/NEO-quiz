@@ -1,0 +1,62 @@
+{
+  "form_name": "F2S - Create and Update Purchasing Flow for Non-BOM Stocked Materials",
+  "topic_code": "F2S.DP.S002.NC06436.Deck.USAFP.EN",
+  "tribe": "F2S",
+  "question_count": 5,
+  "questions": [
+    {
+      "number": 1,
+      "text": "True or False: In the new NEO process, contracts are created within the MINDS PURCHASING module.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "How many source lists are typically required when planning is performed in APO?",
+      "options": [
+        "One for both APO and S4",
+        "One for APO and one for S4",
+        "One for APO and two for S4",
+        "Two for APO and one for S4"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "Explain the primary purpose of a Purchase Info Record (PIR) in the context of NEO.",
+      "options": [
+        "PIRs store the Purchasing Standard Price and are used for connection to APO. They are created automatically upon contract creation."
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "True or False: The standard price is entered within the PIR manually in S4.",
+      "options": [
+        "False (It's entered within MINDS PURCHASING alongside the purchasing price)."
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "Where can you view the planned conditions for each validity period of a contract within NEO S4?",
+      "options": [
+        "In the \"Item Condition\" tab and \"Scales\" section of the contract display."
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    }
+  ]
+}

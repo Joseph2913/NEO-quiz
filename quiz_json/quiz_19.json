@@ -1,0 +1,68 @@
+{
+  "form_name": "F2S - Direct Reverse Flows",
+  "topic_code": "F2S.IF.S255.NC04733.Deck.USAFMAFP.EN",
+  "tribe": "F2S",
+  "question_count": 5,
+  "questions": [
+    {
+      "number": 1,
+      "text": "When returning goods from an affiliate to the factory (AFM to AFI), what is a pre-requisite action?",
+      "options": [
+        "Sending a D003 UD from the factory",
+        "Creating a return sales order in NEO",
+        "Contacting the 3PL provider",
+        "Generating an invoice in the legacy system"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "In the new process for AFM to AFI returns, what stock type should be selected in the delivery view of the Purchase Order (PO)?",
+      "options": [
+        "Blocked Stock"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "What is the correct order of these steps in the Direct Flow Return process for POs:\nA. Good Issue \nB. Return to done in Blocked Stock\nC. Choose Type of PO for Return (ZICR)\nD. Creation of the Outbound delivery in blocked Status",
+      "options": [
+        "A, B, C, D",
+        "C, B, D, A",
+        "C, A, D, B",
+        "D, C, B, A"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "ZICR is a type of Purchase Order used for what purpose within the new system?",
+      "options": [
+        "Standard Purchase Orders for raw materials.",
+        "Returns of products.",
+        "Stock Transfers between affiliates.",
+        "Purchases from external vendors."
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "True or False: The Mass PO and STO Closure report allows for the simultaneous closure of multiple Purchase Orders and Stock Transport Orders.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    }
+  ]
+}

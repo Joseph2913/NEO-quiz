@@ -1,0 +1,117 @@
+{
+  "form_name": "O2C - Credit Management",
+  "topic_code": "O2C.AC.S017.NC04737.Deck.USAFM.EN",
+  "tribe": "O2C",
+  "question_count": 9,
+  "questions": [
+    {
+      "number": 1,
+      "text": "What does the Credit Limit define in terms of customer transactions?",
+      "options": [
+        "The minimum amount a customer must spend annually",
+        "The numerical limit on the maximum credit exposure a customer can have at any given time",
+        "The number of transactions a customer can make in a month",
+        "The credit score of the customer"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "Which interface is used for Insurance/Credit Limit in Credit Limit Management?",
+      "options": [
+        "SAP Interface",
+        "Credit Insurance Interface",
+        "Informa Interface",
+        "Dun&Bradstreet Interface"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "What happens when an order exceeds the credit limit in SAP?",
+      "options": [
+        "A credit increase is automatically applied",
+        "The order is processed without checks",
+        "A credit block is triggered",
+        "The order is deleted from the system"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "Which of the following is NOT used in calculating a customer's credit score?",
+      "options": [
+        "Annual Sales",
+        "Payment Method",
+        "Days of Arrears",
+        "Payment Term"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "What is the purpose of a dynamic credit limit check?",
+      "options": [
+        "To block credit based on past sales data",
+        "To ignore the credit limit entirely",
+        "To update the customer's credit score instantly",
+        "To consider the order’s requested delivery date in the credit check"
+      ],
+      "correct_answer_index": 3,
+      "correct_answer_letter": "D",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "Credit Limit Management includes a Credit Limit Request Workflow internal to SAP.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
+    },
+    {
+      "number": 7,
+      "text": "External Credit Agency interfaces are not utilized for credit rating in Credit Management.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 8,
+      "text": "Static and Dynamic Credit Limit Checks consider the same variables for blocking credit.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 9,
+      "text": "The Risk Class is a qualitative tag that is automatically updated and cannot be manually changed.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    }
+  ]
+}

@@ -1,0 +1,283 @@
+{
+  "form_name": "F2S - Batch Management",
+  "topic_code": "F2S.QS.S137.NC04745.Deck.USAFMAFP.EN",
+  "tribe": "F2S",
+  "question_count": 25,
+  "questions": [
+    {
+      "number": 1,
+      "text": "Batch Management in Direct Flow can be shipped before the quality controls are finished.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "All stocked materials at L'Oréal are followed by batch management.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "When the stock is in block status, it will keep the precise batch in SAP.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "The SLED (Shelf-Life Expiration Date) is calculated based on the date of manufacturing plus the total shelf life.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "Product manufactured by L'Oréal factory (FERT Material) which are not batch-managed will not require SLED date.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "Batch number and values in the batch characteristics will be the same for all plants that have received the batch.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 7,
+      "text": "The Movement Code for Goods Receipt from purchasing is Mvt = 601 and the movement code for Goods Issue from a sales process is Mvt = 101.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 8,
+      "text": "Factory GLN is the factory identification number where the batch was shipped.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 9,
+      "text": "Once the “Date of Manufacturing” is filled, the system will calculate the SLED date by performing a simple addition: Date of manufacturing + Total days.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 10,
+      "text": "The Inspection Type for Direct Flow material is Z01DIRPF, and it should not be set as preferred or ticked to trigger GR.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 11,
+      "text": "“Planned Release Date (QM)” corresponds to the “End date” of the quality control on the factory side and it is the real date of stock availability.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 12,
+      "text": "IF the SAP standard « Delivery date » is LONGER than the « planned release date » then the Date considered in stock requirement FIORI applications and APO will be the Planned Release Date",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 13,
+      "text": "The UD Code D006 represents a rejected Usage Decision, in this case, the stock status equals “Blocked” and the batch status is “Unrestricted”.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 14,
+      "text": "Batch derivation needs to be maintained using 2 SAP standard transactions: \nDVR1: Maintain the criteria for the sending batch(es): BOM components\nDVS1: Maintain the criteria for the receiving batch: BOM Header",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 15,
+      "text": "With Batch Master in Direct Flow, the batch is created and/or updated in WISE (Factory SAP system) and all the updates will be automatically transferred to NEO instance via HIP",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 1,
+      "text": "Batch management in NEO is only activated for materials that are stocked.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "All stocked materials in NEO are tracked by batch.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "The batch number and batch characteristics are unique for each material/batch combination.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "The SLED (Shelf-Life Expiration Date) is calculated based on the date of manufacturing plus the total shelf life.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "L'Oréal utilizes multiple batch classes within NEO to accommodate various product types and categories.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "In the Non-Direct flow scenario, the stock can be moved to AFM after production, without awaiting any UD taken from WISE plant.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 7,
+      "text": "The UD status for Non-Direct flow inspection lots can be modified by the entity in AFP or AFM.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 8,
+      "text": "When the batch is created in WISE Batch Master, the interface will update the batch UD characteristic in AFP and update the batch master in AFM.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 9,
+      "text": "The UD Code ‘D006’ represents a “Rejected” usage decision. In this case, the stock status equals “Blocked” and the batch status is “Unrestricted”.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 10,
+      "text": "When the UD ‘D003’ is taken by WISE plant for the batch, the status in AFP will be “Unrestricted” and stock “Blocked”.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

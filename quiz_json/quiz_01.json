@@ -1,0 +1,95 @@
+{
+  "form_name": "F2S - S&OP RESA & Advanced ATP",
+  "topic_code": "F2S.PI.S308.NC06428.Deck.USAFP.EN",
+  "tribe": "F2S",
+  "question_count": 7,
+  "questions": [
+    {
+      "number": 1,
+      "text": "Reservations in APO guarantee an absolute confirmation quantity in S4 for the respective customer location.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "What does RAR stand for, and what role does it play in reservation calculation?",
+      "options": [
+        "Resa Allocation Report - Determines the final allocation quantities.",
+        "Remaining Available Reservation - Shows the total available stock.",
+        "Reste A Réserver - Represents the unreserved portion of the confirmed quantity for future periods.",
+        "Reservation and Release - Manages the release of stock for sales orders."
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "Which of the following correctly describes the difference between “NEO S&OP Depts.” or KISS+ and “WISE S&OP Depts.” regarding reservations and quotas?",
+      "options": [
+        "NEO and KISS+ S&OP departments use quotas, while WISE departments use reservations.",
+        "WISE S&OP dpt. guarantee full requested quantity to their AFM’s, while KISS+ departments may confirm less.",
+        "NEO and KISS+ S&OP departments use reservation, while WISE departments’ use quotas.",
+        "There is no difference; both department types are treated the same."
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "How does \"capping\" affect the stock pool?",
+      "options": [
+        "Capped affiliates have priority access to the stock pool.",
+        "Capping has no effect on the stock pool.",
+        "Capped affiliates are prevented from accessing the stock pool.",
+        "Capping increases the size of the stock pool."
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "In which scenario is a manual \"rerun\" of the reservation process in APO required?",
+      "options": [
+        "When the customer allocation flag changes from X to empty.",
+        "When stock is automatically released earlier than planned.",
+        "When performing manual arbitration/allocation.",
+        "During the nightly batch calculation of reservations."
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "Overprotection in NEO occurs when the total of all reservations is less than the available stock.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 7,
+      "text": "If there's a shortage in period 1, what change is made in the iDoc sent to S4, and why?",
+      "options": [
+        "The reservation quantity is increased to match the available stock.",
+        "The delivery date is pushed to the next period.",
+        "capping flag is set to trigger the creation of a PAL.",
+        "The SO is automatically rejected."
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    }
+  ]
+}

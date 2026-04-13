@@ -1,0 +1,559 @@
+{
+  "total_forms": 89,
+  "batch_size": 10,
+  "total_batches": 9,
+  "batches": [
+    [
+      {
+        "row_number": 2,
+        "form_name": "F2S - S&OP RESA & Advanced ATP",
+        "topic_code": "F2S.PI.S308.NC06428.Deck.USAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 3,
+        "form_name": "F2S - Inbound Delivery & Goods Reception",
+        "topic_code": "F2S.IF.S004.NC06584.Deck.USAFMAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 4,
+        "form_name": "F2S - Stock Comparison & Adjustment",
+        "topic_code": "F2S.DI.S118.NC04699.Deck.USAFMAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 5,
+        "form_name": "F2S - Create and Update Purchasing Flow for Non-BOM Stocked Materials",
+        "topic_code": "F2S.DP.S002.NC06436.Deck.USAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 6,
+        "form_name": "F2S - CoPacking Planning & Scheduling",
+        "topic_code": "F2S.IF.S139.NC04738.Deck.USAFMAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 7,
+        "form_name": "F2S - Direct Procurement Analysis",
+        "topic_code": "F2S.DP.S001.NC04710.Deck.USAFMAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 8,
+        "form_name": "F2S - Destructions Management",
+        "topic_code": "F2S.DI.S013.NC06753.Deck.USAFMAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 9,
+        "form_name": "F2S - Transportation Management",
+        "topic_code": "F2S.DI.S343.NC06780.Deck.USAFMAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 10,
+        "form_name": "F2S - Supply Acquisition Costs",
+        "topic_code": "F2S.DP.S370.NC07716.Deck.USAFMAFP",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 11,
+        "form_name": "F2S - Manage Substitution",
+        "topic_code": "F2S.IF.S117.NC04719.Deck.USAFMAFP.EN",
+        "tribe": "F2S"
+      }
+    ],
+    [
+      {
+        "row_number": 12,
+        "form_name": "F2S - Triangular Flows",
+        "topic_code": "F2S.ID.S371.NC07778.Deck.USAFMAFP",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 13,
+        "form_name": "F2S - Receiving Entity Activities",
+        "topic_code": "F2S.IF.S133.NC04708.Deck.USAFMAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 14,
+        "form_name": "F2S - Direct Flow Creation",
+        "topic_code": "F2S.IF.S136.NC04734.Deck.USAFMAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 15,
+        "form_name": "F2S - CoPacking Master Data",
+        "topic_code": "F2S.IF.S138.NC04739.Deck.USAFMAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 16,
+        "form_name": "F2S - CoPacking Execution",
+        "topic_code": "F2S.IF.S140.NC04740.Deck.USAFMAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 17,
+        "form_name": "F2S - CoPacking Reverse Logistics",
+        "topic_code": "F2S.IF.S142.NC06752.Deck.USAFMAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 18,
+        "form_name": "F2S - DC to DC Planning - Stock Rebalancing",
+        "topic_code": "F2S.IF.S144.NC07610.Deck.USAFMAFP",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 19,
+        "form_name": "F2S - Stock Overview (subprocess)",
+        "topic_code": "F2S.IF.S253.NC04698.Deck.USAFMAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 20,
+        "form_name": "F2S - Direct Reverse Flows",
+        "topic_code": "F2S.IF.S255.NC04733.Deck.USAFMAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 21,
+        "form_name": "F2S - Supply Planning",
+        "topic_code": "F2S.PI.S010.NC04697.Deck.USAFM.EN",
+        "tribe": "F2S"
+      }
+    ],
+    [
+      {
+        "row_number": 22,
+        "form_name": "F2S - Planning Confirmation",
+        "topic_code": "F2S.PI.S011.NC04714.Deck.USAFM.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 23,
+        "form_name": "F2S - Manage Lifecycle_Decision Table",
+        "topic_code": "F2S.PI.S012.NC07335.Deck.02.USAFMAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 24,
+        "form_name": "F2S - Manage Lifecycle AFM - MM & SD Status",
+        "topic_code": "F2S.PI.S012.NC04720.Deck.01.USAFM.EN.",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 25,
+        "form_name": "F2S - Manage Lifecycle AFP - MM & SD Status",
+        "topic_code": "F2S.PI.S012.NC07334.Deck.01.USAFP.EN.",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 26,
+        "form_name": "F2S - Demand Management",
+        "topic_code": "F2S.PI.S082.NC04735.Deck.GLOB.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 27,
+        "form_name": "F2S - S&OP E2E Planning - Part 1",
+        "topic_code": "F2S.PI.S300.NC06427.Deck.01.USAFMAFP",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 28,
+        "form_name": "F2S - S&OP E2E Planning - Part 2",
+        "topic_code": "F2S.PI.S300.NC07727.Deck.02.USAFMAFP",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 29,
+        "form_name": "F2S - Batch Management",
+        "topic_code": "F2S.QS.S137.NC04745.Deck.USAFMAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 30,
+        "form_name": "F2S - Quality in Procurement & Subcontracting",
+        "topic_code": "F2S.QS.S304.NC06441.Deck.USAFMAFP.EN",
+        "tribe": "F2S"
+      },
+      {
+        "row_number": 31,
+        "form_name": "F2S - Manage Finished Good",
+        "topic_code": "DAT.PM.S296.NC07317.Deck.USAFP.EN",
+        "tribe": "F2S"
+      }
+    ],
+    [
+      {
+        "row_number": 32,
+        "form_name": "O2C - Catalog Management (AFM)",
+        "topic_code": "O2C.MD.S222.NC04743.Deck.USAFMAFP.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 33,
+        "form_name": "O2C - Collection and Dunning",
+        "topic_code": "O2C.AC.S015.NC04742.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 34,
+        "form_name": "O2C - Credit Management",
+        "topic_code": "O2C.AC.S017.NC04737.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 35,
+        "form_name": "O2C - OS4 Pre-cubing & Load Planning Tool",
+        "topic_code": "O2C.OI.S336.NC06577.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 36,
+        "form_name": "O2C - Cash App and Winshuttle",
+        "topic_code": "O2C.AC.S338.NC06573.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 37,
+        "form_name": "O2C - Dispute Management",
+        "topic_code": "O2C.AC.S016.NC04732.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 38,
+        "form_name": "O2C - Customer Payment Matching",
+        "topic_code": "O2C.AC.S018.NC04715.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 39,
+        "form_name": "O2C - Order Management - Workflows",
+        "topic_code": "O2C.OI.S368.NC06775.Deck.USAFP.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 40,
+        "form_name": "O2C - Order Creation & Determination",
+        "topic_code": "O2C.OI.S335.NC06572.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 41,
+        "form_name": "O2C - Order Management - Financial Flows and Cancellations",
+        "topic_code": "O2C.OI.S353.NC07526.Deck.USAFP.EN",
+        "tribe": "O2C"
+      }
+    ],
+    [
+      {
+        "row_number": 42,
+        "form_name": "O2C - Order Management - Date",
+        "topic_code": "O2C.OI.S341.NC06765.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 43,
+        "form_name": "O2C - Order Management - B2B - Forward",
+        "topic_code": "O2C.OI.S238.NC04703.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 44,
+        "form_name": "O2C - Supply Protection (SUP) & Product Allocation (PAL)",
+        "topic_code": "O2C.OI.S339.NC06574.Deck.USAFM",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 45,
+        "form_name": "O2C - Order Management - Promotions & Presales",
+        "topic_code": "O2C.OI.S347.NC06578.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 46,
+        "form_name": "O2C - Order Management - D2C Ecom - Forward & Reverse",
+        "topic_code": "O2C.OI.S355.NC06582.Deck.AFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 47,
+        "form_name": "O2C - Order Management - D2C Retail - Sales & Reverse",
+        "topic_code": "O2C.OI.S356.NC06583.Deck.AFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 48,
+        "form_name": "O2C - Order validation & block management",
+        "topic_code": "O2C.OI.S035.NC07521.Deck.USAFP.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 49,
+        "form_name": "O2C - Order validation & block management",
+        "topic_code": "O2C.OI.S035.NC04718.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 50,
+        "form_name": "O2C - Intra_Intercompany Invoice - Transport documents Management",
+        "topic_code": "O2C.OI.S264.NC06443.Deck.USAFMAFP.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 51,
+        "form_name": "O2C - Sales Order Management - Intra Intercompany",
+        "topic_code": "O2C.OI.S311.NC07239.Deck.USAFP.EN",
+        "tribe": "O2C"
+      }
+    ],
+    [
+      {
+        "row_number": 52,
+        "form_name": "O2C - ATP & BOP",
+        "topic_code": "O2C.OI.S340.NC06757.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 53,
+        "form_name": "O2C - Outbound Delivery Creation",
+        "topic_code": "O2C.OI.S342.NC06576.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 54,
+        "form_name": "O2C - Billing Management",
+        "topic_code": "O2C.OI.S346.NC06761.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 55,
+        "form_name": "O2C - Order Management - Virtual BOM",
+        "topic_code": "O2C.OI.S348.NC06768.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 56,
+        "form_name": "O2C - Order Management - B2B - Reverse",
+        "topic_code": "O2C.OI.S349.NC06579.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 57,
+        "form_name": "O2C - Order Management - Return Contract",
+        "topic_code": "O2C.OI.S350.NC06580.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 58,
+        "form_name": "O2C - Output Management",
+        "topic_code": "O2C.OI.S354.NC06571.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 59,
+        "form_name": "O2C - Order Management - Services",
+        "topic_code": "O2C.OI.S357.NC04700.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 60,
+        "form_name": "O2C - Order Management - Services - Sales & Reverse",
+        "topic_code": "O2C.OI.S357.NC07527.Deck.USAFP",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 61,
+        "form_name": "O2C - Sales Order Management- Triangular Flows - B2B and D2C",
+        "topic_code": "O2C.OI.S359.NC06772.Deck.AFM.US.EN",
+        "tribe": "O2C"
+      }
+    ],
+    [
+      {
+        "row_number": 62,
+        "form_name": "O2C - Order Management - VMI & CMI",
+        "topic_code": "O2C.OI.S364.NC06776.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 63,
+        "form_name": "O2C - Pricing Conditions",
+        "topic_code": "O2C.PR.S246.NC04711.Deck.USAFM.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 64,
+        "form_name": "O2C - Intercompany Pricing",
+        "topic_code": "O2C.PR.S247.NC07197.Deck.USAFP.EN",
+        "tribe": "O2C"
+      },
+      {
+        "row_number": 65,
+        "form_name": "P2P - 2-Way Match",
+        "topic_code": "P2P.IP.S076.NC04761.Deck.USAFMAFP.EN",
+        "tribe": "P2P"
+      },
+      {
+        "row_number": 66,
+        "form_name": "P2P - Purchasing & Suppliers Relation - IP - Contacts",
+        "topic_code": "P2P.IP.S360.NC06445.Deck.USAFM.EN",
+        "tribe": "P2P"
+      },
+      {
+        "row_number": 67,
+        "form_name": "P2P - Supplier Master Data Purchasing Validation",
+        "topic_code": "P2P.MD.S190.NC04767.Deck.USAFMAFP.EN",
+        "tribe": "P2P"
+      },
+      {
+        "row_number": 68,
+        "form_name": "P2P - Supplier Request",
+        "topic_code": "P2P.MD.S191.NC04766.Deck.USAFMAFP.EN",
+        "tribe": "P2P"
+      },
+      {
+        "row_number": 69,
+        "form_name": "P2P - VMDM Vendor Master Data Manager",
+        "topic_code": "DAT.SM.S192.NC04765.Deck.USAFMAFP.EN",
+        "tribe": "P2P"
+      },
+      {
+        "row_number": 70,
+        "form_name": "R2R - Finance Master Data - Cost Center_Profit Center",
+        "topic_code": "R2R.MD.S097.NC04731.Deck.USAFMAFP.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 71,
+        "form_name": "R2R - Finance Master Data - Business Rules for GL account",
+        "topic_code": "R2R.MD.S129.NC04730.Deck.USAFMAFP.EN",
+        "tribe": "R2R"
+      }
+    ],
+    [
+      {
+        "row_number": 72,
+        "form_name": "R2R - Affair Controlling - Cost Collectors and Budget Availability Control",
+        "topic_code": "R2R.AC.S047.NC04748.Deck.USAFM.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 73,
+        "form_name": "R2R - Affair Controlling - Allocation and Settlement",
+        "topic_code": "R2R.AC.S094.NC04753.Deck.USAFM.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 74,
+        "form_name": "R2R - Affair Controlling - Compass Interface",
+        "topic_code": "R2R.AC.S095.NC04751.Deck.01.USAFM.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 75,
+        "form_name": "R2R - Affair Controlling - Standard Cost Calculation",
+        "topic_code": "R2R.AC.S095.NC04752.Deck.02.USAFM.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 76,
+        "form_name": "R2R - General Ledger - Accounting & Payroll, recurring",
+        "topic_code": "R2R.GL.S126.NC04727.Deck.USAFMAFP.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 77,
+        "form_name": "R2R - General Ledger - InterCo",
+        "topic_code": "R2R.GL.S055.NC04728.Deck.USAFMAFP.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 78,
+        "form_name": "R2R - General Ledger - Closing",
+        "topic_code": "R2R.GL.S050.NC04729.Deck.USAFMAFP.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 79,
+        "form_name": "R2R - Assets Accounting - Leased Assets",
+        "topic_code": "R2R.GL.S101.NC04759.Deck.USAFMAFP.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 80,
+        "form_name": "R2R - Treasury - Cash Management",
+        "topic_code": "R2R.TR.S059.NC04692.Deck.USAFMAFP.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 81,
+        "form_name": "R2R - Treasury - Bank Reconciliation",
+        "topic_code": "R2R.TR.S060.NC04691.Deck.USAFMAFP.EN",
+        "tribe": "R2R"
+      }
+    ],
+    [
+      {
+        "row_number": 82,
+        "form_name": "R2R - Treasury - Foreign Exchange",
+        "topic_code": "R2R.TR.S061.NC04690.Deck.USAFMAFP.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 83,
+        "form_name": "R2R - Condition Contract Settlement",
+        "topic_code": "R2R.CCS.S239.NC06865.Deck.USAFM.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 84,
+        "form_name": "R2R - Affair Controlling - Reporting",
+        "topic_code": "R2R.AC.S096.NC04750.Deck.USAFM.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 85,
+        "form_name": "R2R - Affair Controlling - Titan AFM - IG Automatic Services Reinvoicing",
+        "topic_code": "R2R.AC.S363.NC06444.Deck.USAFM.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 86,
+        "form_name": "R2R - Affair Controlling - Profitability Analysis",
+        "topic_code": "R2R.AC.S046.NC04749.Deck.USAFM.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 87,
+        "form_name": "R2R - Assets Accounting - Value Adjustment",
+        "topic_code": "R2R.GL.S049.NC04760.Deck.USAFMAFP.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 88,
+        "form_name": "R2R - Assets Accounting - Capitalization",
+        "topic_code": "R2R.GL.S052.NC04757.Deck.USAFMAFP.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 89,
+        "form_name": "R2R - Assets Accounting - Invest Projects",
+        "topic_code": "R2R.GL.S053.NC04756.Deck.USAFMAFP.EN",
+        "tribe": "R2R"
+      },
+      {
+        "row_number": 90,
+        "form_name": "R2R - Assets Accounting - Closing & Reporting",
+        "topic_code": "R2R.GL.S128.NC04758.Deck.USAFMAFP.EN",
+        "tribe": "R2R"
+      }
+    ]
+  ]
+}

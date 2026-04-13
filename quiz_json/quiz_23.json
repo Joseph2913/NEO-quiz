@@ -1,0 +1,65 @@
+{
+  "form_name": "F2S - Manage Lifecycle AFM - MM & SD Status",
+  "topic_code": "F2S.PI.S012.NC04720.Deck.01.USAFM.EN.",
+  "tribe": "F2S",
+  "question_count": 5,
+  "questions": [
+    {
+      "number": 1,
+      "text": "The lifecycle stages include launch, active, end of life, and dead.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "SD 20- Incomplete Master data  is used when the material is created in the system, but the Master data attributes are incomplete. Materials with this status are orderable.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "SD 70- Discontinued is used when the material is discontinued. Ordering is allowed to continue to deplete any remaining stock and for certain types of processing ->Consignment Issue, Free Delivery, Liquidation, Destruction, Returns, Credit & Debit notes",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "SD status 45 is skipped during the substitution process if the substituted product is already at a higher status.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "When a brand-new material with a brand new EAN is created, how does its SD status transition after master data is complete?",
+      "options": [
+        "It goes directly from status 20 to status 50.",
+        "It transitions from status 10 to status 30.",
+        "It moves directly from status 20 to status 40.",
+        "It remains at status 20 until further notice."
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    }
+  ]
+}

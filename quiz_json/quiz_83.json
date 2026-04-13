@@ -1,0 +1,130 @@
+{
+  "form_name": "R2R - Affair Controlling - Reporting",
+  "topic_code": "R2R.AC.S096.NC04750.Deck.USAFM.EN",
+  "tribe": "R2R",
+  "question_count": 10,
+  "questions": [
+    {
+      "number": 1,
+      "text": "What is the purpose of using the \"Cost Centers - Actuals\" report?",
+      "options": [
+        "To track real-time stock levels.",
+        "To see actual data posted to each cost center and check balances after allocations.",
+        "To manage employee performance evaluations.",
+        "To predict future cost trends."
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "Which report would you use to analyze data posted from journal entries?",
+      "options": [
+        "Journal Entry Analyzer",
+        "P&L AFM TWWT",
+        "Display Line Item Entry",
+        "NEO WBS Report"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "What information does the NEO WBS Report provide?",
+      "options": [
+        "Variance in cost of goods",
+        "Budget and actual costs of WBS, along with commitments and available budget",
+        "Profitability based on different segments",
+        "Details on employee settlements"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "What feature does the \"L'Oréal Controlling Ledger\" offer controllers?",
+      "options": [
+        "Analyzing competitor's financial reports",
+        "Managing payroll transactions",
+        "Tracking live market trends",
+        "Visualizing actual and predictive amounts"
+      ],
+      "correct_answer_index": 3,
+      "correct_answer_letter": "D",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "Which of the following details can be viewed in the Settlement rule section of the NEO WBS Report?",
+      "options": [
+        "Employee performance metrics",
+        "Signature, Brand, Sub brand, Axe, Budget Responsible",
+        "Real-time sales updates",
+        "Detailed customer feedback analysis"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "The POS destruction report includes data on:",
+      "options": [
+        "Employee turnover rates",
+        "Variance in cost of goods",
+        "Value and quantity of POS destroyed as a percentage of POS purchased",
+        "Predictive analysis of sales trends"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 7,
+      "text": "The \"Projects - Actuals\" report is used to display the actual costs of materials only.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 8,
+      "text": "The COG Variance Report includes information on the total cost of good variance and units sold.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 9,
+      "text": "The \"P&L AFM TWWT\" report is used for checking stock inventory levels.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 10,
+      "text": "Realignment activities are used to correct data in reports due to organizational changes.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    }
+  ]
+}

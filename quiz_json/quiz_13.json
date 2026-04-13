@@ -1,0 +1,54 @@
+{
+  "form_name": "F2S - Direct Flow Creation",
+  "topic_code": "F2S.IF.S136.NC04734.Deck.USAFMAFP.EN",
+  "tribe": "F2S",
+  "question_count": 4,
+  "questions": [
+    {
+      "number": 1,
+      "text": "True or False: Direct flows can only be shipped after quality controls are fully completed and closed in the factory.",
+      "options": [
+        "False. Direct flow allows shipping before quality control is finalized, which is the exception to the standard process."
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "What stock type is always used for items in the inbound delivery within the Direct Flow process?",
+      "options": [
+        "Unrestricted Use",
+        "Blocked",
+        "Quality Inspection (QI)",
+        "Restricted Use"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "Where can the date of quality release for a batch be found in NEO?",
+      "options": [
+        "Manage Material Coverage tile"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "What action in NEO automatically triggers a quality inspection lot creation?",
+      "options": [
+        "Creating a Purchase Order",
+        "Posting a Goods Receipt (GR)",
+        "Making a Usage Decision (UD)",
+        "Shipping the Direct Flow"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "form_name": "F2S - Receiving Entity Activities",
+  "topic_code": "F2S.IF.S133.NC04708.Deck.USAFMAFP.EN",
+  "tribe": "F2S",
+  "question_count": 7,
+  "questions": [
+    {
+      "number": 1,
+      "text": "PR to PO Conversion can be done with:",
+      "options": [
+        "Manage Material Coverage with Supersession and Process Purchase Requisitions",
+        "Manage Material Coverage with Supersession",
+        "Process Purchase Requisitions",
+        "Neither of the 2 apps"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "The Inter/Intra Company Flows Monitoring Report is used to ensure consistency between physical and financial flows",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "During the process of Receiving Entity Activities, this is the order of the activities that must be completed (for a CSC Supply Planner):",
+      "options": [
+        "PO Conversion, Trigger Inbound Delivery Goods Receipt, Inventory Reporting, Confirmation of Product line in the PO",
+        "PO Conversion, Confirmation of Product line in the PO, Trigger Inbound Delivery Goods Receipt, Inventory Reporting",
+        "PO Conversion, Inventory Reporting, Trigger Inbound Delivery Goods Receipt, Confirmation of Product line in the PO"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "PR to PO Conversion, Product line confirmation in the PO and Good receipts confirmation are activities done by CSC Supply Planners",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "When performing a Good Receipt Confirmation, the inbound delivery details will indicate an ASN Number. This ASN Number has 3 different versions for Supplier, NEO and 3PL",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 6,
+      "text": "What is the basis for calculating and booking excess and obsolete provisions?",
+      "options": [
+        "Estimates provided by warehouse staff",
+        "Industry benchmarks and average write-off rates",
+        "Group rules",
+        "Negotiations with suppliers for potential returns"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 7,
+      "text": "Who is responsible for reviewing the sensitive stock movements flagged in Process Control Tool?",
+      "options": [
+        "The Supply Planner",
+        "The Internal Control Manager (ICM)",
+        "The Finance Controller / Manufacturing Finance Controller",
+        "The CFO"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    }
+  ]
+}

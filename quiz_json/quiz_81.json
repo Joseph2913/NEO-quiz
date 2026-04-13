@@ -1,0 +1,65 @@
+{
+  "form_name": "R2R - Treasury - Foreign Exchange",
+  "topic_code": "R2R.TR.S061.NC04690.Deck.USAFMAFP.EN",
+  "tribe": "R2R",
+  "question_count": 5,
+  "questions": [
+    {
+      "number": 1,
+      "text": "There are \"____\" Exchange Rate types",
+      "options": [
+        "3",
+        "4",
+        "5"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 2,
+      "text": "Exchange Rate types \"R\" & \"RM\" relate to \"____\"",
+      "options": [
+        "Budget",
+        "Daily operations",
+        "Monthly re-evaluation"
+      ],
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
+    },
+    {
+      "number": 3,
+      "text": "Exchange Rate type \"M\" is defined as \"European Central Bank /National Bank Daily Operational Rate\"",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    },
+    {
+      "number": 4,
+      "text": "\"Execute Hedging Transaction\" describes the process of registration in \"____\" the transactions from Foreign exchange operations (doc16)",
+      "options": [
+        "MyTreasury",
+        "S/4"
+      ],
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
+      "needs_review": false
+    },
+    {
+      "number": 5,
+      "text": "With NEO, Doc16 is automatically integrated in S4 by a daily interface",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer_index": 0,
+      "correct_answer_letter": "A",
+      "needs_review": false
+    }
+  ]
+}

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEO Quiz Automation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <h1>NEO Quiz Automation</h1>
+      <span class="subtitle">Microsoft Forms Quiz Generator</span>
+    </div>
+    <div class="header-right">
+      <button id="setup-guide-btn" class="btn btn-setup-guide">Setup Guide</button>
+      <span id="platform-badge" class="badge">--</span>
+      <span id="status-badge" class="badge badge-idle">Idle</span>
+    </div>
+
+    <!-- Setup Guide Modal -->
+    <div id="setup-modal" class="modal-overlay hidden">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>Setup Guide</h2>
+          <button id="modal-close-btn" class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-intro">Follow these steps to get the NEO Quiz Automation tool running on your machine. Copy the prompt below and paste it into your terminal or Claude Code session.</p>
+
+          <div class="setup-steps">
+            <div class="setup-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h4>Prerequisites</h4>
+                <p>Make sure you have <strong>Node.js</strong> (v18 or later) installed. Download it from <code>https://nodejs.org</code> if needed. You can verify by opening a terminal and running:</p>
+                <div class="code-block"><code>node --version</code></div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h4>Clone the Repository</h4>
+                <p>Open a terminal and run:</p>
+                <div class="code-block"><code id="clone-command">git clone https://github.com/YOUR_USERNAME/neo-quiz-automation.git
+cd neo-quiz-automation</code></div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h4>Install Dependencies &amp; Start</h4>
+                <p>Run these two commands:</p>
+                <div class="code-block"><code>npm install
+npm start</code></div>
+                <p class="step-note">The app will open automatically in your browser at <code>http://localhost:3000</code>.</p>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h4>First-Time Sign In</h4>
+                <p>The first time you process a form, a Chromium browser will open and ask you to sign in to your Microsoft account. After signing in once, your session is saved locally in <code>auth-state.json</code> so you won't need to sign in again.</p>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="section-heading">Full Setup Prompt (copy &amp; paste into terminal)</h3>
+          <p class="modal-intro">This single block of commands will clone, install, and start the tool:</p>
+          <div class="prompt-container">
+            <div class="prompt-header">
+              <span class="prompt-label">Terminal Commands</span>
+              <button id="copy-prompt-btn" class="btn btn-sm btn-copy">Copy to Clipboard</button>
+            </div>
+            <pre id="setup-prompt" class="setup-prompt"># ── NEO Quiz Automation — Quick Setup ──────────────────────────
+# Prerequisites: Node.js v18+ (https://nodejs.org)
+
+# 1. Clone the repo
+git clone https://github.com/YOUR_USERNAME/neo-quiz-automation.git
+cd neo-quiz-automation
+
+# 2. Install dependencies (Playwright + Express)
+npm install
+
+# 3. Install Playwright browsers (Chromium)
+npx playwright install chromium
+
+# 4. Start the app
+npm start
+
+# The app will open at http://localhost:3000
+# ────────────────────────────────────────────────────────────────
+#
+# HOW TO USE:
+#
+# SINGLE FORM:
+#   1. Click a quiz in the sidebar to review questions
+#   2. Click "Approve &amp; Continue"
+#   3. Paste the Microsoft Forms editor URL
+#   4. Click "Start Automation"
+#
+# BULK PROCESSING:
+#   1. On the Dashboard, paste form names + URLs into the
+#      Bulk Process box (one per line, comma or tab separated):
+#      Form Name, https://forms.cloud.microsoft/...
+#   2. Click "Parse &amp; Review" then "Start Bulk Processing"
+#
+# NOTES:
+#   - First run will prompt Microsoft sign-in in the browser
+#   - Session is saved locally — no repeated sign-ins
+#   - The tool duplicates template questions, fills them,
+#     then deletes the templates automatically
+#   - Screenshots are saved to ./screenshots/ for debugging
+# ────────────────────────────────────────────────────────────────</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Sidebar: Quiz List -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <input type="text" id="search-input" placeholder="Search quizzes..." />
+        <select id="filter-tribe">
+          <option value="">All Tribes</option>
+        </select>
+        <select id="filter-status">
+          <option value="">All Status</option>
+          <option value="not_started">Not Started</option>
+          <option value="processed">Processed</option>
+          <option value="failed">Failed</option>
+        </select>
+      </div>
+      <div class="sidebar-stats">
+        <span id="stat-total">0 quizzes</span>
+        <span id="stat-processed" class="stat-processed">0 processed</span>
+        <span id="stat-pending" class="stat-pending">0 pending</span>
+      </div>
+      <ul id="quiz-list" class="quiz-list"></ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Default: Welcome / Dashboard -->
+      <div id="view-dashboard" class="view active">
+        <div class="dashboard">
+          <h2>Dashboard</h2>
+          <div class="dashboard-cards">
+            <div class="dash-card">
+              <div class="dash-card-number" id="dash-total">0</div>
+              <div class="dash-card-label">Total Quizzes</div>
+            </div>
+            <div class="dash-card dash-card-success">
+              <div class="dash-card-number" id="dash-processed">0</div>
+              <div class="dash-card-label">Processed</div>
+            </div>
+            <div class="dash-card dash-card-pending">
+              <div class="dash-card-number" id="dash-pending">0</div>
+              <div class="dash-card-label">Pending</div>
+            </div>
+            <div class="dash-card dash-card-error">
+              <div class="dash-card-number" id="dash-failed">0</div>
+              <div class="dash-card-label">Failed</div>
+            </div>
+          </div>
+
+          <div class="bulk-section">
+            <h3>Bulk Process</h3>
+            <p>Paste form names and URLs (one per line, tab or comma separated):</p>
+            <textarea id="bulk-input" rows="6" placeholder="F2S - S&OP RESA & Advanced ATP, https://forms.cloud.microsoft/...&#10;F2S - Inbound Delivery & Goods Reception, https://forms.cloud.microsoft/..."></textarea>
+            <button id="bulk-parse-btn" class="btn btn-secondary">Parse & Review</button>
+            <div id="bulk-preview" class="bulk-preview hidden"></div>
+            <button id="bulk-start-btn" class="btn btn-primary hidden">Start Bulk Processing</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz Detail / Edit View -->
+      <div id="view-quiz" class="view">
+        <div class="quiz-detail">
+          <div class="quiz-detail-header">
+            <div>
+              <h2 id="quiz-title"></h2>
+              <span id="quiz-meta" class="quiz-meta"></span>
+            </div>
+            <div class="quiz-detail-actions">
+              <span id="quiz-status-badge" class="badge"></span>
+              <a id="quiz-form-link" href="#" target="_blank" class="btn btn-sm btn-outline hidden">Open Form</a>
+              <button id="quiz-reset-btn" class="btn btn-sm btn-danger hidden">Reset Status</button>
+            </div>
+          </div>
+
+          <!-- Questions Editor -->
+          <div id="questions-editor" class="questions-editor"></div>
+
+          <div class="quiz-detail-footer">
+            <button id="save-quiz-btn" class="btn btn-secondary">Save Changes</button>
+            <button id="approve-quiz-btn" class="btn btn-primary">Approve & Continue</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Process View (after approval) -->
+      <div id="view-process" class="view">
+        <div class="process-panel">
+          <h2 id="process-title">Ready to Process</h2>
+          <div class="url-input-group">
+            <label for="form-url-input">Form URL:</label>
+            <input type="url" id="form-url-input" placeholder="Paste the Microsoft Forms editor URL here..." />
+          </div>
+          <button id="start-process-btn" class="btn btn-primary btn-lg">Start Automation</button>
+
+          <!-- Progress Display -->
+          <div id="progress-panel" class="progress-panel hidden">
+            <div class="progress-header">
+              <h3 id="progress-form-name">Processing...</h3>
+              <span id="progress-status" class="badge badge-running">Running</span>
+            </div>
+            <div class="progress-bar-container">
+              <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+            </div>
+            <div id="progress-detail" class="progress-detail">Initializing...</div>
+            <div id="progress-steps" class="progress-steps"></div>
+            <div id="progress-log" class="progress-log"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bulk Progress View -->
+      <div id="view-bulk-progress" class="view">
+        <div class="process-panel">
+          <h2>Bulk Processing</h2>
+          <div id="bulk-progress-list" class="bulk-progress-list"></div>
+          <div class="progress-bar-container">
+            <div id="bulk-progress-bar" class="progress-bar" style="width: 0%"></div>
+          </div>
+          <div id="bulk-progress-detail" class="progress-detail"></div>
+          <div id="bulk-progress-log" class="progress-log"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
