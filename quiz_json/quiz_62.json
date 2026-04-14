@@ -19,7 +19,7 @@
     },
     {
       "number": 2,
-      "text": "Catalogue price (ZCAT) is the first Pricing Condition. It forms the basis of all pricing condition calculations ",
+      "text": "Catalogue price (ZCAT) is the first Pricing Condition. It forms the basis of all pricing condition calculations",
       "options": [
         "True",
         "False"

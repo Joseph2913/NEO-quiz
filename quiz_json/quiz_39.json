@@ -39,18 +39,19 @@
         "EAN / UPC",
         "Logistical Unit / GTIN",
         "Customer Material Number",
-        "None of the above"
+        "None of the above",
+        "All of the above"
       ],
-      "correct_answer_index": -1,
-      "correct_answer_letter": "?",
-      "needs_review": true
+      "correct_answer_index": 5,
+      "correct_answer_letter": "F",
+      "needs_review": false
     },
     {
       "number": 4,
       "text": "MM Supersession will create SD Substitutions _________ with NEO",
       "options": [
-        "manually",
-        "automatically"
+        "Manually",
+        "Automatically"
       ],
       "correct_answer_index": 1,
       "correct_answer_letter": "B",

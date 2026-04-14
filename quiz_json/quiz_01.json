@@ -84,7 +84,7 @@
       "options": [
         "The reservation quantity is increased to match the available stock.",
         "The delivery date is pushed to the next period.",
-        "capping flag is set to trigger the creation of a PAL.",
+        "Capping flag is set to trigger the creation of a PAL.",
         "The SO is automatically rejected."
       ],
       "correct_answer_index": 2,

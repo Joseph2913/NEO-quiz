@@ -64,7 +64,7 @@
       "needs_review": false
     },
     {
-      "number": 1,
+      "number": 6,
       "text": "What must happen after amending a catalog in Catalist before receiving an up-to-date report?",
       "options": [
         "The user must export the previous report",
@@ -77,7 +77,7 @@
       "needs_review": false
     },
     {
-      "number": 2,
+      "number": 7,
       "text": "The Catalog Report will include any exclusions for the customer and its hierarchy.",
       "options": [
         "True",
@@ -88,7 +88,7 @@
       "needs_review": false
     },
     {
-      "number": 3,
+      "number": 8,
       "text": "If a customer is not assigned to any catalog, their report section will be blank—even if they can still order from signatures within their sales area.",
       "options": [
         "True",
@@ -99,7 +99,7 @@
       "needs_review": false
     },
     {
-      "number": 4,
+      "number": 9,
       "text": "You can only view CMIR-related fields in the report if you select the report down to the L6/Sold-To/Customer Code level.",
       "options": [
         "True",
@@ -110,7 +110,7 @@
       "needs_review": false
     },
     {
-      "number": 5,
+      "number": 10,
       "text": "Why might Customer Material Code not appear in the report?",
       "options": [
         "The customer is not part of any catalog",

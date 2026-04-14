@@ -196,8 +196,8 @@ Also tell me these usage tips:
                 <div class="template-card" id="template-card-neo">
                   <div class="template-card-icon">&#128203;</div>
                   <div class="template-card-body">
-                    <div class="template-card-title">LUSA NEO Training Feedback Form</div>
-                    <div class="template-card-desc">Standard quiz template with Self Assessment section, sample True/False and multiple choice questions</div>
+                    <div class="template-card-title">LUSA NEO Quiz Template</div>
+                    <div class="template-card-desc">Standard quiz template with sample True/False and multiple choice questions</div>
                   </div>
                   <div class="template-card-check" id="template-card-check">&#10003;</div>
                 </div>
@@ -248,7 +248,14 @@ Also tell me these usage tips:
 
             <!-- Shared Preview & Start (all tabs feed into this) -->
             <div id="bulk-preview" class="bulk-preview hidden"></div>
-            <button id="bulk-start-btn" class="btn btn-primary hidden">Start Bulk Processing</button>
+
+            <!-- Bulk Warning Card (shown when selected quizzes have flagged questions) -->
+            <div id="bulk-warning-panel" class="bulk-warning-panel hidden"></div>
+
+            <div id="bulk-action-buttons" class="bulk-action-buttons hidden">
+              <button id="bulk-save-warnings-btn" class="btn btn-secondary hidden">Save Changes</button>
+              <button id="bulk-start-btn" class="btn btn-primary">Start Bulk Processing</button>
+            </div>
           </div>
         </div>
       </div>
@@ -268,6 +275,20 @@ Also tell me these usage tips:
             </div>
           </div>
 
+          <!-- Warning Banner (shown when quiz has flagged questions) -->
+          <div id="quiz-warning-banner" class="quiz-warning-banner hidden"></div>
+
+          <!-- Error Check Summary (shown for processed/partial/failed forms) -->
+          <div id="processing-summary" class="processing-summary hidden">
+            <div id="error-check-header" class="error-check-header"></div>
+            <div id="error-check-body" class="error-check-body"></div>
+            <div class="summary-toggle" id="summary-toggle">
+              <span class="summary-toggle-icon">&#9654;</span>
+              <span>Full Processing Timeline</span>
+            </div>
+            <div id="summary-content" class="summary-content hidden"></div>
+          </div>
+
           <!-- Questions Editor -->
           <div id="questions-editor" class="questions-editor"></div>
 
@@ -282,7 +303,21 @@ Also tell me these usage tips:
       <div id="view-process" class="view">
         <div class="process-panel">
           <h2 id="process-title">Ready to Process</h2>
-          <div class="url-input-group">
+
+          <!-- Template card option -->
+          <div class="single-template-section">
+            <div class="template-card" id="single-template-card">
+              <div class="template-card-icon">&#128203;</div>
+              <div class="template-card-body">
+                <div class="template-card-title">Create from LUSA NEO Quiz Template</div>
+                <div class="template-card-desc">Automatically duplicate the standard quiz template and fill in the questions</div>
+              </div>
+              <div class="template-card-check" id="single-template-check">&#10003;</div>
+            </div>
+            <div class="template-or"><span>or use an existing form</span></div>
+          </div>
+
+          <div class="url-input-group" id="single-url-group">
             <label for="form-url-input">Form URL:</label>
             <input type="url" id="form-url-input" placeholder="Paste the Microsoft Forms editor URL here..." />
           </div>
@@ -294,11 +329,16 @@ Also tell me these usage tips:
               <h3 id="progress-form-name">Processing...</h3>
               <span id="progress-status" class="badge badge-running">Running</span>
             </div>
+            <div id="progress-phases" class="bp-phases" style="margin-bottom: 12px;"></div>
             <div class="progress-bar-container">
               <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
             </div>
             <div id="progress-detail" class="progress-detail">Initializing...</div>
+            <div id="progress-form-link" class="progress-form-link hidden">
+              <a id="progress-form-url" href="#" target="_blank" class="btn btn-primary btn-sm">Open Form</a>
+            </div>
             <div id="progress-steps" class="progress-steps"></div>
+            <div id="progress-errors" class="progress-errors hidden"></div>
             <div id="progress-log" class="progress-log"></div>
           </div>
         </div>

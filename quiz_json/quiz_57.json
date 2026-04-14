@@ -8,20 +8,26 @@
       "number": 1,
       "text": "Which of the following documents CANNOT be managed in OPD?",
       "options": [
-        "A: InvoicesB: Credit note CCS C: Delivery Notes D: Debit Notes"
+        "Invoices",
+        "Credit note CCS",
+        "Delivery Notes",
+        "Debit Notes"
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
       "needs_review": false
     },
     {
       "number": 2,
       "text": "Which of the following outputs CANNOT be managed in OPD?",
       "options": [
-        "A: Email (PDF)B: EDI C: Print (PDF)D: IDoc"
+        "Email (PDF)",
+        "EDI",
+        "Print (PDF)",
+        "IDoc"
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
       "needs_review": false
     },
     {
@@ -51,10 +57,13 @@
       "number": 5,
       "text": "What Fiori tile allows users to mass download invoices?",
       "options": [
-        "A: Manage Output ItemB: Display Billing Documents C: Invoice output mass processing D: Output Determination"
+        "Manage Output Item",
+        "Display Billing Documents",
+        "Invoice output mass processing",
+        "Output Determination"
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
       "needs_review": false
     }
   ]

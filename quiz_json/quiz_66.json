@@ -8,9 +8,9 @@
       "number": 1,
       "text": "What is the definition of BP?",
       "options": [
-        "#NAME?",
-        "#NAME?",
-        "#NAME?"
+        "Supplier",
+        "Customer",
+        "Business Partner (Supplier + Customer views)"
       ],
       "correct_answer_index": 2,
       "correct_answer_letter": "C",

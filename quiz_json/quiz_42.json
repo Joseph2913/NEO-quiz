@@ -35,15 +35,16 @@
         "Non-Group Customer Creation",
         "Manage Customer Hierarchy",
         "Product Master Data",
-        "Material Life Cycle Mgmt.F) None of the above"
+        "Material Life Cycle Mgmt.",
+        "None of the above"
       ],
-      "correct_answer_index": 4,
-      "correct_answer_letter": "E",
+      "correct_answer_index": 5,
+      "correct_answer_letter": "F",
       "needs_review": false
     },
     {
       "number": 4,
-      "text": "Product Attributes are maintained in the Material Master for the Sales Org + Distribution channel for each SKU variant  ",
+      "text": "Product Attributes are maintained in the Material Master for the Sales Org + Distribution channel for each SKU variant",
       "options": [
         "True",
         "False"
@@ -70,14 +71,14 @@
       "number": 6,
       "text": "What exceptional circumstance might require a pricing date change for a sales order?",
       "options": [
-        "customer requests a price adjustment after an order has been placed.",
-        "product's price fluctuates significantly due to market volatility.",
-        "pre-sales placed in the current year and invoiced and shipped the following year, with new catalog prices in effect.",
+        "Customer requests a price adjustment after an order has been placed.",
+        "Product's price fluctuates significantly due to market volatility.",
+        "Pre-sales placed in the current year and invoiced and shipped the following year, with new catalog prices in effect.",
         "An error in the original price calculation is discovered after the order is confirmed."
       ],
-      "correct_answer_index": -1,
-      "correct_answer_letter": "REVIEW",
-      "needs_review": true
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
     },
     {
       "number": 7,
@@ -88,9 +89,9 @@
         "L'Oréal's pricing master data",
         "The Salesforce application"
       ],
-      "correct_answer_index": -1,
-      "correct_answer_letter": "REVIEW",
-      "needs_review": true
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
     }
   ]
 }

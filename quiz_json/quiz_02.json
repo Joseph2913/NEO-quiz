@@ -21,9 +21,9 @@
       "options": [
         "\"Rich ASN\" includes an SSCC (Serial Shipping Container Code), while a \"Poor ASN\" does not. This impacts how the system groups items into Inbound Deliveries."
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
-      "needs_review": false
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
     },
     {
       "number": 3,
@@ -31,9 +31,9 @@
       "options": [
         "It determines how Inbound Deliveries are created from the ASN, depending on factors like material, order, batch, and SSCC. This rule allows flexibility based on the WMS capabilities."
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
-      "needs_review": false
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
     },
     {
       "number": 4,
@@ -41,9 +41,9 @@
       "options": [
         "Stock in Transit report (GCP) or Stock report - Multiple materials – NEO (Both are valid)"
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
-      "needs_review": false
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
     },
     {
       "number": 5,

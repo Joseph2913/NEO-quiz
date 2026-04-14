@@ -8,10 +8,10 @@
       "number": 1,
       "text": "What happens if a customer sends more units than authorized in the Return Contract?",
       "options": [
-        "Units arereturnedtothecustomer",
-        "Extra quantitiesareaddedasunplannedreturnswith R07 reason code",
-        "The contractisautomaticallyclosed",
-        "The systemrejectsthe additional units"
+        "Units are returned to the customer",
+        "Extra quantities are added as unplanned returns with R07 reason code",
+        "The contract is automatically closed",
+        "The system rejects the additional units"
       ],
       "correct_answer_index": 1,
       "correct_answer_letter": "B",
@@ -21,10 +21,10 @@
       "number": 2,
       "text": "What is required for a customer to link a return parcel to the correct Return Contract?",
       "options": [
-        "Customer’sname and contactinformation",
-        "Sold-to Party number and Return Contractnumber",
-        "Return quantity and productdetails",
-        "Approvalfromthewarehouse"
+        "Customer's name and contact information",
+        "Sold-to Party number and Return Contract number",
+        "Return quantity and product details",
+        "Approval from the warehouse"
       ],
       "correct_answer_index": 1,
       "correct_answer_letter": "B",
@@ -34,10 +34,10 @@
       "number": 3,
       "text": "What is the purpose of the validation workflow in the Return Contract process?",
       "options": [
-        "Toapprovethecontract and allowtheflowtocontinue",
-        "Togeneratethereturnorder IDOC",
-        "Toverify stock quantities in thewarehouse",
-        "To update thepricedeterminationbased on thelatestdata"
+        "To approve the contract and allow the flow to continue",
+        "To generate the return order IDOC",
+        "To verify stock quantities in the warehouse",
+        "To update the price determination based on the latest data"
       ],
       "correct_answer_index": 0,
       "correct_answer_letter": "A",
@@ -48,7 +48,7 @@
       "text": "What report allows Customer Care to view Return Contracts with filter options?",
       "options": [
         "CCJ Report",
-        "List ofContracts (VA45) orContract Report",
+        "List of Contracts (VA45) or Contract Report",
         "Material Inspection Report",
         "Order-to-Cash Summary"
       ],
@@ -60,10 +60,10 @@
       "number": 5,
       "text": "When will the system apply billing block when comparing a return order to a return contract?",
       "options": [
-        "Whenreturncontractvalidityperiodisexceeded",
-        "Total dollarvalueofthereturncontractisexceeded",
-        "SKU is not on thereturncontract",
-        "Any oftheabove"
+        "When return contract validity period is exceeded",
+        "Total dollar value of the return contract is exceeded",
+        "SKU is not on the return contract",
+        "Any of the above"
       ],
       "correct_answer_index": 3,
       "correct_answer_letter": "D",

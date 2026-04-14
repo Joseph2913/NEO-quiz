@@ -34,9 +34,9 @@
       "options": [
         "PIRs store the Purchasing Standard Price and are used for connection to APO. They are created automatically upon contract creation."
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
-      "needs_review": false
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
     },
     {
       "number": 4,
@@ -44,9 +44,9 @@
       "options": [
         "False (It's entered within MINDS PURCHASING alongside the purchasing price)."
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
-      "needs_review": false
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
     },
     {
       "number": 5,
@@ -54,9 +54,9 @@
       "options": [
         "In the \"Item Condition\" tab and \"Scales\" section of the contract display."
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
-      "needs_review": false
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
     }
   ]
 }

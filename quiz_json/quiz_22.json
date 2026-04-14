@@ -43,9 +43,9 @@
       "options": [
         "Any from this list: Units of measure, Forecast, Forecast Months, Unrestricted Stocks, Stock (Batch Rest), Blocked Stocks, Stock In-Transit, Stock Consignment, Goods Receipt, GR_Range (Past), Goods Issue, GI_Range (Past). Sales Master Data"
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
-      "needs_review": false
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
     },
     {
       "number": 5,
@@ -53,9 +53,9 @@
       "options": [
         "The Master Data will then be copied from Code Out to Code In, whatever the Code Out MM status"
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
-      "needs_review": false
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
     },
     {
       "number": 6,
@@ -63,9 +63,9 @@
       "options": [
         "To set up rules for changing MM/SD status"
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
-      "needs_review": false
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
     },
     {
       "number": 7,
@@ -85,9 +85,9 @@
       "options": [
         "GR (Goods Reception) or GI (Goods Issue) or MSL status"
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
-      "needs_review": false
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
     },
     {
       "number": 9,
@@ -95,9 +95,9 @@
       "options": [
         "With Autoupdate \"No\", MM/SD changes only if the user validates on the Fiori App"
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
-      "needs_review": false
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
     },
     {
       "number": 10,
@@ -105,9 +105,9 @@
       "options": [
         "2 Fiori Apps"
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
-      "needs_review": false
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
     }
   ]
 }

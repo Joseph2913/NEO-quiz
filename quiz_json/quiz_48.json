@@ -102,11 +102,14 @@
       "number": 9,
       "text": "According to Control LoC1, what triggers a mandatory validation workflow for free goods orders?",
       "options": [
-        "All free goods orders, regardless of value. B) Free goods orders placed using specific dedicated order types. C) Free goods orders exceeding locally defined thresholdsD) Free goods orders that are flagged as potentially high-risk."
+        "All free goods orders, regardless of value.",
+        "Free goods orders placed using specific dedicated order types.",
+        "Free goods orders exceeding locally defined thresholds",
+        "Free goods orders that are flagged as potentially high-risk."
       ],
-      "correct_answer_index": -1,
-      "correct_answer_letter": "REVIEW",
-      "needs_review": true
+      "correct_answer_index": 2,
+      "correct_answer_letter": "C",
+      "needs_review": false
     }
   ]
 }

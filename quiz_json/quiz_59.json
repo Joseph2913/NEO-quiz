@@ -8,17 +8,19 @@
       "number": 1,
       "text": "ATP check is required for Service Sales Order",
       "options": [
-        "TrueFalse"
+        "True",
+        "False"
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
       "needs_review": false
     },
     {
       "number": 2,
       "text": "Sales order can be uploaded in mass or created manually.",
       "options": [
-        "TrueFalse"
+        "True",
+        "False"
       ],
       "correct_answer_index": 0,
       "correct_answer_letter": "A",
@@ -28,7 +30,8 @@
       "number": 3,
       "text": "Service Sales Order are part of Financial Orders",
       "options": [
-        "TrueFalse"
+        "True",
+        "False"
       ],
       "correct_answer_index": 0,
       "correct_answer_letter": "A",
@@ -36,9 +39,10 @@
     },
     {
       "number": 4,
-      "text": "All service invoicing flows will be managed through SD",
+      "text": "All service invoicing flows will be managed through SD",
       "options": [
-        "TrueFalse"
+        "True",
+        "False"
       ],
       "correct_answer_index": 0,
       "correct_answer_letter": "A",
@@ -48,10 +52,11 @@
       "number": 5,
       "text": "The sales orders must embed cost center and WBS",
       "options": [
-        "TrueFalse"
+        "True",
+        "False"
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
+      "correct_answer_index": 1,
+      "correct_answer_letter": "B",
       "needs_review": false
     }
   ]

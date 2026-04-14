@@ -94,7 +94,7 @@
     },
     {
       "number": 9,
-      "text": "Once the “Date of Manufacturing” is filled, the system will calculate the SLED date by performing a simple addition: Date of manufacturing + Total days.",
+      "text": "Once the \"Date of Manufacturing\" is filled, the system will calculate the SLED date by performing a simple addition: Date of manufacturing + Total days.",
       "options": [
         "True",
         "False"
@@ -116,7 +116,7 @@
     },
     {
       "number": 11,
-      "text": "“Planned Release Date (QM)” corresponds to the “End date” of the quality control on the factory side and it is the real date of stock availability.",
+      "text": "\u201cPlanned Release Date (QM)\u201d corresponds to the \u201cEnd date\u201d of the quality control on the factory side and it is the real date of stock availability.",
       "options": [
         "True",
         "False"
@@ -127,7 +127,7 @@
     },
     {
       "number": 12,
-      "text": "IF the SAP standard « Delivery date » is LONGER than the « planned release date » then the Date considered in stock requirement FIORI applications and APO will be the Planned Release Date",
+      "text": "IF the SAP standard \u00ab Delivery date \u00bb is LONGER than the \u00ab planned release date \u00bb then the Date considered in stock requirement FIORI applications and APO will be the Planned Release Date",
       "options": [
         "True",
         "False"
@@ -138,7 +138,7 @@
     },
     {
       "number": 13,
-      "text": "The UD Code D006 represents a rejected Usage Decision, in this case, the stock status equals “Blocked” and the batch status is “Unrestricted”.",
+      "text": "The UD Code D006 represents a rejected Usage Decision, in this case, the stock status equals \u201cBlocked\u201d and the batch status is \u201cUnrestricted\u201d.",
       "options": [
         "True",
         "False"
@@ -160,7 +160,7 @@
     },
     {
       "number": 15,
-      "text": "With Batch Master in Direct Flow, the batch is created and/or updated in WISE (Factory SAP system) and all the updates will be automatically transferred to NEO instance via HIP",
+      "text": "With Batch Master in Direct Flow, the batch is created and/or updated in WISE (Factory SAP system) and all the updates will be automatically transferred to NEO instance via HIP",
       "options": [
         "True",
         "False"
@@ -170,7 +170,7 @@
       "needs_review": false
     },
     {
-      "number": 1,
+      "number": 16,
       "text": "Batch management in NEO is only activated for materials that are stocked.",
       "options": [
         "True",
@@ -181,7 +181,7 @@
       "needs_review": false
     },
     {
-      "number": 2,
+      "number": 17,
       "text": "All stocked materials in NEO are tracked by batch.",
       "options": [
         "True",
@@ -192,7 +192,7 @@
       "needs_review": false
     },
     {
-      "number": 3,
+      "number": 18,
       "text": "The batch number and batch characteristics are unique for each material/batch combination.",
       "options": [
         "True",
@@ -203,7 +203,7 @@
       "needs_review": false
     },
     {
-      "number": 4,
+      "number": 19,
       "text": "The SLED (Shelf-Life Expiration Date) is calculated based on the date of manufacturing plus the total shelf life.",
       "options": [
         "True",
@@ -214,8 +214,8 @@
       "needs_review": false
     },
     {
-      "number": 5,
-      "text": "L'Oréal utilizes multiple batch classes within NEO to accommodate various product types and categories.",
+      "number": 20,
+      "text": "L'Or\u00e9al utilizes multiple batch classes within NEO to accommodate various product types and categories.",
       "options": [
         "True",
         "False"
@@ -225,7 +225,7 @@
       "needs_review": false
     },
     {
-      "number": 6,
+      "number": 21,
       "text": "In the Non-Direct flow scenario, the stock can be moved to AFM after production, without awaiting any UD taken from WISE plant.",
       "options": [
         "True",
@@ -236,7 +236,7 @@
       "needs_review": false
     },
     {
-      "number": 7,
+      "number": 22,
       "text": "The UD status for Non-Direct flow inspection lots can be modified by the entity in AFP or AFM.",
       "options": [
         "True",
@@ -247,7 +247,7 @@
       "needs_review": false
     },
     {
-      "number": 8,
+      "number": 23,
       "text": "When the batch is created in WISE Batch Master, the interface will update the batch UD characteristic in AFP and update the batch master in AFM.",
       "options": [
         "True",
@@ -258,8 +258,8 @@
       "needs_review": false
     },
     {
-      "number": 9,
-      "text": "The UD Code ‘D006’ represents a “Rejected” usage decision. In this case, the stock status equals “Blocked” and the batch status is “Unrestricted”.",
+      "number": 24,
+      "text": "The UD Code 'D006' represents a \u201cRejected\u201d usage decision. In this case, the stock status equals \u201cBlocked\u201d and the batch status is \u201cUnrestricted\u201d.",
       "options": [
         "True",
         "False"
@@ -269,8 +269,8 @@
       "needs_review": false
     },
     {
-      "number": 10,
-      "text": "When the UD ‘D003’ is taken by WISE plant for the batch, the status in AFP will be “Unrestricted” and stock “Blocked”.",
+      "number": 25,
+      "text": "When the UD 'D003' is taken by WISE plant for the batch, the status in AFP will be \u201cUnrestricted\u201d and stock \u201cBlocked\u201d.",
       "options": [
         "True",
         "False"

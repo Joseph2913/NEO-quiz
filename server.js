@@ -71,9 +71,13 @@ app.get('/api/quizzes', (req, res) => {
         form_name: form.form_name,
         tribe: form.tribe,
         question_count: form.question_count,
+        needs_review: form.needs_review || 0,
         status: entry ? entry.status : 'not_started',
         form_url: entry ? entry.form_url || null : null,
         date: entry ? entry.date || null : null,
+        questions_processed: entry ? entry.questions_processed || 0 : 0,
+        questions_total: entry ? entry.questions_total || 0 : 0,
+        summary: entry ? entry.summary || null : null,
       };
     });
 
@@ -159,27 +163,53 @@ app.post('/api/process', (req, res) => {
 
         const automation = new QuizAutomation();
 
+        // Collect per-form processing events for the summary
+        const formEvents = {}; // { formName: [ { type, timestamp, ... } ] }
+
         automation.on('progress', (event) => {
           sendSSE(event);
+          // Store relevant events per form
+          const fn = event.formName;
+          if (fn && event.type !== 'batch_start' && event.type !== 'batch_done') {
+            if (!formEvents[fn]) formEvents[fn] = [];
+            formEvents[fn].push({
+              type: event.type,
+              timestamp: new Date().toISOString(),
+              question: event.question || null,
+              totalQuestions: event.totalQuestions || null,
+              questionText: event.questionText || null,
+              error: event.error || null,
+              newFormUrl: event.newFormUrl || null,
+              issues: (event.results && event.results.issues) ? event.results.issues : null,
+            });
+          }
         });
 
         const results = await automation.processBatch(enrichedItems, {
           templateUrl: template_url || null,
         });
 
-        // Update processing log
+        // Update processing log with summary
         const log = readProcessingLog();
         for (let ri = 0; ri < results.length; ri++) {
           const result = results[ri];
           const originalItem = enrichedItems[ri] || {};
           const formName = result.formName || result.form_name || (originalItem.quizData && originalItem.quizData.form_name);
           if (!formName) continue;
+
+          const events = formEvents[formName] || [];
+          const questionErrors = events.filter(e => e.type === 'question_error');
+          const questionsDone = events.filter(e => e.type === 'question_done').length;
+          const totalQ = originalItem.quizData ? originalItem.quizData.question_count : 0;
+          const hasErrors = questionErrors.length > 0;
+
           log.entries[formName] = {
-            status: result.success ? 'processed' : 'failed',
+            status: result.success ? (hasErrors ? 'partial' : 'processed') : 'failed',
             form_url: result.newFormUrl || originalItem.form_url || null,
             date: new Date().toISOString(),
-            questions_processed: result.success ? (originalItem.quizData ? originalItem.quizData.question_count : 0) : 0,
-            questions_total: originalItem.quizData ? originalItem.quizData.question_count : 0,
+            questions_processed: questionsDone,
+            questions_total: totalQ,
+            summary: events,
           };
         }
         writeProcessingLog(log);

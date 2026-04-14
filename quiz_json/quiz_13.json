@@ -10,9 +10,9 @@
       "options": [
         "False. Direct flow allows shipping before quality control is finalized, which is the exception to the standard process."
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
-      "needs_review": false
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
     },
     {
       "number": 2,
@@ -33,9 +33,9 @@
       "options": [
         "Manage Material Coverage tile"
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
-      "needs_review": false
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
     },
     {
       "number": 4,

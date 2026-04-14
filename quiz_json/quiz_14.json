@@ -60,7 +60,7 @@
       "needs_review": false
     },
     {
-      "number": 1,
+      "number": 6,
       "text": "Co-Packing Master Data set-up includes BOM Maintenance and Manage Contracts and Source Lists",
       "options": [
         "True",
@@ -71,7 +71,7 @@
       "needs_review": false
     },
     {
-      "number": 2,
+      "number": 7,
       "text": "Contract creation will trigger automatically PIR creation",
       "options": [
         "True",
@@ -82,7 +82,7 @@
       "needs_review": false
     },
     {
-      "number": 3,
+      "number": 8,
       "text": "In the Manage Workflows for Purchase Contract app, each contract will go workflow",
       "options": [
         "True",
@@ -93,7 +93,7 @@
       "needs_review": false
     },
     {
-      "number": 4,
+      "number": 9,
       "text": "If the purchase contract is in the process, you still can place purchase order",
       "options": [
         "True",
@@ -104,7 +104,7 @@
       "needs_review": false
     },
     {
-      "number": 5,
+      "number": 10,
       "text": "The source list creation is not mandatory for single or multi-sourcing cases",
       "options": [
         "True",
@@ -115,7 +115,7 @@
       "needs_review": false
     },
     {
-      "number": 6,
+      "number": 11,
       "text": "A contract will be created manually when a new supplier needs to be assigned to a subcontracted material for one of the 3 following reasons: Error on supplier assignment, Switch of supplier, Multi-sourcing.",
       "options": [
         "True",

@@ -10,9 +10,9 @@
       "options": [
         "Transportation fees"
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
-      "needs_review": false
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
     },
     {
       "number": 2,
@@ -31,9 +31,9 @@
       "options": [
         "Create Price Conditions - Purchasing"
       ],
-      "correct_answer_index": 0,
-      "correct_answer_letter": "A",
-      "needs_review": false
+      "correct_answer_index": -1,
+      "correct_answer_letter": "REVIEW",
+      "needs_review": true
     },
     {
       "number": 4,

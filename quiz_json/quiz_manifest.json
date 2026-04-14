@@ -18,7 +18,7 @@
       "topic_code": "F2S.IF.S004.NC06584.Deck.USAFMAFP.EN",
       "tribe": "F2S",
       "question_count": 6,
-      "needs_review": 0
+      "needs_review": 3
     },
     {
       "index": 3,
@@ -36,7 +36,7 @@
       "topic_code": "F2S.DP.S002.NC06436.Deck.USAFP.EN",
       "tribe": "F2S",
       "question_count": 5,
-      "needs_review": 0
+      "needs_review": 3
     },
     {
       "index": 5,
@@ -54,7 +54,7 @@
       "topic_code": "F2S.DP.S001.NC04710.Deck.USAFMAFP.EN",
       "tribe": "F2S",
       "question_count": 5,
-      "needs_review": 0
+      "needs_review": 3
     },
     {
       "index": 7,
@@ -72,7 +72,7 @@
       "topic_code": "F2S.DI.S343.NC06780.Deck.USAFMAFP.EN",
       "tribe": "F2S",
       "question_count": 10,
-      "needs_review": 0
+      "needs_review": 1
     },
     {
       "index": 9,
@@ -81,7 +81,7 @@
       "topic_code": "F2S.DP.S370.NC07716.Deck.USAFMAFP",
       "tribe": "F2S",
       "question_count": 5,
-      "needs_review": 0
+      "needs_review": 2
     },
     {
       "index": 10,
@@ -99,7 +99,7 @@
       "topic_code": "F2S.ID.S371.NC07778.Deck.USAFMAFP",
       "tribe": "F2S",
       "question_count": 5,
-      "needs_review": 0
+      "needs_review": 1
     },
     {
       "index": 12,
@@ -117,7 +117,7 @@
       "topic_code": "F2S.IF.S136.NC04734.Deck.USAFMAFP.EN",
       "tribe": "F2S",
       "question_count": 4,
-      "needs_review": 0
+      "needs_review": 2
     },
     {
       "index": 14,
@@ -171,7 +171,7 @@
       "topic_code": "F2S.IF.S255.NC04733.Deck.USAFMAFP.EN",
       "tribe": "F2S",
       "question_count": 5,
-      "needs_review": 0
+      "needs_review": 1
     },
     {
       "index": 20,
@@ -198,7 +198,7 @@
       "topic_code": "F2S.PI.S012.NC07335.Deck.02.USAFMAFP.EN",
       "tribe": "F2S",
       "question_count": 10,
-      "needs_review": 0
+      "needs_review": 6
     },
     {
       "index": 23,
@@ -261,7 +261,7 @@
       "topic_code": "F2S.QS.S304.NC06441.Deck.USAFMAFP.EN",
       "tribe": "F2S",
       "question_count": 5,
-      "needs_review": 0
+      "needs_review": 3
     },
     {
       "index": 30,
@@ -351,7 +351,7 @@
       "topic_code": "O2C.OI.S335.NC06572.Deck.USAFM.EN",
       "tribe": "O2C",
       "question_count": 5,
-      "needs_review": 1
+      "needs_review": 0
     },
     {
       "index": 40,
@@ -378,7 +378,7 @@
       "topic_code": "O2C.OI.S238.NC04703.Deck.USAFM.EN",
       "tribe": "O2C",
       "question_count": 7,
-      "needs_review": 2
+      "needs_review": 0
     },
     {
       "index": 43,
@@ -432,7 +432,7 @@
       "topic_code": "O2C.OI.S035.NC04718.Deck.USAFM.EN",
       "tribe": "O2C",
       "question_count": 9,
-      "needs_review": 1
+      "needs_review": 0
     },
     {
       "index": 49,
@@ -737,7 +737,7 @@
       "form_name": "R2R - Condition Contract Settlement",
       "topic_code": "R2R.CCS.S239.NC06865.Deck.USAFM.EN",
       "tribe": "R2R",
-      "question_count": 13,
+      "question_count": 7,
       "needs_review": 0
     },
     {

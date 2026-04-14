@@ -11,6 +11,7 @@
   let processFormName = null;  // form being processed (single mode)
   let bulkItems = [];          // parsed bulk items
   let useTemplate = false;     // template duplication mode
+  const NEO_TEMPLATE_URL = 'https://forms.cloud.microsoft/Pages/ShareFormPage.aspx?id=-PwcN9hMeUuH3N6aiZ96iJL6XI4jatJEuJk0OOXdqXtUNFU0NUhMU0IzTlhBRkFMSjI3MEc0TUJGOS4u&sharetoken=V5v5UgZt2EBKi9p5hl4O';
 
   // ─── DOM refs ────────────────────────────────────────────────────────────
   const $ = (sel) => document.querySelector(sel);
@@ -111,8 +112,10 @@
     filtered.forEach(q => {
       const li = document.createElement('li');
       li.className = currentQuiz && currentQuiz.filename === q.filename ? 'active' : '';
+      const warningIcon = q.needs_review > 0 ? `<span class="quiz-warning-icon" title="${q.needs_review} question(s) need review">&#9888;</span>` : '';
       li.innerHTML = `
         <span class="quiz-name" title="${esc(q.form_name)}">${esc(q.form_name)}</span>
+        ${warningIcon}
         <span class="quiz-count">${q.question_count}q</span>
         <span class="status-dot ${q.status}"></span>
       `;
@@ -194,6 +197,46 @@
       resetBtn.classList.add('hidden');
     }
 
+    // Error Check Summary
+    const summaryPanel = $('#processing-summary');
+    const summaryContent = $('#summary-content');
+    const summaryToggle = $('#summary-toggle');
+    if (meta.summary && meta.summary.length > 0) {
+      summaryPanel.classList.remove('hidden');
+      renderErrorCheckSummary(meta);
+      summaryContent.innerHTML = renderProcessingTimeline(meta.summary);
+      summaryToggle.classList.remove('open');
+      summaryContent.classList.add('hidden');
+    } else if (meta.status !== 'not_started') {
+      summaryPanel.classList.remove('hidden');
+      $('#error-check-header').innerHTML = '';
+      $('#error-check-body').innerHTML = '<p style="color:#94a3b8;font-size:13px;padding:0 20px 12px;">No detailed report available. Run the automation again to generate one.</p>';
+      summaryToggle.classList.remove('open');
+      summaryContent.classList.add('hidden');
+      summaryContent.innerHTML = '';
+    } else {
+      summaryPanel.classList.add('hidden');
+    }
+
+    // Warning banner for flagged questions
+    const flaggedQuestions = detectQuizFlags(quizData);
+    const warningBanner = $('#quiz-warning-banner');
+    if (flaggedQuestions.length > 0) {
+      const flagTypes = [...new Set(flaggedQuestions.flatMap(f => f.flags))];
+      warningBanner.classList.remove('hidden');
+      warningBanner.innerHTML = `
+        <div class="warning-banner-icon">&#9888;</div>
+        <div class="warning-banner-body">
+          <div class="warning-banner-title">${flaggedQuestions.length} question${flaggedQuestions.length > 1 ? 's' : ''} need${flaggedQuestions.length === 1 ? 's' : ''} review</div>
+          <div class="warning-banner-desc">${flagTypes.join(', ')}</div>
+        </div>
+        <button class="btn btn-sm btn-outline warning-jump-btn" onclick="document.querySelector('.question-card.needs-review')?.scrollIntoView({behavior:'smooth',block:'center'})">Jump to first</button>
+      `;
+    } else {
+      warningBanner.classList.add('hidden');
+      warningBanner.innerHTML = '';
+    }
+
     // Questions editor
     const editor = $('#questions-editor');
     editor.innerHTML = '';
@@ -202,9 +245,187 @@
     });
   }
 
-  function createQuestionCard(q, idx) {
+  function renderErrorCheckSummary(meta) {
+    const events = meta.summary || [];
+    const questionsDone = events.filter(e => e.type === 'question_done').length;
+    const questionErrors = events.filter(e => e.type === 'question_error');
+    const titleError = events.find(e => e.type === 'title_error');
+    const qcEvent = events.find(e => e.type === 'verification_done');
+    const qcIssues = (qcEvent && qcEvent.issues) ? qcEvent.issues : [];
+    const totalQ = meta.questions_total || 0;
+    const allErrors = [...(titleError ? [{ step: 'Title', error: titleError.error || 'Title replacement failed' }] : [])];
+    questionErrors.forEach(e => allErrors.push({ step: `Q${e.question}`, error: e.error || 'Question processing failed' }));
+    qcIssues.forEach(issue => allErrors.push({ step: 'QC', error: issue }));
+    const hasIssues = allErrors.length > 0;
+
+    // Header
+    let headerHtml = '<div class="error-check-title">';
+    if (hasIssues) {
+      headerHtml += `<span class="check-icon" style="color:#dc2626;">&#9888;</span>`;
+      headerHtml += `<span>Error Check Summary</span>`;
+    } else {
+      headerHtml += `<span class="check-icon" style="color:#16a34a;">&#10003;</span>`;
+      headerHtml += `<span>Error Check Summary</span>`;
+    }
+    headerHtml += '</div>';
+
+    // Form link
+    if (meta.form_url) {
+      headerHtml += `<div class="error-check-link"><a href="${esc(meta.form_url)}" target="_blank" class="btn btn-primary btn-sm" style="text-decoration:none;">Open Form</a><span class="date-text">Processed ${meta.date ? new Date(meta.date).toLocaleString() : ''}</span></div>`;
+    }
+
+    // Stats
+    headerHtml += '<div class="error-check-stats">';
+    headerHtml += `<span style="color:#16a34a;">${questionsDone}/${totalQ} questions filled</span>`;
+    if (hasIssues) {
+      headerHtml += `<span style="color:#dc2626;">${allErrors.length} issue(s) found</span>`;
+    } else {
+      headerHtml += `<span style="color:#16a34a;">All checks passed</span>`;
+    }
+    headerHtml += '</div>';
+
+    $('#error-check-header').innerHTML = headerHtml;
+
+    // Body: error check table
+    let bodyHtml = '<table class="error-check-table">';
+    bodyHtml += '<thead><tr><th>Check</th><th>Status</th><th>Details</th></tr></thead><tbody>';
+
+    // Title check
+    const titleOk = !titleError && !qcIssues.some(i => i.toLowerCase().includes('title'));
+    bodyHtml += `<tr><td>Form Title</td><td class="${titleOk ? 'check-pass' : 'check-fail'}">${titleOk ? 'Passed' : 'Failed'}</td><td>${titleOk ? `Set to "${esc(meta.form_name)}"` : esc(titleError ? titleError.error : 'Title verification failed')}</td></tr>`;
+
+    // Per-question checks
+    for (let i = 1; i <= totalQ; i++) {
+      const qError = questionErrors.find(e => e.question === i);
+      const qcFail = qcIssues.filter(issue => {
+        const lower = issue.toLowerCase();
+        return issue.startsWith(`Q${i}:`) || issue.startsWith(`Q${i} `) || lower.includes(`question ${i}`);
+      });
+      const hasQIssue = !!qError || qcFail.length > 0;
+
+      let details = '';
+      if (qError) details = esc(qError.error);
+      if (qcFail.length > 0) {
+        const qcDetails = qcFail.map(f => {
+          // Strip the "Q3: " prefix for cleaner display
+          const cleaned = f.replace(/^Q\d+:\s*/, '');
+          return esc(cleaned);
+        }).join('<br>');
+        details += (details ? '<br>' : '') + qcDetails;
+      }
+      if (!hasQIssue) {
+        const qStartEvt = events.find(e => e.type === 'question_start' && e.question === i);
+        details = qStartEvt && qStartEvt.questionText ? esc(qStartEvt.questionText) : 'Filled successfully';
+      }
+
+      bodyHtml += `<tr><td>Question ${i}</td><td class="${hasQIssue ? 'check-fail' : 'check-pass'}">${hasQIssue ? 'Failed' : 'Passed'}</td><td>${details}</td></tr>`;
+    }
+
+    // Correct answers summary
+    const answerIssues = qcIssues.filter(i => i.toLowerCase().includes('correct answer'));
+    const answerOk = answerIssues.length === 0;
+    const answersMarked = totalQ - answerIssues.length;
+    bodyHtml += `<tr><td>Correct Answers</td><td class="${answerOk ? 'check-pass' : 'check-fail'}">${answerOk ? 'Passed' : 'Failed'}</td><td>${answerOk ? `All ${totalQ} answers marked correctly` : `${answersMarked}/${totalQ} marked — ${answerIssues.length} missing`}</td></tr>`;
+
+    // Sample cleanup check
+    const cleanupIssues = qcIssues.filter(i => i.toLowerCase().includes('sample question'));
+    const cleanupOk = cleanupIssues.length === 0;
+    bodyHtml += `<tr><td>Sample Cleanup</td><td class="${cleanupOk ? 'check-pass' : 'check-fail'}">${cleanupOk ? 'Passed' : 'Failed'}</td><td>${cleanupOk ? 'Sample questions removed' : cleanupIssues.map(i => esc(i)).join('<br>')}</td></tr>`;
+
+    bodyHtml += '</tbody></table>';
+    $('#error-check-body').innerHTML = bodyHtml;
+  }
+
+  function renderProcessingTimeline(events) {
+    const eventLabels = {
+      form_start: 'Processing started',
+      template_start: 'Duplicating form template',
+      template_done: 'Template duplicated',
+      title_replaced: 'Form title replaced',
+      section_found: 'Questions section found',
+      question_start: 'Question started',
+      question_done: 'Question completed',
+      question_error: 'Question failed',
+      cleanup_start: 'Cleaning up sample questions',
+      form_done: 'Processing complete',
+      form_error: 'Processing failed',
+    };
+
+    let html = '<div class="summary-timeline">';
+
+    for (const evt of events) {
+      const isError = evt.type === 'question_error' || evt.type === 'form_error';
+      const isDone = evt.type === 'question_done' || evt.type === 'form_done' || evt.type === 'template_done' || evt.type === 'title_replaced' || evt.type === 'section_found';
+      const dotClass = isError ? 'dot-error' : isDone ? 'dot-done' : 'dot-info';
+      const dotIcon = isError ? '&#10007;' : isDone ? '&#10003;' : '&#8226;';
+
+      let label = eventLabels[evt.type] || evt.type;
+      let detail = '';
+
+      if (evt.type === 'question_start' && evt.question) {
+        label = `Question ${evt.question}${evt.totalQuestions ? ' of ' + evt.totalQuestions : ''} started`;
+        if (evt.questionText) detail = evt.questionText;
+      } else if (evt.type === 'question_done' && evt.question) {
+        label = `Question ${evt.question} completed`;
+      } else if (evt.type === 'question_error' && evt.question) {
+        label = `Question ${evt.question} failed`;
+      } else if (evt.type === 'template_done' && evt.newFormUrl) {
+        detail = evt.newFormUrl;
+      }
+
+      const time = evt.timestamp ? new Date(evt.timestamp).toLocaleTimeString() : '';
+      const errorMsg = isError && evt.error ? `<div class="summary-event-error">${esc(evt.error)}</div>` : '';
+      const detailHtml = detail ? `<div class="summary-event-detail">${esc(detail)}</div>` : '';
+
+      html += `
+        <div class="summary-event">
+          <div class="summary-dot ${dotClass}">${dotIcon}</div>
+          <div class="summary-event-body">
+            <div class="summary-event-label">${esc(label)}</div>
+            ${detailHtml}
+            ${errorMsg}
+          </div>
+          <div class="summary-event-time">${time}</div>
+        </div>
+      `;
+    }
+
+    html += '</div>';
+    return html;
+  }
+
+  // ─── Flag detection ────────────────────────────────────────────────────
+  function detectQuestionFlags(q) {
+    const flags = [];
+    if (q.needs_review && q.options.length <= 1) {
+      flags.push('Open-ended — needs multiple choice options');
+    } else if (q.needs_review && q.correct_answer_index === -1 && q.options.length > 1) {
+      flags.push('No correct answer set');
+    } else if (q.needs_review) {
+      flags.push('Flagged for review');
+    }
+    if (!q.needs_review && (q.options.length === 3 || q.options.length === 5)) {
+      flags.push(`Non-standard option count (${q.options.length} options)`);
+    }
+    return flags;
+  }
+
+  function detectQuizFlags(quizData) {
+    const flagged = [];
+    quizData.questions.forEach((q, idx) => {
+      const flags = detectQuestionFlags(q);
+      if (flags.length > 0) {
+        flagged.push({ question: q, index: idx, flags });
+      }
+    });
+    return flagged;
+  }
+
+  function createQuestionCard(q, idx, context) {
     const card = document.createElement('div');
-    card.className = `question-card${q.needs_review ? ' needs-review' : ''}`;
+    const flags = detectQuestionFlags(q);
+    const hasFlags = flags.length > 0;
+    card.className = `question-card${q.needs_review ? ' needs-review' : ''}${hasFlags ? ' has-flags' : ''}`;
     const letters = 'ABCDEFGHIJ';
     const isTF = q.options.length === 2 &&
       q.options[0].toLowerCase() === 'true' &&
@@ -213,41 +434,59 @@
       q.options.length === 1 ? 'Fill-in-the-blank' :
       `${q.options.length}-option`;
 
+    const flagBadgesHTML = flags.map(f => `<span class="flag-badge">${esc(f)}</span>`).join('');
+    const ctx = context || 'main';
+
     let optionsHTML = q.options.map((opt, oi) => `
       <div class="option-row">
         <span class="option-letter">${letters[oi] || ''}</span>
         <div class="option-radio ${oi === q.correct_answer_index ? 'correct' : ''}"
-             data-q="${idx}" data-o="${oi}" title="Click to mark as correct"></div>
+             data-q="${idx}" data-o="${oi}" data-ctx="${ctx}" title="Click to mark as correct"></div>
         <input type="text" class="option-input" value="${esc(opt)}"
-               data-q="${idx}" data-o="${oi}" />
-        <button class="remove-option-btn" data-q="${idx}" data-o="${oi}" title="Remove option">&times;</button>
+               data-q="${idx}" data-o="${oi}" data-ctx="${ctx}" />
+        <button class="remove-option-btn" data-q="${idx}" data-o="${oi}" data-ctx="${ctx}" title="Remove option">&times;</button>
       </div>
     `).join('');
 
     card.innerHTML = `
       <div class="question-header">
         <span class="question-number">Q${q.number}</span>
-        <span class="question-type">${typeLabel}${q.needs_review ? ' (needs review)' : ''}</span>
+        <span class="question-type">${typeLabel}</span>
+        ${flagBadgesHTML}
       </div>
-      <input type="text" class="question-text-input" value="${esc(q.text)}" data-q="${idx}" />
+      <input type="text" class="question-text-input" value="${esc(q.text)}" data-q="${idx}" data-ctx="${ctx}" />
       <div class="options-list" data-q="${idx}">
         ${optionsHTML}
       </div>
-      <button class="add-option-btn" data-q="${idx}">+ Add option</button>
+      <button class="add-option-btn" data-q="${idx}" data-ctx="${ctx}">+ Add option</button>
     `;
     return card;
   }
 
   // ─── Quiz editing events ─────────────────────────────────────────────────
+  function getQuizDataForContext(ctx) {
+    if (!ctx || ctx === 'main') return currentQuiz ? currentQuiz.quizData : null;
+    if (ctx.startsWith('bulk:')) {
+      const filename = ctx.substring(5);
+      return bulkWarningData[filename] ? bulkWarningData[filename].quizData : null;
+    }
+    return null;
+  }
+
   function handleEditorClick(e) {
+    const ctx = e.target.dataset.ctx || 'main';
+    const quizData = getQuizDataForContext(ctx);
+    if (!quizData) return;
+
     // Mark correct answer
     if (e.target.classList.contains('option-radio')) {
       const qi = parseInt(e.target.dataset.q);
       const oi = parseInt(e.target.dataset.o);
-      currentQuiz.quizData.questions[qi].correct_answer_index = oi;
+      quizData.questions[qi].correct_answer_index = oi;
       const letters = 'ABCDEFGHIJ';
-      currentQuiz.quizData.questions[qi].correct_answer_letter = letters[oi] || '';
-      renderQuizDetail();
+      quizData.questions[qi].correct_answer_letter = letters[oi] || '';
+      if (ctx === 'main') renderQuizDetail();
+      else rerenderBulkWarningSection(ctx);
       return;
     }
 
@@ -255,40 +494,54 @@
     if (e.target.classList.contains('remove-option-btn')) {
       const qi = parseInt(e.target.dataset.q);
       const oi = parseInt(e.target.dataset.o);
-      const q = currentQuiz.quizData.questions[qi];
+      const q = quizData.questions[qi];
       if (q.options.length <= 1) return;
       q.options.splice(oi, 1);
       if (q.correct_answer_index >= oi && q.correct_answer_index > 0) {
         q.correct_answer_index--;
       }
-      q.question_count = currentQuiz.quizData.questions.length;
-      renderQuizDetail();
+      if (ctx === 'main') renderQuizDetail();
+      else rerenderBulkWarningSection(ctx);
       return;
     }
 
     // Add option
     if (e.target.classList.contains('add-option-btn')) {
       const qi = parseInt(e.target.dataset.q);
-      currentQuiz.quizData.questions[qi].options.push('New option');
-      renderQuizDetail();
+      quizData.questions[qi].options.push('New option');
+      if (ctx === 'main') renderQuizDetail();
+      else rerenderBulkWarningSection(ctx);
       return;
     }
   }
 
   function handleEditorInput(e) {
+    const ctx = e.target.dataset.ctx || 'main';
+    const quizData = getQuizDataForContext(ctx);
+    if (!quizData) return;
+
     // Question text
     if (e.target.classList.contains('question-text-input')) {
       const qi = parseInt(e.target.dataset.q);
-      currentQuiz.quizData.questions[qi].text = e.target.value;
+      quizData.questions[qi].text = e.target.value;
       return;
     }
     // Option text
     if (e.target.classList.contains('option-input')) {
       const qi = parseInt(e.target.dataset.q);
       const oi = parseInt(e.target.dataset.o);
-      currentQuiz.quizData.questions[qi].options[oi] = e.target.value;
+      quizData.questions[qi].options[oi] = e.target.value;
       return;
     }
+  }
+
+  function rerenderBulkWarningSection(ctx) {
+    const filename = ctx.startsWith('bulk:') ? ctx.substring(5) : ctx;
+    const data = bulkWarningData[filename];
+    if (!data) return;
+    // Re-render the entire panel to reflect changes
+    renderBulkWarningPanel();
+    updateBulkStartButton();
   }
 
   // ─── Save quiz ───────────────────────────────────────────────────────────
@@ -308,6 +561,8 @@
   }
 
   // ─── Approve & continue to process ──────────────────────────────────────
+  let singleUseTemplate = false; // template mode for single form processing
+
   function approveQuiz() {
     if (!currentQuiz) return;
     processFormName = currentQuiz.quizData.form_name;
@@ -318,6 +573,10 @@
     } else {
       $('#form-url-input').value = '';
     }
+    // Reset template card
+    singleUseTemplate = false;
+    $('#single-template-card').classList.remove('selected');
+    $('#single-url-group').style.display = '';
     // Reset progress
     $('#progress-panel').classList.add('hidden');
     $('#start-process-btn').disabled = false;
@@ -327,7 +586,7 @@
   // ─── Start single form processing ───────────────────────────────────────
   async function startProcessing() {
     const url = $('#form-url-input').value.trim();
-    if (!url) { alert('Please paste a form URL.'); return; }
+    if (!singleUseTemplate && !url) { alert('Please paste a form URL or select the template.'); return; }
     if (!processFormName) return;
 
     $('#start-process-btn').disabled = true;
@@ -335,12 +594,16 @@
     resetProgressUI(processFormName, currentQuiz.quizData.questions.length);
 
     try {
+      const payload = {
+        items: [{ form_name: processFormName, form_url: url || null }],
+      };
+      if (singleUseTemplate) {
+        payload.template_url = NEO_TEMPLATE_URL;
+      }
       await api('/process', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          items: [{ form_name: processFormName, form_url: url }]
-        }),
+        body: JSON.stringify(payload),
       });
     } catch (e) {
       alert('Failed to start: ' + e.message);
@@ -355,7 +618,8 @@
     $(`#bulk-tab-${tabName}`).classList.add('active');
     // Hide preview when switching tabs
     $('#bulk-preview').classList.add('hidden');
-    $('#bulk-start-btn').classList.add('hidden');
+    $('#bulk-action-buttons').classList.add('hidden');
+    $('#bulk-warning-panel').classList.add('hidden');
     bulkItems = [];
   }
 
@@ -620,7 +884,8 @@
     const preview = $('#bulk-preview');
     if (bulkItems.length === 0) {
       preview.classList.add('hidden');
-      $('#bulk-start-btn').classList.add('hidden');
+      $('#bulk-action-buttons').classList.add('hidden');
+      $('#bulk-warning-panel').classList.add('hidden');
       return;
     }
 
@@ -646,6 +911,7 @@
       </table>
     `;
 
+    const actionButtons = $('#bulk-action-buttons');
     const startBtn = $('#bulk-start-btn');
     const allFound = bulkItems.every(b => b.found);
     const anyValid = bulkItems.some(b => b.found);
@@ -653,21 +919,300 @@
     // Check template URL is provided when in template mode
     const templateReady = !useTemplate || ($('#template-url-input').value || '').trim().length > 0;
 
-    if (allFound && templateReady) {
-      startBtn.classList.remove('hidden');
-      startBtn.disabled = false;
-    } else if (anyValid && templateReady) {
-      startBtn.classList.remove('hidden');
+    if (anyValid && templateReady) {
+      actionButtons.classList.remove('hidden');
       startBtn.disabled = false;
     } else if (anyValid && !templateReady) {
-      startBtn.classList.remove('hidden');
+      actionButtons.classList.remove('hidden');
       startBtn.disabled = true;
       startBtn.title = 'Select a template or paste a template URL first';
     } else {
-      startBtn.classList.add('hidden');
+      actionButtons.classList.add('hidden');
       if (bulkItems.length > 0) {
         alert('None of the form names matched the quiz data. Please check the names and try again.');
       }
+    }
+
+    // Check for warnings in selected quizzes
+    renderBulkWarnings();
+  }
+
+  // ─── Bulk Warning Panel ─────────────────────────────────────────────────
+  let bulkWarningData = {}; // { filename: { quizData, flagged: [...] } }
+  let bulkIgnored = {};     // { "filename:qIndex": true }
+
+  function isBulkWarningResolved() {
+    // All flagged questions must be either ignored or no longer flagged
+    for (const [filename, data] of Object.entries(bulkWarningData)) {
+      for (const { index } of data.flagged) {
+        const key = `${filename}:${index}`;
+        if (!bulkIgnored[key]) {
+          // Re-check if still flagged (user may have edited it)
+          const q = data.quizData.questions[index];
+          const flags = detectQuestionFlags(q);
+          if (flags.length > 0) return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  function updateBulkStartButton() {
+    const startBtn = $('#bulk-start-btn');
+    const hasWarnings = Object.keys(bulkWarningData).length > 0;
+    if (hasWarnings && !isBulkWarningResolved()) {
+      startBtn.disabled = true;
+      startBtn.title = 'Review, edit, or ignore all flagged questions before processing';
+      startBtn.textContent = 'Resolve Warnings to Start';
+    } else {
+      startBtn.disabled = false;
+      startBtn.title = '';
+      startBtn.textContent = 'Start Bulk Processing';
+    }
+  }
+
+  function getUnresolvedCount() {
+    let count = 0;
+    for (const [filename, data] of Object.entries(bulkWarningData)) {
+      for (const { index } of data.flagged) {
+        const key = `${filename}:${index}`;
+        if (!bulkIgnored[key]) {
+          const q = data.quizData.questions[index];
+          const flags = detectQuestionFlags(q);
+          if (flags.length > 0) count++;
+        }
+      }
+    }
+    return count;
+  }
+
+  function ignoreBulkQuestion(filename, qIndex) {
+    bulkIgnored[`${filename}:${qIndex}`] = true;
+    renderBulkWarningPanel();
+    updateBulkStartButton();
+  }
+
+  function ignoreAllForForm(filename) {
+    const data = bulkWarningData[filename];
+    if (!data) return;
+    data.flagged.forEach(({ index }) => {
+      bulkIgnored[`${filename}:${index}`] = true;
+    });
+    renderBulkWarningPanel();
+    updateBulkStartButton();
+  }
+
+  function ignoreAllWarnings() {
+    for (const [filename, data] of Object.entries(bulkWarningData)) {
+      data.flagged.forEach(({ index }) => {
+        bulkIgnored[`${filename}:${index}`] = true;
+      });
+    }
+    renderBulkWarningPanel();
+    updateBulkStartButton();
+  }
+
+  async function renderBulkWarnings() {
+    const panel = $('#bulk-warning-panel');
+    const saveBtn = $('#bulk-save-warnings-btn');
+    bulkWarningData = {};
+    bulkIgnored = {};
+
+    // Load quiz data for each valid bulk item and detect flags
+    const validItems = bulkItems.filter(b => b.found);
+    let totalFlags = 0;
+
+    for (const item of validItems) {
+      const quizMeta = quizzes.find(q => q.form_name === item.form_name);
+      if (!quizMeta) continue;
+      try {
+        const quizData = await api(`/quiz/${quizMeta.filename}`);
+        const flagged = detectQuizFlags(quizData);
+        if (flagged.length > 0) {
+          bulkWarningData[quizMeta.filename] = { quizData, flagged, meta: quizMeta };
+          totalFlags += flagged.length;
+        }
+      } catch (_) { /* skip on error */ }
+    }
+
+    if (totalFlags === 0) {
+      panel.classList.add('hidden');
+      panel.innerHTML = '';
+      saveBtn.classList.add('hidden');
+      updateBulkStartButton();
+      return;
+    }
+
+    saveBtn.classList.remove('hidden');
+    renderBulkWarningPanel();
+    updateBulkStartButton();
+  }
+
+  function renderBulkWarningPanel() {
+    const panel = $('#bulk-warning-panel');
+    const unresolvedCount = getUnresolvedCount();
+    const totalFlags = Object.values(bulkWarningData).reduce((sum, d) => sum + d.flagged.length, 0);
+    const quizCount = Object.keys(bulkWarningData).length;
+    const allResolved = unresolvedCount === 0;
+
+    if (allResolved) {
+      panel.innerHTML = `
+        <div class="bulk-warning-header bulk-warning-resolved">
+          <div class="bulk-warning-icon">&#10003;</div>
+          <div class="bulk-warning-title">All ${totalFlags} warning${totalFlags > 1 ? 's' : ''} resolved</div>
+          <div class="bulk-warning-count resolved">Ready to process</div>
+        </div>
+      `;
+      panel.classList.remove('hidden');
+      return;
+    }
+
+    let html = `
+      <div class="bulk-warning-header">
+        <div class="bulk-warning-icon">&#9888;</div>
+        <div class="bulk-warning-header-body">
+          <div class="bulk-warning-title">${unresolvedCount} flagged question${unresolvedCount > 1 ? 's' : ''} need${unresolvedCount === 1 ? 's' : ''} your attention</div>
+          <div class="bulk-warning-subtitle">Expand each form below to review and fix issues, or ignore them to proceed.</div>
+        </div>
+        <div class="bulk-warning-header-actions">
+          <span class="bulk-warning-count">${unresolvedCount} of ${totalFlags} unresolved</span>
+          <button class="btn btn-sm btn-outline bulk-ignore-all-btn">Ignore All</button>
+        </div>
+      </div>
+      <div class="bulk-warning-sections">
+    `;
+
+    for (const [filename, data] of Object.entries(bulkWarningData)) {
+      const { quizData, flagged, meta } = data;
+      const unresolvedInForm = flagged.filter(({ index }) => {
+        const key = `${filename}:${index}`;
+        if (bulkIgnored[key]) return false;
+        return detectQuestionFlags(data.quizData.questions[index]).length > 0;
+      }).length;
+      const formResolved = unresolvedInForm === 0;
+
+      html += `
+        <div class="bulk-warning-section ${formResolved ? 'section-resolved' : ''}" data-filename="${esc(filename)}">
+          <div class="bulk-warning-section-header" data-filename="${esc(filename)}">
+            <span class="bulk-warning-collapse-icon">&#9654;</span>
+            <span class="bulk-warning-section-name">${esc(quizData.form_name)}</span>
+            <span class="badge badge-pending">${meta.tribe}</span>
+            ${formResolved
+              ? '<span class="bulk-warning-section-status resolved">&#10003; Resolved</span>'
+              : `<span class="bulk-warning-section-count">${unresolvedInForm} warning${unresolvedInForm > 1 ? 's' : ''}</span>
+                 <button class="btn btn-xs btn-outline bulk-ignore-form-btn" data-filename="${esc(filename)}">Ignore for this form</button>`
+            }
+          </div>
+          <div class="bulk-warning-section-body hidden" data-filename="${esc(filename)}">
+            <div class="bulk-warning-questions" id="bulk-warn-q-${esc(filename)}"></div>
+          </div>
+        </div>
+      `;
+    }
+
+    html += '</div>';
+    panel.innerHTML = html;
+    panel.classList.remove('hidden');
+
+    // Render question cards into each section
+    for (const [filename, data] of Object.entries(bulkWarningData)) {
+      const container = $(`#bulk-warn-q-${CSS.escape(filename)}`);
+      if (!container) continue;
+      data.flagged.forEach(({ question, index }) => {
+        const key = `${filename}:${index}`;
+        const isIgnored = !!bulkIgnored[key];
+        const stillFlagged = detectQuestionFlags(question).length > 0;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = `bulk-warn-item ${isIgnored ? 'ignored' : ''} ${!stillFlagged ? 'fixed' : ''}`;
+
+        if (isIgnored) {
+          wrapper.innerHTML = `
+            <div class="bulk-warn-ignored-bar">
+              <span>&#10003; Q${question.number} — Ignored</span>
+              <button class="btn btn-xs btn-outline bulk-unignore-btn" data-key="${esc(key)}">Undo</button>
+            </div>
+          `;
+        } else if (!stillFlagged) {
+          wrapper.innerHTML = `
+            <div class="bulk-warn-fixed-bar">
+              <span>&#10003; Q${question.number} — Fixed</span>
+            </div>
+          `;
+        } else {
+          const card = createQuestionCard(question, index, `bulk:${filename}`);
+          const ignoreBtn = document.createElement('button');
+          ignoreBtn.className = 'btn btn-sm btn-outline bulk-ignore-q-btn';
+          ignoreBtn.textContent = 'Ignore this warning';
+          ignoreBtn.dataset.filename = filename;
+          ignoreBtn.dataset.qindex = index;
+          wrapper.appendChild(card);
+          wrapper.appendChild(ignoreBtn);
+        }
+
+        container.appendChild(wrapper);
+      });
+    }
+
+    // Bind collapse/expand
+    $$('.bulk-warning-section-header').forEach(header => {
+      header.addEventListener('click', (e) => {
+        // Don't toggle if clicking an action button
+        if (e.target.closest('.bulk-ignore-form-btn')) return;
+        const fn = header.dataset.filename;
+        const body = $(`.bulk-warning-section-body[data-filename="${CSS.escape(fn)}"]`);
+        const icon = header.querySelector('.bulk-warning-collapse-icon');
+        if (body.classList.contains('hidden')) {
+          body.classList.remove('hidden');
+          icon.innerHTML = '&#9660;';
+          header.closest('.bulk-warning-section').classList.add('expanded');
+        } else {
+          body.classList.add('hidden');
+          icon.innerHTML = '&#9654;';
+          header.closest('.bulk-warning-section').classList.remove('expanded');
+        }
+      });
+    });
+
+    // Bind ignore buttons
+    $$('.bulk-ignore-all-btn').forEach(btn => btn.addEventListener('click', ignoreAllWarnings));
+    $$('.bulk-ignore-form-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        ignoreAllForForm(btn.dataset.filename);
+      });
+    });
+    $$('.bulk-ignore-q-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        ignoreBulkQuestion(btn.dataset.filename, parseInt(btn.dataset.qindex));
+      });
+    });
+    $$('.bulk-unignore-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        delete bulkIgnored[btn.dataset.key];
+        renderBulkWarningPanel();
+        updateBulkStartButton();
+      });
+    });
+  }
+
+  async function saveBulkWarningEdits() {
+    let saved = 0;
+    for (const [filename, data] of Object.entries(bulkWarningData)) {
+      try {
+        data.quizData.question_count = data.quizData.questions.length;
+        await api(`/quiz/${filename}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data.quizData),
+        });
+        saved++;
+      } catch (_) { /* skip on error */ }
+    }
+    if (saved > 0) {
+      alert(`Saved changes to ${saved} quiz${saved > 1 ? 'zes' : ''}.`);
+      await loadQuizzes();
+      renderBulkWarnings();
     }
   }
 
@@ -679,6 +1224,20 @@
     if (bulkItems.length === 0) return;
     const validItems = bulkItems.filter(b => b.found);
     if (validItems.length === 0) return;
+
+    // Auto-save any warning edits before starting
+    if (Object.keys(bulkWarningData).length > 0) {
+      for (const [filename, data] of Object.entries(bulkWarningData)) {
+        try {
+          data.quizData.question_count = data.quizData.questions.length;
+          await api(`/quiz/${filename}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data.quizData),
+          });
+        } catch (_) { /* best effort */ }
+      }
+    }
 
     // Initialize state
     bulkTotalForms = validItems.length;
@@ -741,9 +1300,9 @@
                         s.status === 'failed' ? 'bp-failed' : '';
 
       const phases = useTemplate
-        ? ['template', 'opening', 'title', 'questions', 'cleanup']
-        : ['opening', 'title', 'questions', 'cleanup'];
-      const phaseLabels = { template: 'Duplicate', opening: 'Opening', title: 'Title', questions: 'Questions', cleanup: 'Cleanup' };
+        ? ['template', 'opening', 'title', 'questions', 'cleanup', 'verify']
+        : ['opening', 'title', 'questions', 'cleanup', 'verify'];
+      const phaseLabels = { template: 'Duplicate', opening: 'Opening', title: 'Title', questions: 'Questions', cleanup: 'Cleanup', verify: 'Verify' };
       const phasesHTML = phases.map(p => {
         let cls = '';
         if (s.status === 'processed' || (s.status === 'running' && phases.indexOf(p) < phases.indexOf(s.phase))) cls = 'phase-done';
@@ -848,7 +1407,13 @@
   }
 
   // ─── Progress UI ─────────────────────────────────────────────────────────
+  let singleFormPhase = 'opening';
+  let singleFormErrors = []; // track question errors for summary
+
   function resetProgressUI(formName, totalQuestions) {
+    singleFormPhase = 'opening';
+    singleFormErrors = [];
+
     $('#progress-form-name').textContent = formName;
     $('#progress-status').textContent = 'Running';
     $('#progress-status').className = 'badge badge-running';
@@ -856,6 +1421,12 @@
     $('#progress-bar').className = 'progress-bar';
     $('#progress-detail').textContent = 'Initializing...';
     $('#progress-log').innerHTML = '';
+    $('#progress-errors').classList.add('hidden');
+    $('#progress-errors').innerHTML = '';
+    $('#progress-form-link').classList.add('hidden');
+
+    // Render phase indicators
+    renderSinglePhases();
 
     const steps = $('#progress-steps');
     steps.innerHTML = '';
@@ -866,6 +1437,31 @@
       step.textContent = `Q${i}`;
       steps.appendChild(step);
     }
+  }
+
+  function renderSinglePhases() {
+    const phases = singleUseTemplate
+      ? ['template', 'opening', 'title', 'questions', 'cleanup', 'verify']
+      : ['opening', 'title', 'questions', 'cleanup', 'verify'];
+    const labels = { template: 'Duplicate', opening: 'Opening', title: 'Title', questions: 'Questions', cleanup: 'Cleanup', verify: 'Verify' };
+    const phaseOrder = phases;
+
+    const container = $('#progress-phases');
+    container.innerHTML = phaseOrder.map(p => {
+      let cls = '';
+      const currentIdx = phaseOrder.indexOf(singleFormPhase);
+      const thisIdx = phaseOrder.indexOf(p);
+      if (thisIdx < currentIdx) cls = 'phase-done';
+      else if (p === singleFormPhase) cls = 'phase-active';
+      return `<span class="bp-phase ${cls}">${labels[p]}</span>`;
+    }).join('');
+  }
+
+  function showProgressFormLink(url) {
+    const container = $('#progress-form-link');
+    const link = $('#progress-form-url');
+    link.href = url;
+    container.classList.remove('hidden');
   }
 
   // ─── SSE connection ──────────────────────────────────────────────────────
@@ -902,7 +1498,9 @@
           renderBulkCards();
           updateBulkSummary();
         } else if (!isBulk) {
-          $('#progress-detail').textContent = 'Opening form...';
+          singleFormPhase = singleUseTemplate ? 'template' : 'opening';
+          renderSinglePhases();
+          $('#progress-detail').textContent = singleUseTemplate ? 'Duplicating form template...' : 'Opening form...';
         }
         break;
 
@@ -910,6 +1508,10 @@
         if (isBulk && bulkFormStates[fn]) {
           bulkFormStates[fn].phase = 'template';
           renderBulkCards();
+        } else if (!isBulk) {
+          singleFormPhase = 'template';
+          renderSinglePhases();
+          $('#progress-detail').textContent = 'Duplicating form template...';
         }
         break;
 
@@ -918,6 +1520,13 @@
           bulkFormStates[fn].phase = 'opening';
           if (data.newUrl) bulkFormStates[fn].newFormUrl = data.newUrl;
           renderBulkCards();
+        } else if (!isBulk) {
+          singleFormPhase = 'opening';
+          renderSinglePhases();
+          $('#progress-detail').textContent = 'Template duplicated, loading form editor...';
+          if (data.newUrl) {
+            showProgressFormLink(data.newUrl);
+          }
         }
         break;
 
@@ -926,6 +1535,8 @@
           bulkFormStates[fn].phase = 'title';
           renderBulkCards();
         } else if (!isBulk) {
+          singleFormPhase = 'title';
+          renderSinglePhases();
           $('#progress-detail').textContent = 'Title replaced, scrolling to questions...';
         }
         break;
@@ -936,7 +1547,9 @@
           bulkFormStates[fn].currentQuestion = 0;
           renderBulkCards();
         } else if (!isBulk) {
-          $('#progress-detail').textContent = 'Found Self Assessment section, starting questions...';
+          singleFormPhase = 'questions';
+          renderSinglePhases();
+          $('#progress-detail').textContent = 'Found questions section, starting...';
         }
         break;
 
@@ -947,6 +1560,8 @@
           bulkFormStates[fn].totalQ = data.totalQuestions || bulkFormStates[fn].totalQ;
           renderBulkCards();
         } else if (!isBulk) {
+          singleFormPhase = 'questions';
+          renderSinglePhases();
           const pct = ((data.question - 1) / data.totalQuestions) * 100;
           const step = $(`#step-q${data.question}`);
           if (step) { step.className = 'progress-step active'; }
@@ -972,21 +1587,51 @@
 
       case 'question_error': {
         if (isBulk && bulkFormStates[fn]) {
-          // Mark the question as errored but keep going
           renderBulkCards();
         } else if (!isBulk) {
           const step = $(`#step-q${data.question}`);
           if (step) { step.className = 'progress-step error'; }
+          singleFormErrors.push({
+            question: data.question,
+            error: data.error || 'Unknown error',
+          });
         }
         break;
       }
+
+      case 'title_error':
+        if (!isBulk) {
+          singleFormErrors.push({ question: 0, error: data.error || 'Title replacement failed' });
+        }
+        break;
 
       case 'cleanup_start':
         if (isBulk && bulkFormStates[fn]) {
           bulkFormStates[fn].phase = 'cleanup';
           renderBulkCards();
         } else if (!isBulk) {
+          singleFormPhase = 'cleanup';
+          renderSinglePhases();
           $('#progress-detail').textContent = 'Cleaning up sample questions...';
+        }
+        break;
+
+      case 'verification_start':
+        if (isBulk && bulkFormStates[fn]) {
+          bulkFormStates[fn].phase = 'verify';
+          renderBulkCards();
+        } else if (!isBulk) {
+          singleFormPhase = 'verify';
+          renderSinglePhases();
+          $('#progress-detail').textContent = 'Running quality check...';
+        }
+        break;
+
+      case 'verification_done':
+        if (!isBulk && data.results && data.results.issues && data.results.issues.length > 0) {
+          data.results.issues.forEach(issue => {
+            singleFormErrors.push({ question: 0, error: issue });
+          });
         }
         break;
 
@@ -999,11 +1644,42 @@
           renderBulkCards();
           updateBulkSummary();
         } else if (!isBulk) {
+          singleFormPhase = 'done';
+          // Mark all phases as done
+          $('#progress-phases').querySelectorAll('.bp-phase').forEach(p => {
+            p.className = 'bp-phase phase-done';
+          });
+
           $('#progress-bar').style.width = '100%';
-          $('#progress-bar').classList.add('complete');
-          $('#progress-status').textContent = 'Complete';
-          $('#progress-status').className = 'badge badge-success';
-          $('#progress-detail').textContent = 'Form processed successfully!';
+
+          if (data.newFormUrl) {
+            showProgressFormLink(data.newFormUrl);
+          }
+
+          if (singleFormErrors.length > 0) {
+            // Partially complete
+            $('#progress-bar').classList.add('error');
+            $('#progress-status').textContent = 'Partially Complete';
+            $('#progress-status').className = 'badge badge-pending';
+            const totalQ = $$('.progress-step').length;
+            const failedQ = singleFormErrors.length;
+            $('#progress-detail').textContent = `${totalQ - failedQ} of ${totalQ} questions filled successfully. ${failedQ} question(s) had issues.`;
+
+            // Show error summary
+            const errPanel = $('#progress-errors');
+            errPanel.classList.remove('hidden');
+            errPanel.innerHTML = `
+              <div class="error-title">Issues found during processing:</div>
+              ${singleFormErrors.map(e =>
+                `<div class="error-item">Q${e.question}: ${e.error}</div>`
+              ).join('')}
+            `;
+          } else {
+            $('#progress-bar').classList.add('complete');
+            $('#progress-status').textContent = 'Complete';
+            $('#progress-status').className = 'badge badge-success';
+            $('#progress-detail').textContent = 'Form processed successfully!';
+          }
         }
         loadQuizzes();
         break;
@@ -1016,10 +1692,19 @@
           renderBulkCards();
           updateBulkSummary();
         } else if (!isBulk) {
+          // Mark the current phase as error
+          const phaseEls = $('#progress-phases').querySelectorAll('.bp-phase');
+          phaseEls.forEach(p => {
+            if (p.classList.contains('phase-active')) {
+              p.classList.remove('phase-active');
+              p.classList.add('phase-error');
+            }
+          });
+
           $('#progress-bar').classList.add('error');
           $('#progress-status').textContent = 'Failed';
           $('#progress-status').className = 'badge badge-error';
-          $('#progress-detail').textContent = `Error: ${data.error || 'Unknown error'}`;
+          $('#progress-detail').textContent = `Error during ${singleFormPhase}: ${data.error || 'Unknown error'}`;
         }
         loadQuizzes();
         break;
@@ -1092,9 +1777,24 @@
     $('#approve-quiz-btn').addEventListener('click', approveQuiz);
     $('#quiz-reset-btn').addEventListener('click', resetQuizStatus);
 
-    // Editor delegation
+    // Processing summary toggle
+    $('#summary-toggle').addEventListener('click', () => {
+      const toggle = $('#summary-toggle');
+      const content = $('#summary-content');
+      toggle.classList.toggle('open');
+      content.classList.toggle('hidden');
+    });
+
+    // Editor delegation (main editor + bulk warning editor)
     $('#questions-editor').addEventListener('click', handleEditorClick);
     $('#questions-editor').addEventListener('input', handleEditorInput);
+
+    // Bulk warning panel editor delegation
+    $('#bulk-warning-panel').addEventListener('click', handleEditorClick);
+    $('#bulk-warning-panel').addEventListener('input', handleEditorInput);
+
+    // Bulk warning save button
+    $('#bulk-save-warnings-btn').addEventListener('click', saveBulkWarningEdits);
 
     // Export
     $('#export-btn').addEventListener('click', async () => {
@@ -1139,12 +1839,19 @@
       });
     });
 
+    // Single form template card
+    $('#single-template-card').addEventListener('click', () => {
+      const card = $('#single-template-card');
+      singleUseTemplate = !card.classList.contains('selected');
+      card.classList.toggle('selected');
+      // Hide/show the manual URL input
+      $('#single-url-group').style.display = singleUseTemplate ? 'none' : '';
+    });
+
     // Process
     $('#start-process-btn').addEventListener('click', startProcessing);
 
     // Template toggle
-    const NEO_TEMPLATE_URL = 'https://forms.cloud.microsoft/Pages/ShareFormPage.aspx?id=-PwcN9hMeUuH3N6aiZ96iJL6XI4jatJEuJk0OOXdqXtUQkFPODk2U0VST1NXRk1TR1dYWUhSSVpORi4u&sharetoken=3PyQUmQnMob1STET4Lxp';
-
     $('#use-template-toggle').addEventListener('change', (e) => {
       useTemplate = e.target.checked;
       $('#template-url-input-group').classList.toggle('hidden', !useTemplate);
@@ -1249,9 +1956,10 @@
       // Reset paste tab
       $('#bulk-input').value = '';
 
-      // Hide preview and start button
+      // Hide preview, warnings, and action buttons
       $('#bulk-preview').classList.add('hidden');
-      $('#bulk-start-btn').classList.add('hidden');
+      $('#bulk-action-buttons').classList.add('hidden');
+      $('#bulk-warning-panel').classList.add('hidden');
 
       // Reset bulk progress view
       $('#bulk-progress-list').innerHTML = '';
