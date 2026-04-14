@@ -544,6 +544,81 @@
     updateBulkStartButton();
   }
 
+  // ─── Add new question ───────────────────────────────────────────────────
+  let addQuestionOptionCount = 0;
+
+  function openAddQuestionForm(numOptions) {
+    addQuestionOptionCount = numOptions;
+    const form = $('#add-question-form');
+    const isTF = numOptions === 2;
+    $('#add-q-form-title').textContent = isTF ? 'New True / False Question' : 'New Multiple Choice Question';
+    $('#add-q-text').value = '';
+
+    const optionsContainer = $('#add-q-options');
+    const correctSelect = $('#add-q-correct');
+    const letters = 'ABCDEFGHIJ';
+
+    if (isTF) {
+      optionsContainer.innerHTML = `
+        <div class="add-q-option-row"><span class="option-letter">A</span><input type="text" class="add-q-input add-q-option-input" value="True" data-o="0" /></div>
+        <div class="add-q-option-row"><span class="option-letter">B</span><input type="text" class="add-q-input add-q-option-input" value="False" data-o="1" /></div>
+      `;
+    } else {
+      let html = '';
+      for (let i = 0; i < numOptions; i++) {
+        html += `<div class="add-q-option-row"><span class="option-letter">${letters[i]}</span><input type="text" class="add-q-input add-q-option-input" placeholder="Option ${letters[i]}..." data-o="${i}" /></div>`;
+      }
+      optionsContainer.innerHTML = html;
+    }
+
+    correctSelect.innerHTML = '';
+    for (let i = 0; i < numOptions; i++) {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${letters[i]}`;
+      correctSelect.appendChild(opt);
+    }
+
+    form.classList.remove('hidden');
+    $('#add-q-text').focus();
+  }
+
+  function submitNewQuestion() {
+    if (!currentQuiz) return;
+    const text = $('#add-q-text').value.trim();
+    if (!text) { alert('Please enter a question.'); return; }
+
+    const optionInputs = document.querySelectorAll('#add-q-options .add-q-option-input');
+    const options = [];
+    for (const input of optionInputs) {
+      const val = input.value.trim();
+      if (!val) { alert('Please fill in all options.'); return; }
+      options.push(val);
+    }
+
+    const correctIndex = parseInt($('#add-q-correct').value);
+    const letters = 'ABCDEFGHIJ';
+    const newQ = {
+      number: currentQuiz.quizData.questions.length + 1,
+      text,
+      options,
+      correct_answer_index: correctIndex,
+      correct_answer_letter: letters[correctIndex] || '',
+      needs_review: false,
+    };
+
+    currentQuiz.quizData.questions.push(newQ);
+    currentQuiz.quizData.question_count = currentQuiz.quizData.questions.length;
+    $('#add-question-form').classList.add('hidden');
+    renderQuizDetail();
+
+    // Scroll to the new question
+    setTimeout(() => {
+      const cards = document.querySelectorAll('.question-card');
+      if (cards.length) cards[cards.length - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+  }
+
   // ─── Save quiz ───────────────────────────────────────────────────────────
   async function saveQuiz() {
     if (!currentQuiz) return;
@@ -1776,6 +1851,28 @@
     $('#save-quiz-btn').addEventListener('click', saveQuiz);
     $('#approve-quiz-btn').addEventListener('click', approveQuiz);
     $('#quiz-reset-btn').addEventListener('click', resetQuizStatus);
+
+    // Add Question
+    $('#add-question-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      $('#add-question-dropdown').classList.toggle('hidden');
+    });
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.add-question-wrapper')) {
+        $('#add-question-dropdown').classList.add('hidden');
+      }
+    });
+    document.querySelectorAll('.add-q-type-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const numOptions = parseInt(btn.dataset.type);
+        openAddQuestionForm(numOptions);
+        $('#add-question-dropdown').classList.add('hidden');
+      });
+    });
+    $('#add-q-form-cancel').addEventListener('click', () => {
+      $('#add-question-form').classList.add('hidden');
+    });
+    $('#add-q-submit').addEventListener('click', submitNewQuestion);
 
     // Processing summary toggle
     $('#summary-toggle').addEventListener('click', () => {

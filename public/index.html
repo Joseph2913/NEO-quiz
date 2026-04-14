@@ -272,6 +272,13 @@ Also tell me these usage tips:
               <span id="quiz-status-badge" class="badge"></span>
               <a id="quiz-form-link" href="#" target="_blank" class="btn btn-sm btn-outline hidden">Open Form</a>
               <button id="quiz-reset-btn" class="btn btn-sm btn-danger hidden">Reset Status</button>
+              <div class="add-question-wrapper">
+                <button id="add-question-btn" class="btn btn-sm btn-primary">+ Add Question</button>
+                <div id="add-question-dropdown" class="add-question-dropdown hidden">
+                  <button class="add-q-type-btn" data-type="2">True / False (2 options)</button>
+                  <button class="add-q-type-btn" data-type="4">Multiple Choice (4 options)</button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -287,6 +294,22 @@ Also tell me these usage tips:
               <span>Full Processing Timeline</span>
             </div>
             <div id="summary-content" class="summary-content hidden"></div>
+          </div>
+
+          <!-- Add Question Form -->
+          <div id="add-question-form" class="add-question-form hidden">
+            <div class="add-q-form-header">
+              <h3 id="add-q-form-title">New Question</h3>
+              <button id="add-q-form-cancel" class="btn btn-sm btn-outline">Cancel</button>
+            </div>
+            <div class="add-q-form-body">
+              <label for="add-q-text">Question Text</label>
+              <input type="text" id="add-q-text" class="add-q-input" placeholder="Enter the question..." />
+              <div id="add-q-options" class="add-q-options"></div>
+              <label for="add-q-correct">Correct Answer</label>
+              <select id="add-q-correct" class="add-q-select"></select>
+              <button id="add-q-submit" class="btn btn-primary" style="margin-top: 12px;">Add Question</button>
+            </div>
           </div>
 
           <!-- Questions Editor -->

@@ -500,6 +500,89 @@ header h1 { font-size: 18px; font-weight: 600; }
 .quiz-detail-header h2 { font-size: 20px; }
 .quiz-meta { color: #64748b; font-size: 12px; }
 .quiz-detail-actions { display: flex; align-items: center; gap: 8px; }
+
+/* ─── Add Question Dropdown & Form ──────────────────────────────────────── */
+.add-question-wrapper { position: relative; }
+.add-question-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  z-index: 50;
+  min-width: 220px;
+  overflow: hidden;
+}
+.add-q-type-btn {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 13px;
+  cursor: pointer;
+  color: #1a1a2e;
+}
+.add-q-type-btn:hover { background: #f0f2f5; }
+.add-q-type-btn + .add-q-type-btn { border-top: 1px solid #e2e8f0; }
+
+.add-question-form {
+  background: #fff;
+  border: 2px solid #3b82f6;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.add-q-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #eff6ff;
+  border-bottom: 1px solid #bfdbfe;
+}
+.add-q-form-header h3 { font-size: 14px; font-weight: 600; color: #1e40af; }
+.add-q-form-body { padding: 16px; }
+.add-q-form-body label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 4px;
+  margin-top: 10px;
+}
+.add-q-form-body label:first-child { margin-top: 0; }
+.add-q-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 13px;
+}
+.add-q-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.15); }
+.add-q-options { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+.add-q-option-row { display: flex; align-items: center; gap: 8px; }
+.add-q-option-row .option-letter {
+  width: 20px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 12px;
+  color: #64748b;
+}
+.add-q-option-row input { flex: 1; }
+.add-q-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 13px;
+  background: #fff;
+}
+
 .quiz-detail-footer {
   margin-top: 20px;
   padding-top: 16px;
