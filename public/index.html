@@ -13,8 +13,13 @@
       <span class="subtitle">Microsoft Forms Quiz Generator</span>
     </div>
     <div class="header-right">
+      <div id="org-switcher" class="org-switcher">
+        <span class="org-dot"></span>
+        <span id="org-switcher-name">--</span>
+        <span class="org-arrow">&#9662;</span>
+        <div id="org-dropdown" class="org-dropdown hidden"></div>
+      </div>
       <button id="export-btn" class="btn btn-export">Export to Excel</button>
-      <button id="setup-guide-btn" class="btn btn-setup-guide">Setup Guide</button>
       <span id="platform-badge" class="badge">--</span>
       <span id="status-badge" class="badge badge-idle">Idle</span>
     </div>
@@ -27,7 +32,6 @@
           <button id="modal-close-btn" class="modal-close">&times;</button>
         </div>
         <div class="modal-body">
-          <!-- PROMPT FIRST -->
           <div class="prompt-hero">
             <div class="prompt-hero-header">
               <div>
@@ -84,15 +88,8 @@ Also tell me these usage tips:
 - The first time you run an automation, a Chromium browser will open asking you to sign in to your Microsoft account. After signing in once, the session is saved so you won't need to sign in again.
 - To stop the server later, press Ctrl+C in the terminal where it is running. To restart, run `npm start` again from the NEO-quiz folder.</pre>
           </div>
-
-          <!-- DIVIDER -->
-          <div class="guide-divider">
-            <span>How to use the prompt above</span>
-          </div>
-
-          <!-- SIMPLE STEPS -->
+          <div class="guide-divider"><span>How to use the prompt above</span></div>
           <p class="modal-callout">You don't need to take any technical action yourself. Just follow these 4 steps and the prompt above handles everything else:</p>
-
           <div class="setup-steps">
             <div class="setup-step">
               <div class="step-number">1</div>
@@ -101,7 +98,6 @@ Also tell me these usage tips:
                 <p>If you don't already have it, download Visual Studio Code from <code>https://code.visualstudio.com</code> and install it.</p>
               </div>
             </div>
-
             <div class="setup-step">
               <div class="step-number">2</div>
               <div class="step-content">
@@ -109,7 +105,6 @@ Also tell me these usage tips:
                 <p>Open VS Code, go to the Extensions panel (the square icon on the left sidebar), search for <strong>"Claude Code"</strong>, and click <strong>Install</strong>.</p>
               </div>
             </div>
-
             <div class="setup-step">
               <div class="step-number">3</div>
               <div class="step-content">
@@ -117,7 +112,6 @@ Also tell me these usage tips:
                 <p>Open the Claude Code panel in VS Code and sign in with your Claude / Anthropic account. If you don't have one, you can create one at <code>https://claude.ai</code>.</p>
               </div>
             </div>
-
             <div class="setup-step">
               <div class="step-number">4</div>
               <div class="step-content">
@@ -131,61 +125,228 @@ Also tell me these usage tips:
     </div>
   </header>
 
-  <div class="container">
-    <!-- Sidebar: Quiz List -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <input type="text" id="search-input" placeholder="Search quizzes..." />
-        <select id="filter-tribe">
-          <option value="">All Tribes</option>
-        </select>
-        <select id="filter-status">
-          <option value="">All Status</option>
-          <option value="not_started">Not Started</option>
-          <option value="processed">Processed</option>
-          <option value="failed">Failed</option>
-        </select>
-      </div>
-      <div class="sidebar-stats">
-        <span id="stat-total">0 quizzes</span>
-        <span id="stat-processed" class="stat-processed">0 processed</span>
-        <span id="stat-pending" class="stat-pending">0 pending</span>
-      </div>
-      <ul id="quiz-list" class="quiz-list"></ul>
-    </aside>
+  <div class="app-shell">
+    <!-- Left Nav -->
+    <nav class="side-nav">
+      <button class="nav-item active" data-view="library">
+        <span class="nav-icon">&#128203;</span>
+        <span class="nav-label">Quiz Library</span>
+      </button>
+      <button class="nav-item" data-view="bulk">
+        <span class="nav-icon">&#9889;</span>
+        <span class="nav-label">Bulk Process</span>
+      </button>
+      <div class="nav-spacer"></div>
+      <button class="nav-item" data-view="settings">
+        <span class="nav-icon">&#9881;</span>
+        <span class="nav-label">Settings</span>
+      </button>
+    </nav>
 
     <!-- Main Content -->
     <main class="main-content">
-      <!-- Default: Welcome / Dashboard -->
-      <div id="view-dashboard" class="view active">
-        <div class="dashboard">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
-            <h2 style="margin:0;">Dashboard</h2>
-            <a href="https://oxygy.sharepoint.com/sites/NEOOnboarding-2023/Lists/NEO_Quiz_Responses/AllItems.aspx" target="_blank" class="btn btn-outline btn-sm">📊 View SharePoint Responses List</a>
+
+      <!-- View: Quiz Library -->
+      <div id="view-library" class="view active">
+        <div class="library-toolbar">
+          <div class="library-stats-bar">
+            <span id="stat-total" class="stat-item">0 quizzes</span>
+            <span class="stat-sep">•</span>
+            <span id="stat-processed" class="stat-item stat-processed">0 processed</span>
+            <span class="stat-sep">•</span>
+            <span id="stat-pending" class="stat-item stat-pending">0 pending</span>
           </div>
-          <div class="dashboard-cards">
-            <div class="dash-card">
-              <div class="dash-card-number" id="dash-total">0</div>
-              <div class="dash-card-label">Total Quizzes</div>
+          <div class="library-filters">
+            <input type="text" id="search-input" placeholder="Search quizzes..." class="lib-search" />
+            <select id="filter-tribe" class="lib-select">
+              <option value="">All Tribes</option>
+            </select>
+            <select id="filter-status" class="lib-select">
+              <option value="">All Status</option>
+              <option value="not_started">Not Started</option>
+              <option value="processed">Processed</option>
+              <option value="failed">Failed</option>
+            </select>
+            <a id="sharepoint-link" href="#" target="_blank" class="btn btn-outline btn-sm">View SharePoint</a>
+          </div>
+        </div>
+        <div class="quiz-table-wrapper">
+          <table class="quiz-table">
+            <thead>
+              <tr>
+                <th class="col-name sortable" data-sort="form_name">Quiz Name <span class="sort-icon">&#8597;</span></th>
+                <th class="col-tribe sortable" data-sort="tribe">Tribe <span class="sort-icon">&#8597;</span></th>
+                <th class="col-questions sortable" data-sort="question_count">Qs <span class="sort-icon">&#8597;</span></th>
+                <th class="col-status sortable" data-sort="status">Status <span class="sort-icon">&#8597;</span></th>
+                <th class="col-date sortable" data-sort="date">Processed On <span class="sort-icon">&#8597;</span></th>
+                <th class="col-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="quiz-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- View: Quiz Editor -->
+      <div id="view-quiz" class="view">
+        <div class="quiz-detail">
+          <div class="quiz-detail-header">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <button id="back-to-library-btn" class="btn btn-sm btn-outline">&#8592; Library</button>
+              <div>
+                <h2 id="quiz-title"></h2>
+                <span id="quiz-meta" class="quiz-meta"></span>
+              </div>
             </div>
-            <div class="dash-card dash-card-success">
-              <div class="dash-card-number" id="dash-processed">0</div>
-              <div class="dash-card-label">Processed</div>
-            </div>
-            <div class="dash-card dash-card-pending">
-              <div class="dash-card-number" id="dash-pending">0</div>
-              <div class="dash-card-label">Pending</div>
-            </div>
-            <div class="dash-card dash-card-error">
-              <div class="dash-card-number" id="dash-failed">0</div>
-              <div class="dash-card-label">Failed</div>
+            <div class="quiz-detail-actions">
+              <span id="quiz-status-badge" class="badge"></span>
+              <a id="quiz-form-link" href="#" target="_blank" class="btn btn-sm btn-outline hidden">Open Form</a>
+              <button id="quiz-reset-btn" class="btn btn-sm btn-danger hidden">Reset Status</button>
+              <div class="add-question-wrapper">
+                <button id="add-question-btn" class="btn btn-sm btn-primary">+ Add Question</button>
+                <div id="add-question-dropdown" class="add-question-dropdown hidden">
+                  <button class="add-q-type-btn" data-type="2">True / False (2 options)</button>
+                  <button class="add-q-type-btn" data-type="4">Multiple Choice (4 options)</button>
+                </div>
+              </div>
             </div>
           </div>
+
+          <!-- Processed Links Panel -->
+          <div id="quiz-links-panel" class="quiz-links-panel hidden">
+            <div class="quiz-links-header">
+              <span class="quiz-links-icon">&#128279;</span>
+              <strong>Processed Links</strong>
+              <span id="quiz-links-date" class="quiz-links-date"></span>
+            </div>
+            <div class="quiz-links-buttons">
+              <a id="link-open-form" href="#" target="_blank" class="btn btn-primary btn-sm hidden">&#128221; Open Form</a>
+              <a id="link-open-flow" href="#" target="_blank" class="btn btn-primary btn-sm hidden" style="background:#059669;">&#9889; Open Flow</a>
+              <a id="link-edit-form" href="#" target="_blank" class="btn btn-outline btn-sm hidden">&#9998; Edit Form</a>
+              <a id="link-collaborate" href="#" target="_blank" class="btn btn-outline btn-sm hidden">&#128101; Share to Collaborate</a>
+            </div>
+          </div>
+
+          <!-- Warning Banner -->
+          <div id="quiz-warning-banner" class="quiz-warning-banner hidden"></div>
+
+          <!-- Error Check Summary -->
+          <div id="processing-summary" class="processing-summary hidden">
+            <div id="error-check-header" class="error-check-header"></div>
+            <div id="error-check-body" class="error-check-body"></div>
+            <div class="summary-toggle" id="summary-toggle">
+              <span class="summary-toggle-icon">&#9654;</span>
+              <span>Full Processing Timeline</span>
+            </div>
+            <div id="summary-content" class="summary-content hidden"></div>
+          </div>
+
+          <!-- Add Question Form -->
+          <div id="add-question-form" class="add-question-form hidden">
+            <div class="add-q-form-header">
+              <h3 id="add-q-form-title">New Question</h3>
+              <button id="add-q-form-cancel" class="btn btn-sm btn-outline">Cancel</button>
+            </div>
+            <div class="add-q-form-body">
+              <label for="add-q-text">Question Text</label>
+              <input type="text" id="add-q-text" class="add-q-input" placeholder="Enter the question..." />
+              <div id="add-q-options" class="add-q-options"></div>
+              <label for="add-q-correct">Correct Answer</label>
+              <select id="add-q-correct" class="add-q-select"></select>
+              <button id="add-q-submit" class="btn btn-primary" style="margin-top: 12px;">Add Question</button>
+            </div>
+          </div>
+
+          <!-- Questions Editor -->
+          <div id="questions-editor" class="questions-editor"></div>
+
+          <div class="quiz-detail-footer">
+            <button id="save-quiz-btn" class="btn btn-secondary">Save Changes</button>
+            <button id="approve-quiz-btn" class="btn btn-primary">Approve &amp; Continue</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- View: Process (single form) -->
+      <div id="view-process" class="view">
+        <div class="process-panel">
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+            <button id="back-from-process-btn" class="btn btn-sm btn-outline">&#8592; Library</button>
+            <h2 id="process-title">Ready to Process</h2>
+          </div>
+
+          <div class="single-template-section">
+            <div class="template-card" id="single-template-card">
+              <div class="template-card-icon">&#128203;</div>
+              <div class="template-card-body">
+                <div class="template-card-title">Create from LUSA NEO Quiz Template</div>
+                <div class="template-card-desc">Automatically duplicate the standard quiz template and fill in the questions</div>
+              </div>
+              <div class="template-card-check" id="single-template-check">&#10003;</div>
+            </div>
+            <div class="template-or"><span>or use an existing form</span></div>
+          </div>
+
+          <div class="url-input-group" id="single-url-group">
+            <label for="form-url-input">Form URL:</label>
+            <input type="url" id="form-url-input" placeholder="Paste the Microsoft Forms editor URL here..." />
+          </div>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button id="start-process-btn" class="btn btn-primary btn-lg">Start Automation (Form only)</button>
+            <button id="start-e2e-btn" class="btn btn-primary btn-lg" style="background:#059669;">Create Form + Power Automate Flow</button>
+          </div>
+          <p style="color:#64748b; font-size:12px; margin-top:8px;">
+            <strong>Form only</strong>: just creates the Microsoft Form.<br>
+            <strong>Form + Flow</strong>: creates the form, then automatically wires up the Power Automate flow to ingest and score responses into SharePoint.
+          </p>
+
+          <!-- E2E result panel -->
+          <div id="e2e-result-panel" class="progress-panel hidden" style="margin-top:16px; border-left: 4px solid #059669; background:#f0fdf4;">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+              <div style="font-size:28px;">&#9989;</div>
+              <div>
+                <h3 style="margin:0; color:#065f46;">Pipeline Complete</h3>
+                <div style="font-size:13px; color:#047857;">Form created, flow deployed, saved to dashboard.</div>
+              </div>
+            </div>
+            <div id="e2e-result-body" style="font-size:13px; line-height:1.8; background:white; padding:14px; border-radius:6px; border:1px solid #d1fae5;"></div>
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+              <button id="e2e-back-dashboard-btn" class="btn btn-primary btn-lg">&#8592; Back to Library</button>
+              <button id="e2e-process-next-btn" class="btn btn-primary btn-lg" style="background:#059669;">Process Next Quiz &#8594;</button>
+            </div>
+            <div style="margin-top:12px; padding:10px; background:#fffbeb; border-left:3px solid #f59e0b; font-size:12px; color:#78350f;">
+              <strong>Next:</strong> Open the Power Automate flow link above, toggle it <strong>On</strong>, then submit a test response to verify scoring.
+            </div>
+          </div>
+
+          <!-- Progress Display -->
+          <div id="progress-panel" class="progress-panel hidden">
+            <div class="progress-header">
+              <h3 id="progress-form-name">Processing...</h3>
+              <span id="progress-status" class="badge badge-running">Running</span>
+            </div>
+            <div id="progress-phases" class="bp-phases" style="margin-bottom: 12px;"></div>
+            <div class="progress-bar-container">
+              <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+            </div>
+            <div id="progress-detail" class="progress-detail">Initializing...</div>
+            <div id="progress-form-link" class="progress-form-link hidden">
+              <a id="progress-form-url" href="#" target="_blank" class="btn btn-primary btn-sm">Open Form</a>
+            </div>
+            <div id="progress-steps" class="progress-steps"></div>
+            <div id="progress-errors" class="progress-errors hidden"></div>
+            <div id="progress-log" class="progress-log"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- View: Bulk Process -->
+      <div id="view-bulk" class="view">
+        <div class="bulk-page">
+          <h2 style="margin-bottom:20px;">Bulk Process</h2>
 
           <div class="bulk-section">
-            <h3>Bulk Process</h3>
-
-            <!-- Template URL (shared across all modes) -->
+            <!-- Template URL -->
             <div class="template-url-section">
               <div class="template-toggle">
                 <label class="toggle-label">
@@ -220,9 +381,7 @@ Also tell me these usage tips:
             <!-- Tab 1: Manual Picker -->
             <div id="bulk-tab-manual" class="bulk-tab-content active">
               <p class="bulk-tab-desc">Select a quiz from the dropdown, paste its form URL, and click + to add more.</p>
-              <div id="manual-picker-rows" class="picker-rows">
-                <!-- rows added dynamically -->
-              </div>
+              <div id="manual-picker-rows" class="picker-rows"></div>
               <button id="add-picker-row-btn" class="btn btn-sm btn-add-row">+ Add Form</button>
             </div>
 
@@ -242,19 +401,16 @@ Also tell me these usage tips:
               <div id="csv-filename" class="csv-filename hidden"></div>
             </div>
 
-            <!-- Tab 3: Paste Text (original) -->
+            <!-- Tab 3: Paste Text -->
             <div id="bulk-tab-paste" class="bulk-tab-content">
               <p class="bulk-tab-desc">Paste form names and URLs (one per line, tab or comma separated):</p>
-              <textarea id="bulk-input" rows="6" placeholder="F2S - S&OP RESA & Advanced ATP, https://forms.cloud.microsoft/...&#10;F2S - Inbound Delivery & Goods Reception, https://forms.cloud.microsoft/..."></textarea>
+              <textarea id="bulk-input" rows="6" placeholder="F2S - S&amp;OP RESA &amp; Advanced ATP, https://forms.cloud.microsoft/...&#10;F2S - Inbound Delivery &amp; Goods Reception, https://forms.cloud.microsoft/..."></textarea>
               <button id="bulk-parse-btn" class="btn btn-secondary">Parse &amp; Review</button>
             </div>
 
-            <!-- Shared Preview & Start (all tabs feed into this) -->
+            <!-- Shared Preview & Start -->
             <div id="bulk-preview" class="bulk-preview hidden"></div>
-
-            <!-- Bulk Warning Card (shown when selected quizzes have flagged questions) -->
             <div id="bulk-warning-panel" class="bulk-warning-panel hidden"></div>
-
             <div id="bulk-action-buttons" class="bulk-action-buttons hidden">
               <button id="bulk-save-warnings-btn" class="btn btn-secondary hidden">Save Changes</button>
               <button id="bulk-start-btn" class="btn btn-primary">Start Bulk Processing</button>
@@ -263,155 +419,7 @@ Also tell me these usage tips:
         </div>
       </div>
 
-      <!-- Quiz Detail / Edit View -->
-      <div id="view-quiz" class="view">
-        <div class="quiz-detail">
-          <div class="quiz-detail-header">
-            <div>
-              <h2 id="quiz-title"></h2>
-              <span id="quiz-meta" class="quiz-meta"></span>
-            </div>
-            <div class="quiz-detail-actions">
-              <span id="quiz-status-badge" class="badge"></span>
-              <a id="quiz-form-link" href="#" target="_blank" class="btn btn-sm btn-outline hidden">Open Form</a>
-              <button id="quiz-reset-btn" class="btn btn-sm btn-danger hidden">Reset Status</button>
-              <div class="add-question-wrapper">
-                <button id="add-question-btn" class="btn btn-sm btn-primary">+ Add Question</button>
-                <div id="add-question-dropdown" class="add-question-dropdown hidden">
-                  <button class="add-q-type-btn" data-type="2">True / False (2 options)</button>
-                  <button class="add-q-type-btn" data-type="4">Multiple Choice (4 options)</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Processed Links Panel (shown when quiz has been processed) -->
-          <div id="quiz-links-panel" class="quiz-links-panel hidden">
-            <div class="quiz-links-header">
-              <span class="quiz-links-icon">🔗</span>
-              <strong>Processed Links</strong>
-              <span id="quiz-links-date" class="quiz-links-date"></span>
-            </div>
-            <div class="quiz-links-buttons">
-              <a id="link-open-form" href="#" target="_blank" class="btn btn-primary btn-sm hidden">📝 Open Form</a>
-              <a id="link-open-flow" href="#" target="_blank" class="btn btn-primary btn-sm hidden" style="background:#059669;">⚡ Open Flow</a>
-              <a id="link-edit-form" href="#" target="_blank" class="btn btn-outline btn-sm hidden">✏️ Edit Form</a>
-              <a id="link-collaborate" href="#" target="_blank" class="btn btn-outline btn-sm hidden">👥 Share to Collaborate</a>
-            </div>
-          </div>
-
-          <!-- Warning Banner (shown when quiz has flagged questions) -->
-          <div id="quiz-warning-banner" class="quiz-warning-banner hidden"></div>
-
-          <!-- Error Check Summary (shown for processed/partial/failed forms) -->
-          <div id="processing-summary" class="processing-summary hidden">
-            <div id="error-check-header" class="error-check-header"></div>
-            <div id="error-check-body" class="error-check-body"></div>
-            <div class="summary-toggle" id="summary-toggle">
-              <span class="summary-toggle-icon">&#9654;</span>
-              <span>Full Processing Timeline</span>
-            </div>
-            <div id="summary-content" class="summary-content hidden"></div>
-          </div>
-
-          <!-- Add Question Form -->
-          <div id="add-question-form" class="add-question-form hidden">
-            <div class="add-q-form-header">
-              <h3 id="add-q-form-title">New Question</h3>
-              <button id="add-q-form-cancel" class="btn btn-sm btn-outline">Cancel</button>
-            </div>
-            <div class="add-q-form-body">
-              <label for="add-q-text">Question Text</label>
-              <input type="text" id="add-q-text" class="add-q-input" placeholder="Enter the question..." />
-              <div id="add-q-options" class="add-q-options"></div>
-              <label for="add-q-correct">Correct Answer</label>
-              <select id="add-q-correct" class="add-q-select"></select>
-              <button id="add-q-submit" class="btn btn-primary" style="margin-top: 12px;">Add Question</button>
-            </div>
-          </div>
-
-          <!-- Questions Editor -->
-          <div id="questions-editor" class="questions-editor"></div>
-
-          <div class="quiz-detail-footer">
-            <button id="save-quiz-btn" class="btn btn-secondary">Save Changes</button>
-            <button id="approve-quiz-btn" class="btn btn-primary">Approve & Continue</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Process View (after approval) -->
-      <div id="view-process" class="view">
-        <div class="process-panel">
-          <h2 id="process-title">Ready to Process</h2>
-
-          <!-- Template card option -->
-          <div class="single-template-section">
-            <div class="template-card" id="single-template-card">
-              <div class="template-card-icon">&#128203;</div>
-              <div class="template-card-body">
-                <div class="template-card-title">Create from LUSA NEO Quiz Template</div>
-                <div class="template-card-desc">Automatically duplicate the standard quiz template and fill in the questions</div>
-              </div>
-              <div class="template-card-check" id="single-template-check">&#10003;</div>
-            </div>
-            <div class="template-or"><span>or use an existing form</span></div>
-          </div>
-
-          <div class="url-input-group" id="single-url-group">
-            <label for="form-url-input">Form URL:</label>
-            <input type="url" id="form-url-input" placeholder="Paste the Microsoft Forms editor URL here..." />
-          </div>
-          <div style="display:flex; gap:12px; flex-wrap:wrap;">
-            <button id="start-process-btn" class="btn btn-primary btn-lg">Start Automation (Form only)</button>
-            <button id="start-e2e-btn" class="btn btn-primary btn-lg" style="background:#059669;">Create Form + Power Automate Flow</button>
-          </div>
-          <p style="color:#64748b; font-size:12px; margin-top:8px;">
-            <strong>Form only</strong>: just creates the Microsoft Form. <br>
-            <strong>Form + Flow</strong>: creates the form, then automatically wires up the Power Automate flow to ingest and score responses into SharePoint.
-          </p>
-
-          <!-- E2E result panel -->
-          <div id="e2e-result-panel" class="progress-panel hidden" style="margin-top:16px; border-left: 4px solid #059669; background:#f0fdf4;">
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
-              <div style="font-size:28px;">✅</div>
-              <div>
-                <h3 style="margin:0; color:#065f46;">Pipeline Complete</h3>
-                <div style="font-size:13px; color:#047857;">Form created, flow deployed, saved to dashboard.</div>
-              </div>
-            </div>
-            <div id="e2e-result-body" style="font-size:13px; line-height:1.8; background:white; padding:14px; border-radius:6px; border:1px solid #d1fae5;"></div>
-            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-              <button id="e2e-back-dashboard-btn" class="btn btn-primary btn-lg">← Back to Dashboard</button>
-              <button id="e2e-process-next-btn" class="btn btn-primary btn-lg" style="background:#059669;">Process Next Quiz →</button>
-            </div>
-            <div style="margin-top:12px; padding:10px; background:#fffbeb; border-left:3px solid #f59e0b; font-size:12px; color:#78350f;">
-              <strong>Next:</strong> Open the Power Automate flow link above, toggle it <strong>On</strong>, then submit a test response to verify scoring.
-            </div>
-          </div>
-
-          <!-- Progress Display -->
-          <div id="progress-panel" class="progress-panel hidden">
-            <div class="progress-header">
-              <h3 id="progress-form-name">Processing...</h3>
-              <span id="progress-status" class="badge badge-running">Running</span>
-            </div>
-            <div id="progress-phases" class="bp-phases" style="margin-bottom: 12px;"></div>
-            <div class="progress-bar-container">
-              <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
-            </div>
-            <div id="progress-detail" class="progress-detail">Initializing...</div>
-            <div id="progress-form-link" class="progress-form-link hidden">
-              <a id="progress-form-url" href="#" target="_blank" class="btn btn-primary btn-sm">Open Form</a>
-            </div>
-            <div id="progress-steps" class="progress-steps"></div>
-            <div id="progress-errors" class="progress-errors hidden"></div>
-            <div id="progress-log" class="progress-log"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bulk Progress View -->
+      <!-- View: Bulk Progress -->
       <div id="view-bulk-progress" class="view">
         <div class="process-panel">
           <div class="bulk-progress-header">
@@ -428,16 +436,106 @@ Also tell me these usage tips:
           </div>
           <div id="bulk-progress-list" class="bulk-progress-list-v2"></div>
           <div id="bulk-progress-log" class="progress-log" style="margin-top: 16px;"></div>
-
-          <!-- Completion Panel -->
           <div id="bulk-complete-panel" class="bulk-complete-panel hidden">
             <div class="bulk-complete-icon" id="bulk-complete-icon"></div>
             <h3 id="bulk-complete-title"></h3>
             <p id="bulk-complete-message"></p>
-            <button id="bulk-back-btn" class="btn btn-primary btn-lg">Back to Dashboard</button>
+            <button id="bulk-back-btn" class="btn btn-primary btn-lg">Back to Library</button>
           </div>
         </div>
       </div>
+
+      <!-- View: Settings -->
+      <div id="view-settings" class="view">
+        <div class="settings-page">
+          <h2 style="margin-bottom:24px;">Settings</h2>
+
+          <!-- Organisations -->
+          <div class="settings-section">
+            <div class="settings-section-header">
+              <div>
+                <h3>Organisations</h3>
+                <p class="settings-section-desc">Configure the Microsoft tenant, Power Platform environment, and connections for each organisation you deploy to.</p>
+              </div>
+              <button id="add-org-btn" class="btn btn-sm btn-primary">+ Add Organisation</button>
+            </div>
+            <div id="org-list" class="org-list"></div>
+          </div>
+
+          <!-- Org Editor Form -->
+          <div id="org-editor" class="org-editor hidden">
+            <div class="org-editor-header">
+              <h3 id="org-editor-title">New Organisation</h3>
+              <button id="org-cancel-btn" class="btn btn-sm btn-outline">Cancel</button>
+            </div>
+            <div class="org-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Organisation Name</label>
+                  <input type="text" id="org-name-input" placeholder="e.g. L'Oreal" />
+                </div>
+                <div class="form-group">
+                  <label>Tenant ID</label>
+                  <input type="text" id="org-tenant-id" placeholder="Azure AD tenant ID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Power Platform Environment ID</label>
+                  <input type="text" id="org-environment-id" placeholder="e.g. Default-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" />
+                </div>
+              </div>
+              <div class="form-section-title">SharePoint</div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>SharePoint Site URL</label>
+                  <input type="url" id="org-sharepoint-url" placeholder="https://tenant.sharepoint.com/sites/SiteName" />
+                </div>
+                <div class="form-group">
+                  <label>SharePoint List Name</label>
+                  <input type="text" id="org-sharepoint-list" placeholder="NEO_Quiz_Responses" />
+                </div>
+              </div>
+              <div class="form-section-title">Power Automate Connection IDs</div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>SharePoint Connection ID</label>
+                  <input type="text" id="org-conn-sharepoint" placeholder="shared_sharepointonline/..." />
+                </div>
+                <div class="form-group">
+                  <label>Microsoft Forms Connection ID</label>
+                  <input type="text" id="org-conn-forms" placeholder="shared_microsoftforms/..." />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Office 365 Users Connection ID</label>
+                  <input type="text" id="org-conn-office365" placeholder="shared_office365users/..." />
+                </div>
+                <div class="form-group">
+                  <label>Office 365 Outlook Connection ID</label>
+                  <input type="text" id="org-conn-outlook" placeholder="shared_office365/..." />
+                </div>
+              </div>
+              <div class="form-actions">
+                <button id="org-save-btn" class="btn btn-primary">Save Organisation</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Setup Guide -->
+          <div class="settings-section" style="margin-top:32px;">
+            <div class="settings-section-header">
+              <div>
+                <h3>Setup Guide</h3>
+                <p class="settings-section-desc">First time setting up this tool on a new machine? The setup guide walks you through the full installation.</p>
+              </div>
+              <button id="setup-guide-btn" class="btn btn-sm btn-outline">Open Setup Guide</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </main>
   </div>
 

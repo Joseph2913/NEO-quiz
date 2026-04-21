@@ -15,6 +15,7 @@ results.json
 diagnostics/
 form-editor-dump.html
 manifest.json
+org-config.json
 
 # Claude Code local config
 .claude/

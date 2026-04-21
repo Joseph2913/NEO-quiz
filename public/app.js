@@ -6,11 +6,16 @@
   // ─── State ───────────────────────────────────────────────────────────────
   let quizzes = [];
   let currentQuiz = null;      // { filename, quizData }
-  let currentView = 'dashboard';
+  let currentView = 'library';
   let eventSource = null;      // SSE connection
   let processFormName = null;  // form being processed (single mode)
   let bulkItems = [];          // parsed bulk items
   let useTemplate = false;     // template duplication mode
+  let activeOrg = null;        // active org config object
+  let orgConfig = null;        // full config { activeOrgId, orgs }
+  let editingOrgId = null;     // id of org currently being edited (null = new)
+  let sortCol = null;
+  let sortDir = 'asc';
   const NEO_TEMPLATE_URL = 'https://forms.cloud.microsoft/Pages/ShareFormPage.aspx?id=-PwcN9hMeUuH3N6aiZ96iJL6XI4jatJEuJk0OOXdqXtUNFU0NUhMU0IzTlhBRkFMSjI3MEc0TUJGOS4u&sharetoken=V5v5UgZt2EBKi9p5hl4O';
 
   // ─── DOM refs ────────────────────────────────────────────────────────────
@@ -20,6 +25,7 @@
   // ─── Init ────────────────────────────────────────────────────────────────
   async function init() {
     await fetchStatus();
+    await loadConfig();
     await loadQuizzes();
     bindEvents();
     connectSSE();
@@ -74,17 +80,76 @@
     }
   }
 
+  // ─── Load org config ─────────────────────────────────────────────────────
+  async function loadConfig() {
+    try {
+      orgConfig = await api('/config');
+      activeOrg = orgConfig.orgs.find(o => o.id === orgConfig.activeOrgId) || orgConfig.orgs[0] || null;
+      renderOrgSwitcher();
+      updateSharePointLink();
+    } catch (e) { console.error('Config load failed:', e); }
+  }
+
+  function renderOrgSwitcher() {
+    const nameEl = $('#org-switcher-name');
+    if (nameEl) nameEl.textContent = activeOrg ? activeOrg.name : '--';
+    const dropdown = $('#org-dropdown');
+    if (!dropdown || !orgConfig) return;
+    const others = orgConfig.orgs.filter(o => o.id !== orgConfig.activeOrgId);
+    dropdown.innerHTML = orgConfig.orgs.map(o => `
+      <div class="org-dropdown-item ${o.id === orgConfig.activeOrgId ? 'active' : ''}" data-orgid="${esc(o.id)}">
+        <span>${esc(o.name)}</span>
+        ${o.id === orgConfig.activeOrgId ? '<span class="org-check">&#10003;</span>' : ''}
+      </div>
+    `).join('') +
+    '<div class="org-dropdown-divider"></div>' +
+    '<div class="org-dropdown-manage" id="org-manage-link">&#9881; Manage organisations</div>';
+
+    dropdown.querySelectorAll('.org-dropdown-item').forEach(item => {
+      item.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const orgId = item.dataset.orgid;
+        if (orgId === orgConfig.activeOrgId) { dropdown.classList.add('hidden'); return; }
+        try {
+          orgConfig = await api('/config/active', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ orgId }) });
+          activeOrg = orgConfig.orgs.find(o => o.id === orgConfig.activeOrgId);
+          renderOrgSwitcher();
+          updateSharePointLink();
+          dropdown.classList.add('hidden');
+        } catch (err) { alert('Failed to switch organisation: ' + err.message); }
+      });
+    });
+
+    const manageLink = dropdown.querySelector('#org-manage-link');
+    if (manageLink) manageLink.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.classList.add('hidden');
+      showView('settings');
+      renderOrgList();
+    });
+  }
+
+  function updateSharePointLink() {
+    const link = $('#sharepoint-link');
+    if (!link) return;
+    if (activeOrg && activeOrg.sharePointResponsesUrl) {
+      link.href = activeOrg.sharePointResponsesUrl;
+    } else {
+      link.href = '#';
+    }
+  }
+
   // ─── Load quizzes ────────────────────────────────────────────────────────
   async function loadQuizzes() {
     quizzes = await api('/quizzes');
-    renderQuizList();
-    renderDashboard();
+    renderQuizTable();
     populateTribeFilter();
   }
 
   function populateTribeFilter() {
     const tribes = [...new Set(quizzes.map(q => q.tribe))].sort();
     const sel = $('#filter-tribe');
+    if (!sel) return;
     sel.innerHTML = '<option value="">All Tribes</option>';
     tribes.forEach(t => {
       const opt = document.createElement('option');
@@ -94,65 +159,110 @@
     });
   }
 
-  // ─── Render quiz list ────────────────────────────────────────────────────
-  function renderQuizList() {
-    const search = ($('#search-input').value || '').toLowerCase();
-    const tribe = $('#filter-tribe').value;
-    const status = $('#filter-status').value;
+  // ─── Render quiz table ───────────────────────────────────────────────────
+  function renderQuizTable() {
+    const search = ($('#search-input') ? $('#search-input').value : '').toLowerCase();
+    const tribe = $('#filter-tribe') ? $('#filter-tribe').value : '';
+    const status = $('#filter-status') ? $('#filter-status').value : '';
 
-    const filtered = quizzes.filter(q => {
+    let filtered = quizzes.filter(q => {
       if (search && !q.form_name.toLowerCase().includes(search)) return false;
       if (tribe && q.tribe !== tribe) return false;
       if (status && q.status !== status) return false;
       return true;
     });
 
-    const list = $('#quiz-list');
-    list.innerHTML = '';
+    if (sortCol) {
+      filtered = filtered.slice().sort((a, b) => {
+        let av = a[sortCol] || '';
+        let bv = b[sortCol] || '';
+        if (typeof av === 'number' && typeof bv === 'number') {
+          return sortDir === 'asc' ? av - bv : bv - av;
+        }
+        av = String(av).toLowerCase();
+        bv = String(bv).toLowerCase();
+        if (av < bv) return sortDir === 'asc' ? -1 : 1;
+        if (av > bv) return sortDir === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
+
+    const tbody = $('#quiz-table-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
     filtered.forEach(q => {
-      const li = document.createElement('li');
-      li.className = currentQuiz && currentQuiz.filename === q.filename ? 'active' : '';
-      const warningIcon = q.needs_review > 0 ? `<span class="quiz-warning-icon" title="${q.needs_review} question(s) need review">&#9888;</span>` : '';
-      li.innerHTML = `
-        <span class="quiz-name" title="${esc(q.form_name)}">${esc(q.form_name)}</span>
-        ${warningIcon}
-        <span class="quiz-count">${q.question_count}q</span>
-        <span class="status-dot ${q.status}"></span>
+      const tr = document.createElement('tr');
+      if (currentQuiz && currentQuiz.filename === q.filename) tr.classList.add('active-row');
+      const tribeCls = tribePillClass(q.tribe);
+      const dateStr = q.date ? new Date(q.date).toLocaleDateString() : '<span class="quiz-row-date">—</span>';
+      const warningIcon = q.needs_review > 0 ? `<span class="quiz-row-warning" title="${q.needs_review} question(s) need review">&#9888;</span>` : '';
+      const actionBtns = buildTableActions(q);
+      tr.innerHTML = `
+        <td><div class="quiz-row-name">${warningIcon}${esc(q.form_name)}</div></td>
+        <td><span class="tribe-pill ${tribeCls}">${esc(q.tribe)}</span></td>
+        <td style="text-align:center;">${q.question_count}</td>
+        <td><span class="status-pill ${q.status}">${statusLabel(q.status)}</span></td>
+        <td>${q.date ? new Date(q.date).toLocaleDateString() : '<span class="quiz-row-date">—</span>'}</td>
+        <td style="text-align:right;">${actionBtns}</td>
       `;
-      li.addEventListener('click', () => selectQuiz(q));
-      list.appendChild(li);
+      tr.addEventListener('click', (e) => {
+        if (e.target.closest('a')) return;
+        selectQuiz(q);
+      });
+      tbody.appendChild(tr);
     });
 
     // Stats
     const total = quizzes.length;
     const processed = quizzes.filter(q => q.status === 'processed').length;
     const pending = quizzes.filter(q => q.status === 'not_started').length;
-    $('#stat-total').textContent = `${total} quizzes`;
-    $('#stat-processed').textContent = `${processed} processed`;
-    $('#stat-pending').textContent = `${pending} pending`;
+    if ($('#stat-total')) $('#stat-total').textContent = `${total} quizzes`;
+    if ($('#stat-processed')) $('#stat-processed').textContent = `${processed} processed`;
+    if ($('#stat-pending')) $('#stat-pending').textContent = `${pending} pending`;
+
+    // Update sort icons
+    $$('.quiz-table th.sortable').forEach(th => {
+      th.classList.remove('sort-asc', 'sort-desc');
+      if (th.dataset.sort === sortCol) th.classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+    });
   }
 
-  // ─── Render dashboard ────────────────────────────────────────────────────
-  function renderDashboard() {
-    const total = quizzes.length;
-    const processed = quizzes.filter(q => q.status === 'processed').length;
-    const failed = quizzes.filter(q => q.status === 'failed').length;
-    const pending = total - processed - failed;
-    $('#dash-total').textContent = total;
-    $('#dash-processed').textContent = processed;
-    $('#dash-pending').textContent = pending;
-    $('#dash-failed').textContent = failed;
+  function tribePillClass(tribe) {
+    if (!tribe) return 'tribe-default';
+    if (tribe.startsWith('F2S')) return 'tribe-F2S';
+    if (tribe.startsWith('O2C')) return 'tribe-O2C';
+    if (tribe.startsWith('P2P')) return 'tribe-P2P';
+    if (tribe.startsWith('R2R')) return 'tribe-R2R';
+    if (tribe.toLowerCase().includes('finance')) return 'tribe-Finance';
+    return 'tribe-default';
+  }
+
+  function statusLabel(status) {
+    return { not_started: 'Not Started', processed: 'Processed', failed: 'Failed', partial: 'Partial' }[status] || status;
+  }
+
+  function buildTableActions(q) {
+    let html = '';
+    if (q.form_url) {
+      html += `<a href="${esc(q.form_url)}" target="_blank" class="table-action-btn" title="Open form editor">Edit Form</a>`;
+    }
+    if (q.flow_url) {
+      html += `<a href="${esc(q.flow_url)}" target="_blank" class="table-action-btn btn-flow" title="Open Power Automate flow">Flow</a>`;
+    }
+    return html;
   }
 
   // ─── View switching ──────────────────────────────────────────────────────
   function showView(name) {
     currentView = name;
     $$('.view').forEach(v => v.classList.remove('active'));
-    $(`#view-${name}`).classList.add('active');
-    // Refresh data when navigating to dashboard or quiz list
-    if (name === 'dashboard' || name === 'quiz') {
-      loadQuizzes();
-    }
+    const viewEl = $(`#view-${name}`);
+    if (viewEl) viewEl.classList.add('active');
+    // Update nav active state
+    $$('.nav-item').forEach(item => {
+      item.classList.toggle('active', item.dataset.view === name);
+    });
+    if (name === 'library') loadQuizzes();
   }
 
   // ─── Select a quiz ──────────────────────────────────────────────────────
@@ -162,7 +272,6 @@
       currentQuiz = { filename: quizMeta.filename, quizData, meta: quizMeta };
       renderQuizDetail();
       showView('quiz');
-      renderQuizList(); // update active highlight
     } catch (e) {
       alert('Failed to load quiz: ' + e.message);
     }
@@ -767,8 +876,7 @@
     $('#e2e-result-panel').classList.add('hidden');
     $('#progress-panel').classList.add('hidden');
     currentQuiz = null;
-    showView('dashboard');
-    renderQuizList();
+    showView('library');
   }
 
   function processNextQuiz() {
@@ -1970,18 +2078,60 @@
 
   // ─── Event bindings ──────────────────────────────────────────────────────
   function bindEvents() {
-    // Sidebar filters
-    $('#search-input').addEventListener('input', renderQuizList);
-    $('#filter-tribe').addEventListener('change', renderQuizList);
-    $('#filter-status').addEventListener('change', renderQuizList);
+    // Library filters
+    $('#search-input').addEventListener('input', renderQuizTable);
+    $('#filter-tribe').addEventListener('change', renderQuizTable);
+    $('#filter-status').addEventListener('change', renderQuizTable);
 
-    // Dashboard link (click header title)
+    // Table sort
+    $$('.quiz-table th.sortable').forEach(th => {
+      th.addEventListener('click', () => {
+        if (sortCol === th.dataset.sort) {
+          sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+          sortCol = th.dataset.sort;
+          sortDir = 'asc';
+        }
+        renderQuizTable();
+      });
+    });
+
+    // Nav items
+    $$('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const view = item.dataset.view;
+        if (view === 'settings') renderOrgList();
+        showView(view);
+      });
+    });
+
+    // Header title click → library
     $('header h1').addEventListener('click', () => {
       currentQuiz = null;
-      showView('dashboard');
-      renderQuizList();
+      showView('library');
     });
     $('header h1').style.cursor = 'pointer';
+
+    // Org switcher toggle
+    $('#org-switcher').addEventListener('click', (e) => {
+      e.stopPropagation();
+      $('#org-dropdown').classList.toggle('hidden');
+    });
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#org-switcher')) {
+        const dd = $('#org-dropdown');
+        if (dd) dd.classList.add('hidden');
+      }
+    });
+
+    // Back to library buttons
+    $('#back-to-library-btn').addEventListener('click', () => {
+      currentQuiz = null;
+      showView('library');
+    });
+    $('#back-from-process-btn').addEventListener('click', () => {
+      showView('library');
+    });
 
     // Quiz detail actions
     $('#save-quiz-btn').addEventListener('click', saveQuiz);
@@ -2071,6 +2221,11 @@
         setTimeout(() => { btn.textContent = 'Copy to Clipboard'; btn.classList.remove('copied'); }, 2000);
       });
     });
+
+    // Settings: Org management
+    $('#add-org-btn').addEventListener('click', () => openOrgEditor(null));
+    $('#org-save-btn').addEventListener('click', saveOrg);
+    $('#org-cancel-btn').addEventListener('click', closeOrgEditor);
 
     // Single form template card
     $('#single-template-card').addEventListener('click', () => {
@@ -2207,10 +2362,137 @@
       // Switch back to manual picker tab
       switchBulkTab('manual');
 
-      // Refresh data and show dashboard
+      // Refresh data and show library
       loadQuizzes();
-      showView('dashboard');
+      showView('library');
     });
+  }
+
+  // ─── Org Management ──────────────────────────────────────────────────────
+  function renderOrgList() {
+    if (!orgConfig) return;
+    const list = $('#org-list');
+    if (!list) return;
+    if (orgConfig.orgs.length === 0) {
+      list.innerHTML = '<p style="color:#94a3b8; font-size:13px;">No organisations configured.</p>';
+      return;
+    }
+    list.innerHTML = orgConfig.orgs.map(org => {
+      const isActive = org.id === orgConfig.activeOrgId;
+      const meta = [org.sharePointSiteUrl, org.environmentId ? `Env: ${org.environmentId.substring(0, 20)}...` : null].filter(Boolean).join(' · ');
+      return `
+        <div class="org-card ${isActive ? 'active-org' : ''}" data-orgid="${esc(org.id)}">
+          <div class="org-card-left">
+            <div class="org-card-dot"></div>
+            <div>
+              <div class="org-card-name">${esc(org.name)}</div>
+              ${meta ? `<div class="org-card-meta">${esc(meta)}</div>` : ''}
+            </div>
+            ${isActive ? '<span class="active-org-badge">Active</span>' : ''}
+          </div>
+          <div class="org-card-actions">
+            ${!isActive ? `<button class="btn btn-sm btn-outline org-activate-btn" data-orgid="${esc(org.id)}">Set Active</button>` : ''}
+            <button class="btn btn-sm btn-outline org-edit-btn" data-orgid="${esc(org.id)}">Edit</button>
+            ${!isActive ? `<button class="btn btn-sm btn-danger org-delete-btn" data-orgid="${esc(org.id)}">Delete</button>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    list.querySelectorAll('.org-activate-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        try {
+          orgConfig = await api('/config/active', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ orgId: btn.dataset.orgid }) });
+          activeOrg = orgConfig.orgs.find(o => o.id === orgConfig.activeOrgId);
+          renderOrgSwitcher();
+          updateSharePointLink();
+          renderOrgList();
+        } catch (e) { alert('Failed: ' + e.message); }
+      });
+    });
+
+    list.querySelectorAll('.org-edit-btn').forEach(btn => {
+      btn.addEventListener('click', () => openOrgEditor(btn.dataset.orgid));
+    });
+
+    list.querySelectorAll('.org-delete-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const org = orgConfig.orgs.find(o => o.id === btn.dataset.orgid);
+        if (!confirm(`Delete organisation "${org ? org.name : btn.dataset.orgid}"?`)) return;
+        try {
+          orgConfig = await api(`/config/org/${encodeURIComponent(btn.dataset.orgid)}`, { method: 'DELETE' });
+          renderOrgList();
+          renderOrgSwitcher();
+        } catch (e) { alert('Failed: ' + e.message); }
+      });
+    });
+  }
+
+  function openOrgEditor(orgId) {
+    editingOrgId = orgId;
+    const editor = $('#org-editor');
+    if (!editor) return;
+    editor.classList.remove('hidden');
+    editor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    $('#org-editor-title').textContent = orgId ? 'Edit Organisation' : 'New Organisation';
+
+    if (orgId) {
+      const org = orgConfig.orgs.find(o => o.id === orgId);
+      if (!org) return;
+      $('#org-name-input').value = org.name || '';
+      $('#org-tenant-id').value = org.tenantId || '';
+      $('#org-environment-id').value = org.environmentId || '';
+      $('#org-sharepoint-url').value = org.sharePointSiteUrl || '';
+      $('#org-sharepoint-list').value = org.sharePointListName || '';
+      $('#org-conn-sharepoint').value = (org.connections && org.connections.sharePoint) || '';
+      $('#org-conn-forms').value = (org.connections && org.connections.forms) || '';
+      $('#org-conn-office365').value = (org.connections && org.connections.office365Users) || '';
+      $('#org-conn-outlook').value = (org.connections && org.connections.outlook) || '';
+    } else {
+      ['#org-name-input','#org-tenant-id','#org-environment-id','#org-sharepoint-url','#org-sharepoint-list',
+       '#org-conn-sharepoint','#org-conn-forms','#org-conn-office365','#org-conn-outlook'].forEach(sel => {
+        $(sel).value = '';
+      });
+    }
+  }
+
+  function closeOrgEditor() {
+    editingOrgId = null;
+    const editor = $('#org-editor');
+    if (editor) editor.classList.add('hidden');
+  }
+
+  async function saveOrg() {
+    const name = $('#org-name-input').value.trim();
+    if (!name) { alert('Organisation name is required.'); return; }
+    const spUrl = $('#org-sharepoint-url').value.trim();
+    const spList = $('#org-sharepoint-list').value.trim();
+    const spResponsesUrl = spUrl && spList ? `${spUrl.replace(/\/$/, '')}/Lists/${spList}/AllItems.aspx` : '';
+
+    const org = {
+      id: editingOrgId || name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      name,
+      tenantId: $('#org-tenant-id').value.trim(),
+      environmentId: $('#org-environment-id').value.trim(),
+      sharePointSiteUrl: spUrl,
+      sharePointListName: spList,
+      sharePointResponsesUrl: spResponsesUrl,
+      connections: {
+        sharePoint: $('#org-conn-sharepoint').value.trim(),
+        forms: $('#org-conn-forms').value.trim(),
+        office365Users: $('#org-conn-office365').value.trim(),
+        outlook: $('#org-conn-outlook').value.trim(),
+      },
+    };
+
+    try {
+      orgConfig = await api('/config/org', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(org) });
+      activeOrg = orgConfig.orgs.find(o => o.id === orgConfig.activeOrgId);
+      renderOrgSwitcher();
+      updateSharePointLink();
+      renderOrgList();
+      closeOrgEditor();
+    } catch (e) { alert('Save failed: ' + e.message); }
   }
 
   // ─── Utility ─────────────────────────────────────────────────────────────

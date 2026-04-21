@@ -12,6 +12,37 @@ const MANIFEST_PATH = path.join(QUIZ_JSON_DIR, 'quiz_manifest.json');
 const RUNTIME_STATE_PATH = path.join(PROJECT_ROOT, 'quiz-runtime-state.json');
 const LEGACY_LOG_PATH = path.join(PROJECT_ROOT, 'processing-log.json');
 const LEGACY_PIPELINE_PATH = path.join(PROJECT_ROOT, 'pipeline-results.json');
+const CONFIG_PATH = path.join(PROJECT_ROOT, 'org-config.json');
+
+const DEFAULT_CONFIG = {
+  activeOrgId: 'oxygy',
+  orgs: [{
+    id: 'oxygy',
+    name: 'OXYGY',
+    tenantId: '',
+    environmentId: '',
+    sharePointSiteUrl: 'https://oxygy.sharepoint.com/sites/NEOOnboarding-2023',
+    sharePointListName: 'NEO_Quiz_Responses',
+    sharePointResponsesUrl: 'https://oxygy.sharepoint.com/sites/NEOOnboarding-2023/Lists/NEO_Quiz_Responses/AllItems.aspx',
+    connections: { sharePoint: '', forms: '', office365Users: '', outlook: '' }
+  }]
+};
+
+function readConfig() {
+  try {
+    if (!fs.existsSync(CONFIG_PATH)) {
+      fs.writeFileSync(CONFIG_PATH, JSON.stringify(DEFAULT_CONFIG, null, 2));
+      return DEFAULT_CONFIG;
+    }
+    return JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
+  } catch {
+    return DEFAULT_CONFIG;
+  }
+}
+
+function writeConfig(config) {
+  fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
+}
 
 // One-time migration from old files into consolidated runtime state
 (function migrateLegacyFiles() {
@@ -626,6 +657,46 @@ app.get('/api/export', async (req, res) => {
     console.error('Error in GET /api/export:', err);
     res.status(500).json({ error: 'Failed to generate export' });
   }
+});
+
+// --- Org Config Routes ---
+
+// GET /api/config
+app.get('/api/config', (req, res) => {
+  res.json(readConfig());
+});
+
+// POST /api/config/org - create or update an org
+app.post('/api/config/org', (req, res) => {
+  const config = readConfig();
+  const org = req.body;
+  if (!org.id || !org.name) return res.status(400).json({ error: 'id and name required' });
+  const idx = config.orgs.findIndex(o => o.id === org.id);
+  if (idx >= 0) config.orgs[idx] = org;
+  else config.orgs.push(org);
+  writeConfig(config);
+  res.json(config);
+});
+
+// PUT /api/config/active - switch active org
+app.put('/api/config/active', (req, res) => {
+  const { orgId } = req.body;
+  const config = readConfig();
+  if (!config.orgs.find(o => o.id === orgId)) return res.status(404).json({ error: 'Org not found' });
+  config.activeOrgId = orgId;
+  writeConfig(config);
+  res.json(config);
+});
+
+// DELETE /api/config/org/:id
+app.delete('/api/config/org/:id', (req, res) => {
+  const config = readConfig();
+  const { id } = req.params;
+  if (config.orgs.length <= 1) return res.status(400).json({ error: 'Cannot delete the only organisation' });
+  if (id === config.activeOrgId) return res.status(400).json({ error: 'Cannot delete the active organisation. Switch to another org first.' });
+  config.orgs = config.orgs.filter(o => o.id !== id);
+  writeConfig(config);
+  res.json(config);
 });
 
 // --- Start server ---
