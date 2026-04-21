@@ -1247,9 +1247,12 @@ class QuizAutomation extends EventEmitter {
     this._log('ALL FORMS COMPLETE');
     this._log('='.repeat(60));
 
-    // Auto-close browser after batch
-    await wait(3000);
-    await this.close();
+    // Auto-close browser after batch (unless caller asks to keep it open)
+    const keepOpen = !!(opts && opts.keepOpen);
+    if (!keepOpen) {
+      await wait(3000);
+      await this.close();
+    }
 
     return results;
   }

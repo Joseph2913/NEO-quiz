@@ -3,13 +3,21 @@ node_modules/
 
 # Auth state (contains session tokens - never commit)
 auth-state.json
+auth-state-pa.json
 
-# Runtime/output files
+# Runtime/output files (tenant-specific state, don't commit)
 screenshots/
 processing-log.json
+quiz-runtime-state.json
+pipeline-results.json
 progress.json
 results.json
 diagnostics/
+form-editor-dump.html
+manifest.json
+
+# Claude Code local config
+.claude/
 
 # OS files
 .DS_Store

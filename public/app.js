@@ -180,13 +180,32 @@
     statusBadge.textContent = meta.status.replace('_', ' ');
     statusBadge.className = `badge badge-${meta.status}`;
 
-    // Form link
+    // Form link (legacy small button in header)
     const formLink = $('#quiz-form-link');
     if (meta.form_url) {
       formLink.href = meta.form_url;
       formLink.classList.remove('hidden');
     } else {
       formLink.classList.add('hidden');
+    }
+
+    // Processed links panel (shown for processed quizzes)
+    const linksPanel = $('#quiz-links-panel');
+    const hasAnyLink = meta.response_link || meta.flow_url || meta.form_url || meta.collaboration_link;
+    if (meta.status === 'processed' && hasAnyLink) {
+      linksPanel.classList.remove('hidden');
+      $('#quiz-links-date').textContent = meta.date ? `Processed ${new Date(meta.date).toLocaleString()}` : '';
+      const setLink = (id, url) => {
+        const el = $(id);
+        if (url) { el.href = url; el.classList.remove('hidden'); }
+        else el.classList.add('hidden');
+      };
+      setLink('#link-open-form', meta.response_link || meta.form_url);
+      setLink('#link-open-flow', meta.flow_url);
+      setLink('#link-edit-form', meta.form_url);
+      setLink('#link-collaborate', meta.collaboration_link);
+    } else {
+      linksPanel.classList.add('hidden');
     }
 
     // Reset button
@@ -683,6 +702,85 @@
     } catch (e) {
       alert('Failed to start: ' + e.message);
       $('#start-process-btn').disabled = false;
+    }
+  }
+
+  // ─── End-to-end pipeline (form + Power Automate flow) ──────────────────
+  async function startEndToEnd() {
+    if (!currentQuiz) return;
+    const url = $('#form-url-input').value.trim();
+    const payload = { quiz_filename: currentQuiz.filename };
+    if (singleUseTemplate) {
+      payload.template_url = NEO_TEMPLATE_URL;
+    } else if (url) {
+      payload.editor_url = url;
+    } else {
+      alert('Please either pick the template card, or paste an existing form editor URL.');
+      return;
+    }
+
+    $('#start-process-btn').disabled = true;
+    $('#start-e2e-btn').disabled = true;
+    $('#progress-panel').classList.remove('hidden');
+    $('#e2e-result-panel').classList.add('hidden');
+    resetProgressUI(currentQuiz.quizData.form_name, currentQuiz.quizData.questions.length);
+    $('#progress-detail').textContent = 'Starting end-to-end pipeline...';
+
+    try {
+      await api('/end-to-end', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } catch (e) {
+      alert('Failed to start: ' + e.message);
+      $('#start-process-btn').disabled = false;
+      $('#start-e2e-btn').disabled = false;
+    }
+  }
+
+  function showE2EResult(data) {
+    const panel = $('#e2e-result-panel');
+    const body = $('#e2e-result-body');
+    const quizName = currentQuiz ? currentQuiz.quizData.form_name : '';
+    body.innerHTML = `
+      <div style="margin-bottom:8px;"><strong>Quiz:</strong> ${esc(quizName)}</div>
+      <div style="margin-bottom:6px;">
+        <strong>📝 Respondent link</strong> <span style="color:#64748b; font-size:11px;">(share with users)</span><br>
+        <a href="${esc(data.responseLink)}" target="_blank" style="word-break:break-all; font-size:12px;">${esc(data.responseLink)}</a>
+      </div>
+      <div style="margin-bottom:6px;">
+        <strong>⚡ Power Automate flow</strong> <span style="color:#64748b; font-size:11px;">(turn it on to activate scoring)</span><br>
+        <a href="${esc(data.flowUrl)}" target="_blank" style="word-break:break-all; font-size:12px;">${esc(data.flowUrl)}</a>
+      </div>
+      <div style="font-size:11px; color:#94a3b8; margin-top:8px; padding-top:8px; border-top:1px solid #e2e8f0;">
+        Form ID: <code>${esc((data.formId || '').substring(0, 50))}...</code>
+      </div>`;
+    panel.classList.remove('hidden');
+    $('#start-process-btn').disabled = false;
+    $('#start-e2e-btn').disabled = false;
+    // Refresh the dashboard's quiz data so this one shows as processed next time
+    loadQuizzes().catch(() => {});
+  }
+
+  function goBackToDashboard() {
+    $('#e2e-result-panel').classList.add('hidden');
+    $('#progress-panel').classList.add('hidden');
+    currentQuiz = null;
+    showView('dashboard');
+    renderQuizList();
+  }
+
+  function processNextQuiz() {
+    $('#e2e-result-panel').classList.add('hidden');
+    $('#progress-panel').classList.add('hidden');
+    // Find the next unprocessed quiz in the list and open it
+    const unprocessed = quizzes.find((q) => q.status !== 'processed' && (!currentQuiz || q.filename !== currentQuiz.filename));
+    if (unprocessed) {
+      selectQuiz(unprocessed);
+    } else {
+      alert('No unprocessed quizzes remaining 🎉');
+      goBackToDashboard();
     }
   }
 
@@ -1566,6 +1664,44 @@
         updateRunningStatus(true);
         break;
 
+      // End-to-end pipeline events
+      case 'e2e_start':
+        updateRunningStatus(true);
+        $('#progress-detail').textContent = `Starting pipeline for ${data.formName}`;
+        break;
+      case 'e2e_stage':
+        $('#progress-detail').textContent = `[${data.stage}/${data.total}] ${data.label}...`;
+        $('#progress-bar').style.width = `${Math.round((data.stage / data.total) * 100)}%`;
+        break;
+      case 'e2e_form_ready':
+        $('#progress-detail').textContent = 'Form ready, capturing response link...';
+        break;
+      case 'e2e_response_link':
+        $('#progress-detail').textContent = `Response link captured: ${data.responseLink.substring(0, 60)}...`;
+        break;
+      case 'e2e_extracted':
+        $('#progress-detail').textContent = `Extracted ${data.questionCount} question IDs from form`;
+        break;
+      case 'e2e_matched':
+        $('#progress-detail').textContent = `Matched ${data.count} questions to quiz JSON`;
+        break;
+      case 'e2e_done':
+        $('#progress-bar').style.width = '100%';
+        $('#progress-status').textContent = 'Done';
+        $('#progress-status').className = 'badge badge-success';
+        $('#progress-detail').textContent = 'Pipeline complete!';
+        showE2EResult(data);
+        updateRunningStatus(false);
+        break;
+      case 'e2e_error':
+        $('#progress-detail').textContent = `Error: ${data.message}`;
+        $('#progress-status').textContent = 'Failed';
+        $('#progress-status').className = 'badge badge-failed';
+        $('#start-process-btn').disabled = false;
+        $('#start-e2e-btn').disabled = false;
+        updateRunningStatus(false);
+        break;
+
       case 'form_start':
         if (isBulk && bulkFormStates[fn]) {
           bulkFormStates[fn].status = 'running';
@@ -1947,6 +2083,9 @@
 
     // Process
     $('#start-process-btn').addEventListener('click', startProcessing);
+    $('#start-e2e-btn').addEventListener('click', startEndToEnd);
+    $('#e2e-back-dashboard-btn').addEventListener('click', goBackToDashboard);
+    $('#e2e-process-next-btn').addEventListener('click', processNextQuiz);
 
     // Template toggle
     $('#use-template-toggle').addEventListener('change', (e) => {

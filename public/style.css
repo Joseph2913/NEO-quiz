@@ -1420,3 +1420,37 @@ header h1 { font-size: 18px; font-weight: 600; }
   color: #d97706;
   flex-shrink: 0;
 }
+
+/* ─── Processed Links Panel ──────────────────────────────────────────────── */
+.quiz-links-panel {
+  background: #f0fdf4;
+  border: 1px solid #d1fae5;
+  border-left: 4px solid #059669;
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+}
+.quiz-links-panel.hidden { display: none; }
+.quiz-links-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: #065f46;
+  font-size: 14px;
+}
+.quiz-links-icon { font-size: 18px; }
+.quiz-links-date {
+  margin-left: auto;
+  color: #059669;
+  font-size: 12px;
+  font-weight: normal;
+}
+.quiz-links-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.quiz-links-buttons .btn {
+  text-decoration: none;
+}

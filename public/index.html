@@ -159,7 +159,10 @@ Also tell me these usage tips:
       <!-- Default: Welcome / Dashboard -->
       <div id="view-dashboard" class="view active">
         <div class="dashboard">
-          <h2>Dashboard</h2>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+            <h2 style="margin:0;">Dashboard</h2>
+            <a href="https://oxygy.sharepoint.com/sites/NEOOnboarding-2023/Lists/NEO_Quiz_Responses/AllItems.aspx" target="_blank" class="btn btn-outline btn-sm">📊 View SharePoint Responses List</a>
+          </div>
           <div class="dashboard-cards">
             <div class="dash-card">
               <div class="dash-card-number" id="dash-total">0</div>
@@ -282,6 +285,21 @@ Also tell me these usage tips:
             </div>
           </div>
 
+          <!-- Processed Links Panel (shown when quiz has been processed) -->
+          <div id="quiz-links-panel" class="quiz-links-panel hidden">
+            <div class="quiz-links-header">
+              <span class="quiz-links-icon">🔗</span>
+              <strong>Processed Links</strong>
+              <span id="quiz-links-date" class="quiz-links-date"></span>
+            </div>
+            <div class="quiz-links-buttons">
+              <a id="link-open-form" href="#" target="_blank" class="btn btn-primary btn-sm hidden">📝 Open Form</a>
+              <a id="link-open-flow" href="#" target="_blank" class="btn btn-primary btn-sm hidden" style="background:#059669;">⚡ Open Flow</a>
+              <a id="link-edit-form" href="#" target="_blank" class="btn btn-outline btn-sm hidden">✏️ Edit Form</a>
+              <a id="link-collaborate" href="#" target="_blank" class="btn btn-outline btn-sm hidden">👥 Share to Collaborate</a>
+            </div>
+          </div>
+
           <!-- Warning Banner (shown when quiz has flagged questions) -->
           <div id="quiz-warning-banner" class="quiz-warning-banner hidden"></div>
 
@@ -344,7 +362,33 @@ Also tell me these usage tips:
             <label for="form-url-input">Form URL:</label>
             <input type="url" id="form-url-input" placeholder="Paste the Microsoft Forms editor URL here..." />
           </div>
-          <button id="start-process-btn" class="btn btn-primary btn-lg">Start Automation</button>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button id="start-process-btn" class="btn btn-primary btn-lg">Start Automation (Form only)</button>
+            <button id="start-e2e-btn" class="btn btn-primary btn-lg" style="background:#059669;">Create Form + Power Automate Flow</button>
+          </div>
+          <p style="color:#64748b; font-size:12px; margin-top:8px;">
+            <strong>Form only</strong>: just creates the Microsoft Form. <br>
+            <strong>Form + Flow</strong>: creates the form, then automatically wires up the Power Automate flow to ingest and score responses into SharePoint.
+          </p>
+
+          <!-- E2E result panel -->
+          <div id="e2e-result-panel" class="progress-panel hidden" style="margin-top:16px; border-left: 4px solid #059669; background:#f0fdf4;">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+              <div style="font-size:28px;">✅</div>
+              <div>
+                <h3 style="margin:0; color:#065f46;">Pipeline Complete</h3>
+                <div style="font-size:13px; color:#047857;">Form created, flow deployed, saved to dashboard.</div>
+              </div>
+            </div>
+            <div id="e2e-result-body" style="font-size:13px; line-height:1.8; background:white; padding:14px; border-radius:6px; border:1px solid #d1fae5;"></div>
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+              <button id="e2e-back-dashboard-btn" class="btn btn-primary btn-lg">← Back to Dashboard</button>
+              <button id="e2e-process-next-btn" class="btn btn-primary btn-lg" style="background:#059669;">Process Next Quiz →</button>
+            </div>
+            <div style="margin-top:12px; padding:10px; background:#fffbeb; border-left:3px solid #f59e0b; font-size:12px; color:#78350f;">
+              <strong>Next:</strong> Open the Power Automate flow link above, toggle it <strong>On</strong>, then submit a test response to verify scoring.
+            </div>
+          </div>
 
           <!-- Progress Display -->
           <div id="progress-panel" class="progress-panel hidden">

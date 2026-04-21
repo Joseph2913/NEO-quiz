@@ -9,7 +9,44 @@ const PORT = 3000;
 const PROJECT_ROOT = __dirname;
 const QUIZ_JSON_DIR = path.join(PROJECT_ROOT, 'quiz_json');
 const MANIFEST_PATH = path.join(QUIZ_JSON_DIR, 'quiz_manifest.json');
-const LOG_PATH = path.join(PROJECT_ROOT, 'processing-log.json');
+const RUNTIME_STATE_PATH = path.join(PROJECT_ROOT, 'quiz-runtime-state.json');
+const LEGACY_LOG_PATH = path.join(PROJECT_ROOT, 'processing-log.json');
+const LEGACY_PIPELINE_PATH = path.join(PROJECT_ROOT, 'pipeline-results.json');
+
+// One-time migration from old files into consolidated runtime state
+(function migrateLegacyFiles() {
+  if (fs.existsSync(RUNTIME_STATE_PATH)) return;
+  const state = { entries: {} };
+  try {
+    if (fs.existsSync(LEGACY_LOG_PATH)) {
+      const legacy = JSON.parse(fs.readFileSync(LEGACY_LOG_PATH, 'utf-8'));
+      for (const [formName, e] of Object.entries(legacy.entries || {})) {
+        state.entries[formName] = { ...e };
+      }
+    }
+    if (fs.existsSync(LEGACY_PIPELINE_PATH)) {
+      const legacy = JSON.parse(fs.readFileSync(LEGACY_PIPELINE_PATH, 'utf-8'));
+      for (const [quizFile, r] of Object.entries(legacy)) {
+        const formName = r.formName || quizFile;
+        const existing = state.entries[formName] || {};
+        state.entries[formName] = {
+          ...existing,
+          status: existing.status || 'processed',
+          form_url: existing.form_url || r.editorUrl,
+          response_link: r.responseLink,
+          form_id: r.formId,
+          flow_id: r.flowId,
+          flow_url: r.flowUrl,
+          question_map: r.questionMap,
+          date: existing.date || r.createdAt,
+          pipeline: existing.pipeline || 'end-to-end',
+        };
+      }
+    }
+  } catch (e) { console.error('Legacy migration failed:', e); }
+  fs.writeFileSync(RUNTIME_STATE_PATH, JSON.stringify(state, null, 2));
+  console.log(`Migrated legacy state into ${path.basename(RUNTIME_STATE_PATH)}`);
+})();
 
 app.use(express.json());
 app.use(express.static(path.join(PROJECT_ROOT, 'public')));
@@ -18,17 +55,17 @@ app.use(express.static(path.join(PROJECT_ROOT, 'public')));
 
 function readProcessingLog() {
   try {
-    const data = fs.readFileSync(LOG_PATH, 'utf-8');
+    const data = fs.readFileSync(RUNTIME_STATE_PATH, 'utf-8');
     return JSON.parse(data);
   } catch {
     const empty = { entries: {} };
-    fs.writeFileSync(LOG_PATH, JSON.stringify(empty, null, 2));
+    fs.writeFileSync(RUNTIME_STATE_PATH, JSON.stringify(empty, null, 2));
     return empty;
   }
 }
 
 function writeProcessingLog(log) {
-  fs.writeFileSync(LOG_PATH, JSON.stringify(log, null, 2));
+  fs.writeFileSync(RUNTIME_STATE_PATH, JSON.stringify(log, null, 2));
 }
 
 function readManifest() {
@@ -74,6 +111,12 @@ app.get('/api/quizzes', (req, res) => {
         needs_review: form.needs_review || 0,
         status: entry ? entry.status : 'not_started',
         form_url: entry ? entry.form_url || null : null,
+        response_link: entry ? entry.response_link || null : null,
+        collaboration_link: entry ? entry.collaboration_link || null : null,
+        form_id: entry ? entry.form_id || null : null,
+        flow_id: entry ? entry.flow_id || null : null,
+        flow_url: entry ? entry.flow_url || null : null,
+        pipeline: entry ? entry.pipeline || null : null,
         date: entry ? entry.date || null : null,
         questions_processed: entry ? entry.questions_processed || 0 : 0,
         questions_total: entry ? entry.questions_total || 0 : 0,
@@ -226,6 +269,72 @@ app.post('/api/process', (req, res) => {
     console.error('Error in POST /api/process:', err);
     processingRunning = false;
     res.status(500).json({ error: 'Failed to start processing' });
+  }
+});
+
+// POST /api/end-to-end
+// Runs the full pipeline for a single quiz: form creation + flow creation.
+// Body: { quiz_filename: 'quiz_07.json', template_url?: '...', editor_url?: '...' }
+app.post('/api/end-to-end', (req, res) => {
+  try {
+    if (processingRunning) {
+      return res.status(409).json({ error: 'A batch is already running' });
+    }
+    const { quiz_filename, template_url, editor_url } = req.body;
+    if (!quiz_filename) return res.status(400).json({ error: 'quiz_filename is required' });
+    if (!template_url && !editor_url) return res.status(400).json({ error: 'template_url or editor_url required' });
+
+    const quizPath = path.join(QUIZ_JSON_DIR, quiz_filename);
+    if (!fs.existsSync(quizPath)) return res.status(404).json({ error: 'Quiz file not found' });
+
+    processingRunning = true;
+    res.json({ started: true });
+
+    (async () => {
+      try {
+        const { runEndToEnd } = require('./end-to-end');
+        const result = await runEndToEnd({
+          quizPath,
+          templateUrl: template_url || null,
+          existingEditorUrl: editor_url || null,
+          onEvent: (ev) => sendSSE(ev),
+        });
+
+        // Persist to processing-log.json so the dashboard shows the quiz as processed
+        try {
+          const quizData = JSON.parse(fs.readFileSync(quizPath, 'utf-8'));
+          const formName = quizData.form_name;
+          const log = readProcessingLog();
+          log.entries[formName] = {
+            status: 'processed',
+            form_url: result.editorUrl,
+            response_link: result.responseLink,
+            collaboration_link: result.collaborationLink || null,
+            form_id: result.formId,
+            flow_id: result.flowId,
+            flow_url: result.flowUrl,
+            question_map: result.questionMap || [],
+            date: result.createdAt,
+            questions_processed: quizData.questions.filter(q => !q.needs_review).length,
+            questions_total: quizData.questions.length,
+            pipeline: 'end-to-end',
+            summary: [],
+          };
+          writeProcessingLog(log);
+        } catch (e) { console.error('Failed to persist log entry:', e); }
+
+        sendSSE({ type: 'batch_complete', results: [{ success: true, quiz_filename, ...result }] });
+      } catch (err) {
+        console.error('End-to-end error:', err);
+        sendSSE({ type: 'error', message: err.message });
+      } finally {
+        processingRunning = false;
+      }
+    })();
+  } catch (err) {
+    console.error('Error in POST /api/end-to-end:', err);
+    processingRunning = false;
+    res.status(500).json({ error: 'Failed to start end-to-end' });
   }
 });
 
